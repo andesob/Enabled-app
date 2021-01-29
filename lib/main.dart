@@ -49,19 +49,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
   bool sunde = false;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
 
   void _changeText() {
     setState(() {
@@ -74,12 +62,8 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     const Color lightPeach = Color(0xffffecd2);
     const Color darkPeach = Color(0xfffcb7a0);
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+    var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+
     return Container(
       decoration: new BoxDecoration(
           gradient: new LinearGradient(
@@ -88,44 +72,37 @@ class _MyHomePageState extends State<MyHomePage> {
               stops: [0.0, 1.0],
               colors: [lightPeach, darkPeach])),
       child: Scaffold(
-        appBar: GradientAppBar(
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
-          gradient: LinearGradient(colors: [lightPeach, darkPeach]),
-          actions: <Widget>[
-            IconButton(
-                icon: Text(
-                  "Enabled",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-                ),
-                iconSize: 100.0,
-                padding: EdgeInsets.zero,
-                onPressed: () {
-                  _changeText();
-                })
-          ],
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(isPortrait ? 50 : 30),
+          child: GradientAppBar(
+            // Here we take the value from the MyHomePage object that was created by
+            // the App.build method, and use it to set our appbar title.
+            gradient: LinearGradient(colors: [lightPeach, darkPeach]),
+            actions: <Widget>[
+              Material(
+                type: MaterialType.transparency,
+                child: IconButton(
+                    icon: Icon(Icons.accessible_forward),
+                    highlightColor: Color(0xFFFFFF),
+                    padding: EdgeInsets.zero,
+                    onPressed: () {
+                      _changeText();
+                    }),
+              )
+            ],
+          ),
         ),
-        body: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+        body: GridView.count(
+            shrinkWrap: true,
+            crossAxisCount: isPortrait ? 2 : 3,
             children: <Widget>[
-              GridView.count(
-                  shrinkWrap: true,
-                  crossAxisCount: 2,
-                  children: <Widget>[
-                    MainPageButton("Needs"),
-                    MainPageButton("Custom"),
-                    MainPageButton("Keyboard"),
-                    MainPageButton("Contacts"),
-                    MainPageButton("Smart"),
-                    MainPageButton("Emergency"),
-                  ]),
-              Text((sunde) ? "HEI SUNDE" : "ÆSJ :(")
+              MainPageButton("Needs"),
+              MainPageButton("Custom"),
+              MainPageButton("Keyboard"),
+              MainPageButton("Contacts"),
+              MainPageButton("Smart"),
+              MainPageButton("Emergency"),
             ]),
-        floatingActionButton: FloatingActionButton(
-          onPressed: _incrementCounter,
-          tooltip: 'Increment',
-          child: Icon(Icons.add),
-        ), // This trailing comma makes auto-formatting nicer for build methods.
       ),
     );
   }
