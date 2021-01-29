@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'mainPageButton.dart';
+import 'Strings/Strings.dart';
 
 void main() {
   runApp(MyApp());
@@ -96,12 +97,12 @@ class _MyHomePageState extends State<MyHomePage> {
             shrinkWrap: true,
             crossAxisCount: isPortrait ? 2 : 3,
             children: <Widget>[
-              MainPageButton("Needs"),
-              MainPageButton("Custom"),
-              MainPageButton("Keyboard"),
-              MainPageButton("Contacts"),
-              MainPageButton("Smart"),
-              MainPageButton("Emergency"),
+              MainPageButton(Strings.needs),
+              MainPageButton(Strings.custom),
+              MainPageButton(Strings.keyboard),
+              MainPageButton(Strings.contacts),
+              MainPageButton(Strings.smart),
+              MainPageButton(Strings.emergency),
             ]),
       ),
     );
