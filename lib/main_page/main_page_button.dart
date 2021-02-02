@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:enabled_app/colors/colors.dart';
 import 'package:enabled_app/needs/needs.dart';
 import 'package:flutter/material.dart';
+import 'package:gradient_text/gradient_text.dart';
 
 class MainPageButton extends StatelessWidget {
   String text;
@@ -21,7 +22,7 @@ class MainPageButton extends StatelessWidget {
   Widget build(BuildContext context) {
     Color lightPeach = Color(StaticColors.lightPeach);
     Color darkPeach = Color(StaticColors.darkPeach);
-    Color buttonColor = Color(StaticColors.greenSheen);
+    Color buttonColor = Color(StaticColors.lightGray);
 
     return Container(
       margin: EdgeInsets.all(20),
@@ -35,9 +36,15 @@ class MainPageButton extends StatelessWidget {
         ),*/
       ),
       child: FlatButton(
-        child: new Text(
+        child: new GradientText(
           text,
-          style: TextStyle(color: Color(darkmode ? StaticColors.black : StaticColors.white)),
+          style: TextStyle(
+              color: Color(darkmode ? StaticColors.black : StaticColors.white)),
+          gradient: new LinearGradient(
+            colors: [lightPeach, darkPeach],
+            begin: FractionalOffset.centerLeft,
+            end: FractionalOffset.centerRight,
+          ),
         ),
         onPressed: () {
           goToPage(context);

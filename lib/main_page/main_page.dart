@@ -34,8 +34,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    Color lightPeach = Color(StaticColors.unbleachedSilk);
-    Color darkPeach = Color(StaticColors.melon);
+    Color lightPeach = Color(StaticColors.lightPeach);
+    Color darkPeach = Color(StaticColors.darkPeach);
     Color appBarColor = Color(StaticColors.apricot);
     Color backgroundColor = Color(darkmode ? StaticColors.onyx : StaticColors.white);
 
@@ -56,7 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
           child: GradientAppBar(
             // Here we take the value from the MyHomePage object that was created by
             // the App.build method, and use it to set our appbar title.
-            gradient: LinearGradient(colors: [appBarColor, appBarColor]),
+            gradient: LinearGradient(colors: [lightPeach, darkPeach]),
             actions: <Widget>[
               Material(
                 type: MaterialType.transparency,
