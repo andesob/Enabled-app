@@ -1,4 +1,5 @@
 import 'package:enabled_app/colors/colors.dart';
+import 'package:enabled_app/needs/needs.dart';
 import 'package:flutter/material.dart';
 
 class MainPageButton extends StatelessWidget {
@@ -6,6 +7,10 @@ class MainPageButton extends StatelessWidget {
 
   MainPageButton(String text) {
     this.text = text;
+  }
+
+  goToPage(context) {
+    Navigator.pushNamed(context, text);
   }
 
   @override
@@ -25,7 +30,9 @@ class MainPageButton extends StatelessWidget {
       ),
       child: FlatButton(
         child: new Text(text),
-        onPressed: () {},
+        onPressed: () {
+          goToPage(context);
+        },
       ),
     );
   }
