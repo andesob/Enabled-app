@@ -1,3 +1,4 @@
+import 'package:enabled_app/colors/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'main_page_button.dart';
@@ -33,8 +34,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    const Color lightPeach = Color(0xffffecd2);
-    const Color darkPeach = Color(0xfffcb7a0);
+    Color lightPeach = Color(StaticColors.lightPeach);
+    Color darkPeach = Color(StaticColors.darkPeach);
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
 
     return Container(
@@ -56,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 type: MaterialType.transparency,
                 child: IconButton(
                     icon: Icon(Icons.accessible_forward),
-                    highlightColor: Color(0xFFFFFF),
+                    splashColor: Color(Colors.grey.value),
                     padding: EdgeInsets.zero,
                     onPressed: () {
                       _changeText();

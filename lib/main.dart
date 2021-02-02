@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'main_page/main_page.dart';
+import 'colors/colors.dart';
 
 void main() {
   runApp(MyApp());
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
           // is not restarted.
 
           colorScheme: ColorScheme.light(
-              primary: Color(0xffffecd2), secondary: Color(0xfffcb7a0))),
+              primary: Color(StaticColors.lightPeach), secondary: Color(StaticColors.darkPeach))),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }

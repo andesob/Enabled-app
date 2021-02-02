@@ -1,3 +1,4 @@
+import 'package:enabled_app/colors/colors.dart';
 import 'package:flutter/material.dart';
 
 class MainPageButton extends StatelessWidget {
@@ -9,8 +10,8 @@ class MainPageButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const Color lightPeach = Color(0xffffecd2);
-    const Color darkPeach = Color(0xfffcb7a0);
+    Color lightPeach = Color(StaticColors.lightPeach);
+    Color darkPeach = Color(StaticColors.darkPeach);
 
     return Container(
       margin: EdgeInsets.all(20),
