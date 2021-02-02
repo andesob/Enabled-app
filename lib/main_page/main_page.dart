@@ -28,41 +28,43 @@ class _MyHomePageState extends State<MyHomePage> {
   void _changeText() {
     setState(() {
       darkmode = !darkmode;
-      print(darkmode);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     Color lightPeach = Color(StaticColors.lightPeach);
-    Color darkPeach = Color(StaticColors.darkPeach);
-    Color appBarColor = Color(StaticColors.apricot);
-    Color backgroundColor = Color(darkmode ? StaticColors.onyx : StaticColors.white);
+    Color darkPeach = Color(StaticColors.apricot);
+    Color appBarColorLight = Color(StaticColors.apricot);
+    Color appBarColorDark = Color(StaticColors.melon);
+    Color backgroundColor = Color(StaticColors.onyx);
 
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
 
     return Container(
       decoration: new BoxDecoration(
-        /*gradient: new LinearGradient(
+        gradient: new LinearGradient(
           colors: [lightPeach, darkPeach],
           begin: FractionalOffset.topCenter,
           end: FractionalOffset.bottomCenter,
-        ),*/
+        ),
       ),
       child: Scaffold(
-        backgroundColor: backgroundColor,
+        backgroundColor: darkmode ? backgroundColor : Colors.transparent,
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(isPortrait ? 50 : 30),
           child: GradientAppBar(
             // Here we take the value from the MyHomePage object that was created by
             // the App.build method, and use it to set our appbar title.
-            gradient: LinearGradient(colors: [lightPeach, darkPeach]),
+            gradient:
+                LinearGradient(colors: [appBarColorLight, appBarColorDark]),
             actions: <Widget>[
               Material(
                 type: MaterialType.transparency,
                 child: IconButton(
                     icon: Icon(Icons.accessible_forward),
-                    color: Color(darkmode ? StaticColors.black : StaticColors.white),
+                    color: Color(
+                        darkmode ? StaticColors.black : StaticColors.white),
                     splashColor: Color(Colors.grey.value),
                     padding: EdgeInsets.zero,
                     onPressed: () {

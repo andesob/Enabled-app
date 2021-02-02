@@ -26,4 +26,7 @@ class StaticColors{
   static int gray = 0xFF474747;
   static int onyx = 0xFF414141;
   static int lightGray = 0xFF5B5B5B;
+  static int lightSlateGray = 0xFF74909E;
+  static int lighterSlateGray = 0xFF7F99A6;
+  static int lightestSlateGray = 0xFF8BA3AE;
 }

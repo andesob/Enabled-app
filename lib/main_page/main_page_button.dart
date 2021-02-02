@@ -22,7 +22,7 @@ class MainPageButton extends StatelessWidget {
   Widget build(BuildContext context) {
     Color lightPeach = Color(StaticColors.lightPeach);
     Color darkPeach = Color(StaticColors.darkPeach);
-    Color buttonColor = Color(StaticColors.lightGray);
+    Color buttonColor = Color(StaticColors.lighterSlateGray);
 
     return Container(
       margin: EdgeInsets.all(20),
