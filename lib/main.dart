@@ -76,6 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(isPortrait ? 50 : 30),
           child: GradientAppBar(
+            title: Text("Home Page"),
             // Here we take the value from the MyHomePage object that was created by
             // the App.build method, and use it to set our appbar title.
             gradient: LinearGradient(colors: [lightPeach, darkPeach]),
@@ -93,6 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
         ),
+
         body: GridView.count(
             shrinkWrap: true,
             crossAxisCount: isPortrait ? 2 : 3,

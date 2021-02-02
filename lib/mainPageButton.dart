@@ -1,3 +1,6 @@
+import 'dart:core';
+
+import 'package:enabled_app/Contacts/contacts.dart';
 import 'package:flutter/material.dart';
 
 class MainPageButton extends StatelessWidget {
@@ -23,8 +26,11 @@ class MainPageButton extends StatelessWidget {
         ),
       ),
       child: FlatButton(
+        highlightColor: Color(0xffffff),
         child: new Text(text),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => contacts()),
+        );},
       ),
     );
   }
