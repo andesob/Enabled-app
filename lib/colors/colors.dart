@@ -25,4 +25,5 @@ class StaticColors{
   static int patriarch = 0xFF7C0A86;
   static int gray = 0xFF474747;
   static int onyx = 0xFF414141;
+  static int lightGray = 0xFF5B5B5B;
 }
