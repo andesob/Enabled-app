@@ -2,7 +2,7 @@
 # This is a generated file; do not edit or check into version control.
 export "FLUTTER_ROOT=/Users/andreassunde/flutter"
 export "FLUTTER_APPLICATION_PATH=/Users/andreassunde/Documents/Skole/bachelor/enabled_app"
-export "FLUTTER_TARGET=/Users/andreassunde/Documents/Skole/bachelor/enabled_app/lib/custom_page/Custompagelayout.dart"
+export "FLUTTER_TARGET=/Users/andreassunde/Documents/Skole/bachelor/enabled_app/lib/main.dart"
 export "FLUTTER_BUILD_DIR=build"
 export "SYMROOT=${SOURCE_ROOT}/../build/ios"
 export "FLUTTER_BUILD_NAME=1.0.0"
