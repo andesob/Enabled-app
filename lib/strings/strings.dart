@@ -9,5 +9,6 @@ class Strings{
   static String home = "Home";
   static String down = "Down";
   static String right = "Right";
+  static String enter = "Enter";
 
 }
