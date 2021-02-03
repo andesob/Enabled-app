@@ -93,6 +93,10 @@ class _MyHomePageState extends State<MyHomePage> {
     list[currPos[1]][currPos[0]].state.setFocus();
   }
 
+  void goTo() {
+    list[currPos[1]][currPos[0]].state.goToPage(context);
+  }
+
   void removeAllFocus() {
     for (int i = 0; i < mainPageBtnList.length; i++) {
       mainPageBtnList[i].state.removeFocus();
@@ -137,8 +141,6 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(50),
           child: GradientAppBar(
-            // Here we take the value from the MyHomePage object that was created by
-            // the App.build method, and use it to set our appbar title.
             gradient:
                 LinearGradient(colors: [appBarColorLight, appBarColorDark]),
             actions: <Widget>[
@@ -165,16 +167,41 @@ class _MyHomePageState extends State<MyHomePage> {
               crossAxisCount: useMobileLayout ? 2 : 3,
               children: mainPageBtnList.cast<Widget>(),
             ),
-            FlatButton(
-                onPressed: () {
-                  moveDown();
-                },
-                child: Text(Strings.down)),
-            FlatButton(
-                onPressed: () {
-                  moveRight();
-                },
-                child: Text(Strings.right)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                FlatButton(
+                  onPressed: () {
+                    moveDown();
+                  },
+                  child: Text(Strings.down),
+                  color: Color(StaticColors.lighterSlateGray),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+                FlatButton(
+                    onPressed: () {
+                      moveRight();
+                    },
+                    child: Text(Strings.right),
+                  color: Color(StaticColors.lighterSlateGray),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+                FlatButton(
+                    onPressed: () {
+                      goTo();
+                    },
+                    child: Text(Strings.enter),
+                  color: Color(StaticColors.lighterSlateGray),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),
