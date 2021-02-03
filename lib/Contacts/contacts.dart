@@ -1,3 +1,4 @@
+import 'package:enabled_app/colors/colors.dart';
 import 'package:enabled_app/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -48,9 +49,9 @@ class _contactState extends State<contacts> {
             final MessageItem item = items[index];
             return ListTile(
               leading: CircleAvatar(
-                backgroundColor: Color(0xFF7F99A6),
+                backgroundColor: Color(StaticColors.lighterSlateGray),
                   child: Text(item.sender[0],
-                  style: TextStyle(color: Color(0xFFFFFFFF)),
+                  style: TextStyle(color: Color(StaticColors.white)),
                   ),
                 ),
               title: item.buildTitle(context),
@@ -59,8 +60,9 @@ class _contactState extends State<contacts> {
           },
         ),
         floatingActionButton: FloatingActionButton(
+          backgroundColor: Color(StaticColors.lighterSlateGray),
           onPressed: (){ addItemToList();},
-          child: Icon(Icons.add, color: Color(0xFFFFFFFF),),
+          child: Icon(Icons.add, color: Color(StaticColors.white),),
         ),
       ),
     );
