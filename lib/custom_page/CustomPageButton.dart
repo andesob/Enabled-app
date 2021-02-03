@@ -2,6 +2,7 @@ import 'package:enabled_app/colors/colors.dart';
 import 'package:enabled_app/needs/needs.dart';
 import 'package:flutter/material.dart';
 
+// TODO Change the flatButton to raisedButton??
 class CustomPageButton extends StatelessWidget {
   String text;
 
@@ -15,7 +16,7 @@ class CustomPageButton extends StatelessWidget {
     Color darkPeach = Color(StaticColors.darkPeach);
 
     return Container(
-      margin: EdgeInsets.all(20),
+      margin: EdgeInsets.all(10),
       decoration: new BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(20)),
         gradient: new LinearGradient(
