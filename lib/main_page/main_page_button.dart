@@ -2,33 +2,54 @@ import 'dart:ui';
 
 import 'package:enabled_app/colors/colors.dart';
 import 'package:enabled_app/needs/needs.dart';
+import 'package:enabled_app/strings/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_text/gradient_text.dart';
 
-class MainPageButton extends StatelessWidget {
+class MainPageButton extends StatefulWidget {
   String text;
-  bool darkmode;
+  bool darkmode = false;
+  bool focused = false;
+  MainPageButtonState state;
 
-  MainPageButton(String text, bool darkmode) {
-    this.text = text;
-    this.darkmode = darkmode;
+  MainPageButton({Key key, this.text}) : super(key: key);
+
+  @override
+  MainPageButtonState createState() {
+    state = MainPageButtonState();
+    return state;
+  }
+}
+
+class MainPageButtonState extends State<MainPageButton> {
+  goToPage(context) {
+    Navigator.pushNamed(context, widget.text);
   }
 
-  goToPage(context) {
-    Navigator.pushNamed(context, text);
+  setFocus(){
+    setState(() {
+      widget.focused = !widget.focused;
+    });
+  }
+
+  void initState() {
+    super.initState();
+    if(widget.text == Strings.needs){
+      setFocus();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+
     Color lightPeach = Color(StaticColors.lightPeach);
     Color darkPeach = Color(StaticColors.darkPeach);
-    Color buttonColor = Color(StaticColors.lighterSlateGray);
 
     return Container(
       margin: EdgeInsets.all(20),
       decoration: new BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(20)),
-        color: buttonColor,
+        color: Color(widget.focused ? StaticColors.patriarch : StaticColors.lighterSlateGray),
         /*gradient: new LinearGradient(
           colors: [lightPeach, darkPeach],
           begin: FractionalOffset.centerLeft,
@@ -37,9 +58,10 @@ class MainPageButton extends StatelessWidget {
       ),
       child: FlatButton(
         child: new GradientText(
-          text,
+          widget.text,
           style: TextStyle(
-              color: Color(darkmode ? StaticColors.black : StaticColors.white)),
+              color: Color(
+                  widget.darkmode ? StaticColors.black : StaticColors.white)),
           gradient: new LinearGradient(
             colors: [lightPeach, darkPeach],
             begin: FractionalOffset.centerLeft,

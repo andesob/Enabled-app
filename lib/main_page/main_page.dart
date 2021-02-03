@@ -25,10 +25,55 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   bool darkmode = false;
 
+  List<int> currPos = [0, 0];
+  int currXPos = 0;
+  int currYPos = 0;
+  int pos = 0;
+
+  List<MainPageButton> mainPageBtnList = [];
+  var list = List.generate(3, (i) => List(2), growable: false);
+
+  var isPortrait;
+
+  @override
+  void initState() {
+    super.initState();
+    addDefaultButtons();
+  }
+
+  void addDefaultButtons() {
+    mainPageBtnList.add(MainPageButton(text: Strings.needs));
+    mainPageBtnList.add(MainPageButton(text: Strings.custom));
+    mainPageBtnList.add(MainPageButton(text: Strings.keyboard));
+    mainPageBtnList.add(MainPageButton(text: Strings.contacts));
+    mainPageBtnList.add(MainPageButton(text: Strings.smart));
+    mainPageBtnList.add(MainPageButton(text: Strings.emergency));
+
+    int index = 0;
+    for (int i = 0; i < list.length; i++) {
+      for (int j = 0; j < list[i].length; j++) {
+        list[i][j] = mainPageBtnList[index];
+        index++;
+      }
+    }
+  }
+
   void _changeText() {
     setState(() {
       darkmode = !darkmode;
     });
+  }
+
+  void moveRight() {
+    list[currPos[1]][currPos[0]].state.setFocus();
+    currPos[0] == 1 ? currPos[0] = 0 : currPos[0]++;
+    list[currPos[1]][currPos[0]].state.setFocus();
+  }
+
+  void moveDown() {
+    list[currPos[1]][currPos[0]].state.setFocus();
+    currPos[1] == 2 ? currPos[1] = 0 : currPos[1]++;
+    list[currPos[1]][currPos[0]].state.setFocus();
   }
 
   @override
@@ -39,7 +84,10 @@ class _MyHomePageState extends State<MyHomePage> {
     Color appBarColorDark = Color(StaticColors.melon);
     Color backgroundColor = Color(StaticColors.onyx);
 
-    var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+    isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+
+    int horizontalBtns = isPortrait ? 2 : 3;
+    int verticalBtns = isPortrait ? 3 : 2;
 
     return Container(
       decoration: new BoxDecoration(
@@ -74,17 +122,26 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
         ),
-        body: GridView.count(
-            shrinkWrap: true,
-            crossAxisCount: isPortrait ? 2 : 3,
-            children: <Widget>[
-              MainPageButton(Strings.needs, darkmode),
-              MainPageButton(Strings.custom, darkmode),
-              MainPageButton(Strings.keyboard, darkmode),
-              MainPageButton(Strings.contacts, darkmode),
-              MainPageButton(Strings.smart, darkmode),
-              MainPageButton(Strings.emergency, darkmode),
-            ]),
+        body: Column(
+          children: <Widget>[
+            GridView.count(
+              shrinkWrap: true,
+              crossAxisCount: isPortrait ? 2 : 3,
+              children: mainPageBtnList.cast<Widget>(),
+            ),
+            FlatButton(
+                onPressed: () {
+                  moveDown();
+                },
+                child: Text(Strings.down)),
+            FlatButton(
+                onPressed: () {
+                  moveRight();
+                },
+                child: Text(Strings.right
+                )),
+          ],
+        ),
       ),
     );
   }
