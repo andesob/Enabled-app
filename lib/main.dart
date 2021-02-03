@@ -1,11 +1,16 @@
 import 'package:enabled_app/needs/needs.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'main_page/main_page.dart';
 import 'colors/colors.dart';
 import 'strings/strings.dart';
 
 void main() {
-  runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
+      .then((_) {
+    runApp(new MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -18,6 +23,7 @@ class MyApp extends StatelessWidget {
       routes: {
         Strings.home: (context) => MyHomePage(),
         Strings.needs: (context) => NeedsPage(),
+        Strings.contacts: (context) => MyHomePage(),
       }, //home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
