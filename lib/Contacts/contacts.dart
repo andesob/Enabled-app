@@ -1,3 +1,4 @@
+import 'package:enabled_app/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
@@ -8,10 +9,14 @@ class contacts extends StatefulWidget {
   final String title;
 
   @override
-  State<StatefulWidget> createState() => _contactState();
+  _contactState createState() => _contactState();
 }
 
+/*
+
+ */
 class _contactState extends State<contacts> {
+  List<ListItem> items = [];
   @override
   Widget build(BuildContext context) {
     const Color lightPeach = Color(0xffffecd2);
@@ -35,9 +40,37 @@ class _contactState extends State<contacts> {
             gradient: LinearGradient(colors: [lightPeach, darkPeach]),
           ),
         ),
+        body:
+        ListView.builder(
+          padding: EdgeInsets.all(10),
+          itemCount: items.length,
+          itemBuilder: (context, index){
+            final MessageItem item = items[index];
+            return ListTile(
+              leading: CircleAvatar(
+                backgroundColor: Color(0xFF7F99A6),
+                  child: Text(item.sender[0],
+                  style: TextStyle(color: Color(0xFFFFFFFF)),
+                  ),
+                ),
+              title: item.buildTitle(context),
+              subtitle: item.buildSubtitle(context),
+            );
+          },
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: (){ addItemToList();},
+          child: Icon(Icons.add, color: Color(0xFFFFFFFF),),
+        ),
       ),
     );
     throw UnimplementedError();
+  }
+
+  void addItemToList(){
+    setState(() {
+      items.add(MessageItem("Trym", "95945742"));
+    });
   }
 }
 
