@@ -55,7 +55,7 @@ class MainPageButtonState extends State<MainPageButton> {
       decoration: new BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(20)),
         color: Color(widget.focused
-            ? StaticColors.charcoal
+            ? StaticColors.deepSpaceSparkle
             : StaticColors.lighterSlateGray),
         /*gradient: new LinearGradient(
           colors: [lightPeach, darkPeach],
