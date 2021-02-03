@@ -1,5 +1,6 @@
 import 'package:enabled_app/colors/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'main_page_button.dart';
 import '../strings/strings.dart';
@@ -23,7 +24,16 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  Color lightPeach = Color(StaticColors.lightPeach);
+  Color darkPeach = Color(StaticColors.apricot);
+  Color appBarColorLight = Color(StaticColors.apricot);
+  Color appBarColorDark = Color(StaticColors.melon);
+  Color backgroundColor = Color(StaticColors.onyx);
+
   bool darkmode = false;
+
+  int horizontalBtns;
+  int verticalBtns;
 
   List<int> currPos = [0, 0];
   int currXPos = 0;
@@ -31,9 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int pos = 0;
 
   List<MainPageButton> mainPageBtnList = [];
-  var list = List.generate(3, (i) => List(2), growable: false);
-
-  var isPortrait;
+  var list;
 
   @override
   void initState() {
@@ -48,14 +56,6 @@ class _MyHomePageState extends State<MyHomePage> {
     mainPageBtnList.add(MainPageButton(text: Strings.contacts));
     mainPageBtnList.add(MainPageButton(text: Strings.smart));
     mainPageBtnList.add(MainPageButton(text: Strings.emergency));
-
-    int index = 0;
-    for (int i = 0; i < list.length; i++) {
-      for (int j = 0; j < list[i].length; j++) {
-        list[i][j] = mainPageBtnList[index];
-        index++;
-      }
-    }
   }
 
   void _changeText() {
@@ -64,31 +64,66 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void setGridSize(useMobileLayout) {
+    setState(() {
+      horizontalBtns = useMobileLayout ? 2 : 3;
+      verticalBtns = useMobileLayout ? 3 : 2;
+      list = List.generate(verticalBtns, (i) => List(horizontalBtns),
+          growable: false);
+
+      int index = 0;
+      for (int i = 0; i < list.length; i++) {
+        for (int j = 0; j < list[i].length; j++) {
+          list[i][j] = mainPageBtnList[index];
+          index++;
+        }
+      }
+    });
+  }
+
   void moveRight() {
-    list[currPos[1]][currPos[0]].state.setFocus();
-    currPos[0] == 1 ? currPos[0] = 0 : currPos[0]++;
+    removeAllFocus();
+    currPos[0] == horizontalBtns - 1 ? currPos[0] = 0 : currPos[0]++;
     list[currPos[1]][currPos[0]].state.setFocus();
   }
 
   void moveDown() {
+    removeAllFocus();
+    currPos[1] == verticalBtns - 1 ? currPos[1] = 0 : currPos[1]++;
     list[currPos[1]][currPos[0]].state.setFocus();
-    currPos[1] == 2 ? currPos[1] = 0 : currPos[1]++;
-    list[currPos[1]][currPos[0]].state.setFocus();
+  }
+
+  void removeAllFocus() {
+    for (int i = 0; i < mainPageBtnList.length; i++) {
+      mainPageBtnList[i].state.removeFocus();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    Color lightPeach = Color(StaticColors.lightPeach);
-    Color darkPeach = Color(StaticColors.apricot);
-    Color appBarColorLight = Color(StaticColors.apricot);
-    Color appBarColorDark = Color(StaticColors.melon);
-    Color backgroundColor = Color(StaticColors.onyx);
+    var shortestSide = MediaQuery.of(context).size.shortestSide;
+    bool useMobileLayout = shortestSide < 600;
 
-    isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+    setGridSize(useMobileLayout);
 
-    int horizontalBtns = isPortrait ? 2 : 3;
-    int verticalBtns = isPortrait ? 3 : 2;
+    if (useMobileLayout) {
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
+    } else {
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+        DeviceOrientation.landscapeLeft,
+        DeviceOrientation.landscapeRight
+      ]);
+    }
 
+    return _buildLayout(useMobileLayout);
+  }
+
+  Widget _buildLayout(useMobileLayout) {
     return Container(
       decoration: new BoxDecoration(
         gradient: new LinearGradient(
@@ -100,7 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Scaffold(
         backgroundColor: darkmode ? backgroundColor : Colors.transparent,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(isPortrait ? 50 : 30),
+          preferredSize: Size.fromHeight(50),
           child: GradientAppBar(
             // Here we take the value from the MyHomePage object that was created by
             // the App.build method, and use it to set our appbar title.
@@ -122,11 +157,12 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
         ),
-        body: Column(
+        body: new ListView(
           children: <Widget>[
             GridView.count(
               shrinkWrap: true,
-              crossAxisCount: isPortrait ? 2 : 3,
+              physics: NeverScrollableScrollPhysics(),
+              crossAxisCount: useMobileLayout ? 2 : 3,
               children: mainPageBtnList.cast<Widget>(),
             ),
             FlatButton(
@@ -138,8 +174,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 onPressed: () {
                   moveRight();
                 },
-                child: Text(Strings.right
-                )),
+                child: Text(Strings.right)),
           ],
         ),
       ),

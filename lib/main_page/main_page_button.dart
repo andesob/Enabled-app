@@ -26,22 +26,27 @@ class MainPageButtonState extends State<MainPageButton> {
     Navigator.pushNamed(context, widget.text);
   }
 
-  setFocus(){
+  setFocus() {
     setState(() {
-      widget.focused = !widget.focused;
+      widget.focused = true;
+    });
+  }
+
+  removeFocus(){
+    setState(() {
+      widget.focused = false;
     });
   }
 
   void initState() {
     super.initState();
-    if(widget.text == Strings.needs){
+    if (widget.text == Strings.needs) {
       setFocus();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-
     Color lightPeach = Color(StaticColors.lightPeach);
     Color darkPeach = Color(StaticColors.darkPeach);
 
@@ -49,7 +54,9 @@ class MainPageButtonState extends State<MainPageButton> {
       margin: EdgeInsets.all(20),
       decoration: new BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(20)),
-        color: Color(widget.focused ? StaticColors.patriarch : StaticColors.lighterSlateGray),
+        color: Color(widget.focused
+            ? StaticColors.charcoal
+            : StaticColors.lighterSlateGray),
         /*gradient: new LinearGradient(
           colors: [lightPeach, darkPeach],
           begin: FractionalOffset.centerLeft,
