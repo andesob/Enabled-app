@@ -1,3 +1,4 @@
+import 'package:enabled_app/Contacts/ContactPopup.dart';
 import 'package:enabled_app/colors/colors.dart';
 import 'package:enabled_app/main.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,9 +21,12 @@ class contacts extends StatefulWidget {
  */
 class _contactState extends State<contacts> {
   List<ContactItem> items = [];
-  final firstNameController = TextEditingController();
-  final surnameController = TextEditingController();
-  final numberController = TextEditingController();
+
+  bool popupActive = false;
+
+  setPopup(bool active) {
+    popupActive = active;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,77 +51,30 @@ class _contactState extends State<contacts> {
             gradient: LinearGradient(colors: [lightPeach, darkPeach]),
           ),
         ),
-        body:
-        ListView.builder(
+        body: ListView.builder(
           padding: EdgeInsets.all(10),
           itemCount: items.length,
-          itemBuilder: (context, index){
+          itemBuilder: (context, index) {
             final ContactItem item = items[index];
             return item;
           },
         ),
         floatingActionButton: FloatingActionButton(
           backgroundColor: Color(StaticColors.lighterSlateGray),
-          onPressed: (){ contactPopup();},
-          child: Icon(Icons.add, color: Color(StaticColors.white),),
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return ContactPopup(items: items);
+                });
+          },
+          child: Icon(
+            Icons.add,
+            color: Color(StaticColors.white),
+          ),
         ),
       ),
     );
     throw UnimplementedError();
-  }
-
-  void contactPopup(){
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            scrollable: true,
-            title: Text('Add New Contact'),
-            content: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Form(
-                child: Column(
-                  children: <Widget>[
-                    TextFormField(
-                      controller: firstNameController,
-                      decoration: InputDecoration(
-                        labelText: 'First Name',
-                        icon: Icon(Icons.account_box),
-                      ),
-                    ),
-                    TextFormField(
-                      controller: surnameController,
-                      decoration: InputDecoration(
-                        labelText: 'Surname',
-                        icon: Icon(Icons.edit_sharp),
-                      ),
-                    ),
-                    TextFormField(
-                      controller: numberController,
-                      keyboardType: TextInputType.phone,
-                      decoration: InputDecoration(
-                        labelText: 'Number',
-                        icon: Icon(Icons.add_ic_call),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            actions: [
-              RaisedButton(
-                  child: Text("Submit"),
-                  color: Color(StaticColors.lightSlateGray),
-                  onPressed: () {
-                    items.add(ContactItem(firstNameController.text, surnameController.text, numberController.text));
-                    firstNameController.clear();
-                    surnameController.clear();
-                    numberController.clear();
-                    Navigator.pop(context);
-                  }
-                  )
-            ],
-          );
-        });
   }
 }
