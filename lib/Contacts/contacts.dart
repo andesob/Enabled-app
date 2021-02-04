@@ -3,6 +3,8 @@ import 'package:enabled_app/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'ContactItem.dart';
 
 class contacts extends StatefulWidget {
   contacts({Key key, this.title}) : super(key: key);
@@ -17,7 +19,11 @@ class contacts extends StatefulWidget {
 
  */
 class _contactState extends State<contacts> {
-  List<ListItem> items = [];
+  List<ContactItem> items = [];
+  final firstNameController = TextEditingController();
+  final surnameController = TextEditingController();
+  final numberController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     const Color lightPeach = Color(0xffffecd2);
@@ -46,22 +52,13 @@ class _contactState extends State<contacts> {
           padding: EdgeInsets.all(10),
           itemCount: items.length,
           itemBuilder: (context, index){
-            final MessageItem item = items[index];
-            return ListTile(
-              leading: CircleAvatar(
-                backgroundColor: Color(StaticColors.lighterSlateGray),
-                  child: Text(item.sender[0],
-                  style: TextStyle(color: Color(StaticColors.white)),
-                  ),
-                ),
-              title: item.buildTitle(context),
-              subtitle: item.buildSubtitle(context),
-            );
+            final ContactItem item = items[index];
+            return item;
           },
         ),
         floatingActionButton: FloatingActionButton(
           backgroundColor: Color(StaticColors.lighterSlateGray),
-          onPressed: (){ addItemToList();},
+          onPressed: (){ contactPopup();},
           child: Icon(Icons.add, color: Color(StaticColors.white),),
         ),
       ),
@@ -69,28 +66,57 @@ class _contactState extends State<contacts> {
     throw UnimplementedError();
   }
 
-  void addItemToList(){
-    setState(() {
-      items.add(MessageItem("Trym", "95945742"));
-    });
+  void contactPopup(){
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            scrollable: true,
+            title: Text('Add New Contact'),
+            content: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Form(
+                child: Column(
+                  children: <Widget>[
+                    TextFormField(
+                      controller: firstNameController,
+                      decoration: InputDecoration(
+                        labelText: 'First Name',
+                        icon: Icon(Icons.account_box),
+                      ),
+                    ),
+                    TextFormField(
+                      controller: surnameController,
+                      decoration: InputDecoration(
+                        labelText: 'Surname',
+                        icon: Icon(Icons.edit_sharp),
+                      ),
+                    ),
+                    TextFormField(
+                      controller: numberController,
+                      decoration: InputDecoration(
+                        labelText: 'Number',
+                        icon: Icon(Icons.add_ic_call),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            actions: [
+              RaisedButton(
+                  child: Text("Submit"),
+                  color: Color(StaticColors.lightSlateGray),
+                  onPressed: () {
+                    items.add(ContactItem(firstNameController.text, surnameController.text, numberController.text));
+                    firstNameController.clear();
+                    surnameController.clear();
+                    numberController.clear();
+                    Navigator.pop(context);
+                  }
+                  )
+            ],
+          );
+        });
   }
 }
-
-abstract class ListItem {
-  /// The title line to show in a list item.
-  Widget buildTitle(BuildContext context);
-
-  /// The subtitle line, if any, to show in a list item.
-  Widget buildSubtitle(BuildContext context);
-}
-
-class MessageItem implements ListItem{
-  final String sender;
-  final String body;
-
-  MessageItem(this.sender, this.body);
-
-  Widget buildTitle(BuildContext context) => Text(sender);
-
-  Widget buildSubtitle(BuildContext context) => Text(body);
-  }
