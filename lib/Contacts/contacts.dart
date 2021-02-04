@@ -94,6 +94,7 @@ class _contactState extends State<contacts> {
                     ),
                     TextFormField(
                       controller: numberController,
+                      keyboardType: TextInputType.phone,
                       decoration: InputDecoration(
                         labelText: 'Number',
                         icon: Icon(Icons.add_ic_call),
