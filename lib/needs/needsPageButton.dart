@@ -15,35 +15,34 @@ class NeedsPageButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const Color lightPeach = Color(0x80ffecd2);
-    const Color darkPeach = Color(0x80fcb7a0);
+    const Color lightPeach = Color(0xffffecd2);
+    const Color darkPeach = Color(0xfffcb7a0);
 
-    return Row(
-      children: [
-        Flexible(
-            child: new Container(
-              margin: EdgeInsets.all(20),
-              decoration: new BoxDecoration(
-                image: DecorationImage(image: AssetImage('images/flutterimgtest.jpg'),
-                fit: BoxFit.fitHeight),
-                borderRadius: BorderRadius.all(Radius.circular(20)),
-                gradient: new LinearGradient(
-                  colors: [lightPeach, darkPeach],
-                  begin: Alignment.bottomLeft,
-                  end: Alignment.topRight,
-                ),
-              ),
+    return Container(
+        margin: EdgeInsets.all(20),
+        decoration: new BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+          gradient: new LinearGradient(
+            colors: [lightPeach, darkPeach],
+            begin: Alignment.bottomLeft,
+            end: Alignment.topRight,
+          ),
+        ),
+        child: new Column(
+          children: [
+            Flexible(
               child: new Container(
-                width: 400,
-                height: 400,
-                child: new Text(
-                  text,
-                  style: TextStyle(color: Color(0xffffffff)),
-                ),
-                alignment: Alignment.bottomCenter,
+                child: new Image.asset('assets/images/justatest69.png'),
               ),
-            ))
-      ],
-    );
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: new Text(
+                text,
+                style: TextStyle(color: Color(0xffffffff)),
+              ),
+            ),
+          ],
+        ));
   }
 }
