@@ -3,15 +3,57 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
-class ContactItem extends StatelessWidget {
+class ContactItem extends StatefulWidget {
   final String firstname;
   final String surname;
   final String number;
+  int cIndex;
+  _ContactItem state;
+  ContactItem({Key key, this.firstname, this.surname, this.number}) : super(key: key);
 
-  ContactItem(this.firstname, this.surname, this.number);
+  @override
+  State<StatefulWidget> createState() {
+    state = _ContactItem();
+    return state;
+  }
+}
+
+class _ContactItem extends State<ContactItem>{
+  bool boldFont;
+
+  @override
+  void initState() {
+    super.initState();
+    print("INDEX: " + widget.cIndex.toString());
+    if(widget.cIndex == 0){
+      boldFont = true;
+    } else {
+      boldFont = false;
+    }
+  }
+
+  setBold(){
+    setState(() {
+      boldFont = true;
+    });
+  }
+
+  removeBold(){
+    setState(() {
+      boldFont = false;
+    });
+  }
+
+  FontWeight setFontWeight(){
+
+  }
 
   @override
   Widget build(BuildContext context) {
+    String firstname = widget.firstname;
+    String surname = widget.surname;
+    String number = widget.number;
+
     return Container(
       child: ListTile(
         onTap: () => _launchURL(number),
@@ -22,8 +64,8 @@ class ContactItem extends StatelessWidget {
             style: TextStyle(color: Color(StaticColors.white)),
           ),
         ),
-        title: Text(firstname + " " + surname),
-        subtitle: Text(number),
+        title: Text(firstname + " " + surname, style: boldFont ? TextStyle(fontWeight: FontWeight.bold): TextStyle(fontWeight: FontWeight.normal),),
+        subtitle: Text(number, style: boldFont ? TextStyle(fontWeight: FontWeight.bold): TextStyle(fontWeight: FontWeight.normal),),
       ),
     );
     throw UnimplementedError();
@@ -32,4 +74,5 @@ class ContactItem extends StatelessWidget {
   _launchURL(number) async {
     bool res = await FlutterPhoneDirectCaller.callNumber(number);
   }
+
 }
