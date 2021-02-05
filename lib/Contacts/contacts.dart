@@ -1,7 +1,12 @@
+import 'package:enabled_app/Contacts/ContactPopup.dart';
+import 'package:enabled_app/colors/colors.dart';
 import 'package:enabled_app/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'ContactItem.dart';
 
 class contacts extends StatefulWidget {
   contacts({Key key, this.title}) : super(key: key);
@@ -16,12 +21,42 @@ class contacts extends StatefulWidget {
 
  */
 class _contactState extends State<contacts> {
-  List<ListItem> items = [];
+  List<ContactItem> items = [];
+  int focusIndex = 0;
+  final ItemScrollController itemScrollController = ItemScrollController();
+  final ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
+
+  bool popupActive = false;
+
+  setPopup(bool active) {
+    popupActive = active;
+  }
+
+  scrollUp(){
+    focusIndex++;
+    itemScrollController.scrollTo(index: focusIndex, duration: Duration(seconds: 1));
+  }
+
+  scrollDown(){
+    focusIndex--;
+    itemScrollController.scrollTo(index: focusIndex, duration: Duration(seconds: 1));
+  }
+
+  bottomButtonPressed(int index){
+    print("hello");
+  }
+
+
   @override
   Widget build(BuildContext context) {
     const Color lightPeach = Color(0xffffecd2);
     const Color darkPeach = Color(0xfffcb7a0);
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+
+    // TODO: REMOVE AFTER TESTING
+    for (var i = 0; i < 5; i++) {
+      items.add(ContactItem("Test", "Tester", "12345678"));
+    }
 
     return Container(
       decoration: new BoxDecoration(
@@ -35,60 +70,54 @@ class _contactState extends State<contacts> {
           preferredSize: Size.fromHeight(isPortrait ? 50 : 30),
           child: GradientAppBar(
             title: Text("Contacts Page"),
-            // Here we take the value from the MyHomePage object that was created by
-            // the App.build method, and use it to set our appbar title.
             gradient: LinearGradient(colors: [lightPeach, darkPeach]),
           ),
         ),
         body:
-        ListView.builder(
-          padding: EdgeInsets.all(10),
+        ScrollablePositionedList.builder(
+          padding: EdgeInsets.all(8),
           itemCount: items.length,
-          itemBuilder: (context, index){
-            final MessageItem item = items[index];
-            return ListTile(
-              leading: CircleAvatar(
-                backgroundColor: Color(0xFF7F99A6),
-                  child: Text(item.sender[0],
-                  style: TextStyle(color: Color(0xFFFFFFFF)),
-                  ),
-                ),
-              title: item.buildTitle(context),
-              subtitle: item.buildSubtitle(context),
-            );
+          itemBuilder: (context, index) {
+          final ContactItem item = items[index];
+          return item;
           },
+          itemScrollController: itemScrollController,
+          itemPositionsListener: itemPositionsListener,
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: (){ addItemToList();},
-          child: Icon(Icons.add, color: Color(0xFFFFFFFF),),
+          backgroundColor: Color(StaticColors.lighterSlateGray),
+          onPressed: () {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return ContactPopup(items: items);
+                });
+          },
+          child: Icon(
+            Icons.add,
+            color: Color(StaticColors.white),
+          ),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          onTap: bottomButtonPressed,
+          selectedItemColor: Color(StaticColors.lighterSlateGray),
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.arrow_upward),
+              label: 'Up',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.arrow_downward),
+              label: 'Down',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.add),
+              label: 'Send',
+            ),
+          ],
         ),
       ),
     );
     throw UnimplementedError();
   }
-
-  void addItemToList(){
-    setState(() {
-      items.add(MessageItem("Trym", "95945742"));
-    });
-  }
 }
-
-abstract class ListItem {
-  /// The title line to show in a list item.
-  Widget buildTitle(BuildContext context);
-
-  /// The subtitle line, if any, to show in a list item.
-  Widget buildSubtitle(BuildContext context);
-}
-
-class MessageItem implements ListItem{
-  final String sender;
-  final String body;
-
-  MessageItem(this.sender, this.body);
-
-  Widget buildTitle(BuildContext context) => Text(sender);
-
-  Widget buildSubtitle(BuildContext context) => Text(body);
-  }
