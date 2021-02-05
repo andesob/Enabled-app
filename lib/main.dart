@@ -1,3 +1,4 @@
+import 'package:enabled_app/Contacts/contacts.dart';
 import 'package:enabled_app/needs/needs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,8 +25,8 @@ class MyApp extends StatelessWidget {
       routes: {
         Strings.home: (context) => MyHomePage(),
         Strings.needs: (context) => NeedsPage(),
-        Strings.contacts: (context) => MyHomePage(),
         Strings.custom: (context) => CustomPageHome(),
+        Strings.contacts: (context) => contacts(),
       }, //home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
