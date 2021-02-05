@@ -8,6 +8,8 @@ import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 //TODO Find a solution to the "buggy" behavior on the last scrolls in the scrollable position list.
+// TODO turn scrolling into functions.
+//TODO refactor code for redablility.
 
 class CustomPageHome extends StatefulWidget {
   CustomPageHome({Key key, this.title}) : super(key: key);
@@ -25,13 +27,14 @@ class _CustomPageHome extends State<CustomPageHome> {
   int verticalListIndex = 0;
   ItemScrollController childController;
   bool inChildLevel = false;
+  CustomVerticalList focusedList;
 
   // TODO remove test objects.
   @override
   void initState() {
     super.initState();
 
-    // For testing purposes
+    /// For testing purposes
     List<String> testObjects = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
     CustomCategory customCategory = new CustomCategory();
     customCategory.categoryName = "Eskil";
@@ -43,11 +46,13 @@ class _CustomPageHome extends State<CustomPageHome> {
 
     for (var item in categoryList) {
       CustomVerticalList list = new CustomVerticalList(
-        listTitle: item.categoryName,
-        buttons: item.allButtons(),
+        categoryTitle: item.categoryName,
+        buttonList: item.allButtons(),
       );
       verticalList.add(list);
     }
+    focusedList = verticalList[0];
+    focusedList.isFocused = true;
   }
 
   @override
@@ -64,10 +69,22 @@ class _CustomPageHome extends State<CustomPageHome> {
     final ItemPositionsListener itemPositionsListener =
         ItemPositionsListener.create();
 
-    // For testing purposes
-    List<String> testObjects = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
-    final customCategory =
-        CustomCategory(categoryName: "Eskil", categoryObjects: testObjects);
+    void setListFocus() {
+      if (focusedList == null) {
+        focusedList = verticalList[0];
+        focusedList.state.setFocus();
+      } else {
+        focusedList.state.removeFocus();
+        focusedList = verticalList[verticalListIndex];
+        focusedList.state.setFocus();
+      }
+    }
+
+    void removeListFocus() {
+      if (focusedList != null) {
+        focusedList.state.removeFocus();
+      }
+    }
 
     return Container(
       decoration: new BoxDecoration(
@@ -87,12 +104,15 @@ class _CustomPageHome extends State<CustomPageHome> {
                   )
                 ])),
         body: Container(
-          color: Colors.black12,
+          //color: Colors.black12,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
+              Container(
+                  child: Align(
+                alignment: Alignment.centerRight,
+                child: Text("Add more"),
+              )),
               Expanded(
                 child: ScrollablePositionedList.builder(
                     initialScrollIndex: 0,
@@ -100,19 +120,8 @@ class _CustomPageHome extends State<CustomPageHome> {
                     itemPositionsListener: itemPositionsListener,
                     itemCount: verticalList.length,
                     scrollDirection: Axis.vertical,
-                    itemBuilder: (context, index) => verticalList[index]
-
-                    //verticalList.cast<Widget>()
-                    /*  Container(
-                      margin: EdgeInsets.all(10),
-                      child: Align(
-                          alignment: Alignment.centerRight,
-                          child: Text("Add more"))),
-
-                 */
-                    ),
+                    itemBuilder: (context, index) => verticalList[index]),
               ),
-              //TODO mark the box or list in focus.
               Center(
                   child: Row(
                 children: [
@@ -123,15 +132,18 @@ class _CustomPageHome extends State<CustomPageHome> {
                         if (!inChildLevel) {
                           if (verticalListIndex > 0) {
                             verticalListIndex--;
-                            itemScrollController.scrollTo(
-                                index: verticalListIndex,
-                                duration: Duration(
-                                  seconds: 1,
-                                ),
-                                alignment: 0);
+                            if (verticalListIndex < verticalList.length - 3) {
+                              itemScrollController.scrollTo(
+                                  index: verticalListIndex,
+                                  duration: Duration(
+                                    seconds: 1,
+                                  ),
+                                  curve: Curves.ease);
+                            }
+                            setListFocus();
                           }
                         } else if (inChildLevel) {
-                          verticalList[verticalListIndex].scrollLeft();
+                          verticalList[verticalListIndex].state.scrollLeft();
                         }
                       },
                     ),
@@ -142,14 +154,17 @@ class _CustomPageHome extends State<CustomPageHome> {
                       onPressed: () {
                         if (!inChildLevel) {
                           verticalListIndex++;
-                          itemScrollController.scrollTo(
-                              index: verticalListIndex,
-                              duration: Duration(
-                                seconds: 1,
-                              ),
-                              alignment: 0);
+                          if (verticalListIndex < verticalList.length - 3) {
+                            itemScrollController.scrollTo(
+                                index: verticalListIndex,
+                                duration: Duration(
+                                  seconds: 1,
+                                ),
+                                curve: Curves.ease);
+                          }
+                          setListFocus();
                         } else if (inChildLevel) {
-                          verticalList[verticalListIndex].scrollRight();
+                          verticalList[verticalListIndex].state.scrollRight();
                         }
                       },
                     ),
@@ -158,7 +173,7 @@ class _CustomPageHome extends State<CustomPageHome> {
                     child: FlatButton(
                       child: new Text("Ok"),
                       onPressed: () {
-                        verticalList[verticalListIndex].setButtonFocus();
+                        verticalList[verticalListIndex].state.setButtonFocus();
                         inChildLevel = true;
                       },
                     ),
@@ -169,7 +184,9 @@ class _CustomPageHome extends State<CustomPageHome> {
                       child: new Text("Tilbake"),
                       onPressed: () {
                         inChildLevel = false;
-                        verticalList[verticalListIndex].removeButtonFocus();
+                        verticalList[verticalListIndex]
+                            .state
+                            .removeButtonFocus();
                       },
                     ),
                   ),

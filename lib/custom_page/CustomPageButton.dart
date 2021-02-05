@@ -1,5 +1,6 @@
 import 'package:enabled_app/colors/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:gradient_text/gradient_text.dart';
 
 // TODO Change the flatButton to raisedButton??
 class CustomPageButton extends StatefulWidget {
@@ -48,21 +49,29 @@ class _CustomPageButton extends State<CustomPageButton> {
     Color darkPeach = Color(StaticColors.darkPeach);
 
     return Container(
+      padding: EdgeInsets.all(10),
       child: RaisedButton(
-        highlightColor: widget.isFocused ? Colors.pink : Colors.purpleAccent,
-        color: widget.isFocused
-            ? Colors.pink
-            : Color(StaticColors.lighterSlateGray),
-        elevation: widget.isFocused ? 0.5 : 0,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(0.0),
-            side: BorderSide(
-                color: widget.isFocused ? Colors.black : Colors.black12)),
-        onPressed: () {},
-        textColor: Colors.white,
-        padding: const EdgeInsets.all(0.0),
-        child: Text(widget.text),
-      ),
+          highlightColor: widget.isFocused ? Colors.pink : Colors.purpleAccent,
+          color: widget.isFocused
+              ? Color(StaticColors.deepSpaceSparkle)
+              : Color(StaticColors.lighterSlateGray),
+          elevation: widget.isFocused ? 1 : 0,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+              side: BorderSide(
+                  color: widget.isFocused ? Colors.black : Colors.black12)),
+          onPressed: () {},
+          textColor: Colors.white,
+          padding: const EdgeInsets.all(0.0),
+          child: new GradientText(
+            widget.text,
+            style: TextStyle(color: Color(StaticColors.white)),
+            gradient: new LinearGradient(
+              colors: [lightPeach, darkPeach],
+              begin: FractionalOffset.centerLeft,
+              end: FractionalOffset.centerRight,
+            ),
+          )),
     );
   }
 }
