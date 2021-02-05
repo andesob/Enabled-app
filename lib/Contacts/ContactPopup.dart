@@ -49,7 +49,7 @@ class _ContactPopupState extends State<ContactPopup> {
   Color _getLabelColor(FocusNode node) {
     return node.hasFocus
         ? Color(StaticColors.apricot)
-        : Color(StaticColors.patriarch);
+        : Color(StaticColors.lighterSlateGray);
   }
 
   @override
