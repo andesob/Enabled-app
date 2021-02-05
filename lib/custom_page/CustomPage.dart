@@ -1,7 +1,7 @@
 import 'package:enabled_app/colors/colors.dart';
 import 'package:enabled_app/custom_page/CustomCategory.dart';
-import 'package:enabled_app/custom_page/CustomPageButton.dart';
 import 'package:enabled_app/custom_page/CustomVerticalList.dart';
+import 'package:enabled_app/custom_page/VerticalListButtons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
@@ -21,6 +21,7 @@ class CustomPageHome extends StatefulWidget {
 class _CustomPageHome extends State<CustomPageHome> {
   List<CustomCategory> categoryList = [];
   List<CustomVerticalList> verticalList = [];
+  List<VerticalListButtons> buttonList = [];
   int verticalListIndex = 0;
   ItemScrollController childController;
   bool inChildLevel = false;
@@ -34,16 +35,17 @@ class _CustomPageHome extends State<CustomPageHome> {
     List<String> testObjects = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
     CustomCategory customCategory = new CustomCategory();
     customCategory.categoryName = "Eskil";
-    customCategory.objects = testObjects;
+    customCategory.categoryObjects = testObjects;
 
     for (var i = 0; i < 7; i++) {
       categoryList.add(customCategory);
     }
 
     for (var item in categoryList) {
-      CustomVerticalList list = new CustomVerticalList();
-      list.listTitle = item.categoryName;
-      list.listObjects = item;
+      CustomVerticalList list = new CustomVerticalList(
+        listTitle: item.categoryName,
+        buttons: item.allButtons(),
+      );
       verticalList.add(list);
     }
   }
@@ -65,7 +67,7 @@ class _CustomPageHome extends State<CustomPageHome> {
     // For testing purposes
     List<String> testObjects = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
     final customCategory =
-        CustomCategory(categoryName: "Eskil", objects: testObjects);
+        CustomCategory(categoryName: "Eskil", categoryObjects: testObjects);
 
     return Container(
       decoration: new BoxDecoration(
@@ -156,6 +158,7 @@ class _CustomPageHome extends State<CustomPageHome> {
                     child: FlatButton(
                       child: new Text("Ok"),
                       onPressed: () {
+                        verticalList[verticalListIndex].setButtonFocus();
                         inChildLevel = true;
                       },
                     ),
@@ -166,6 +169,7 @@ class _CustomPageHome extends State<CustomPageHome> {
                       child: new Text("Tilbake"),
                       onPressed: () {
                         inChildLevel = false;
+                        verticalList[verticalListIndex].removeButtonFocus();
                       },
                     ),
                   ),

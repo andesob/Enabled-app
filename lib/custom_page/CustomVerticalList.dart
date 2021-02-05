@@ -6,12 +6,12 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 //TODO Find a solution to the "buggy" behavior on the last scrolls in the scrollable position list
 class CustomVerticalList extends StatelessWidget {
-  CustomVerticalList({Key key, this.listTitle, this.listObjects})
-      : super(key: key);
+  CustomVerticalList({Key key, this.listTitle, this.buttons}) : super(key: key);
 
   String listTitle;
-  CustomCategory listObjects;
   int listIndex = 0;
+  List<CustomPageButton> buttons = [];
+  CustomPageButton currentFocusButton;
 
   /// Controller to scroll or jump to a particular item.
   final ItemScrollController itemScrollController = ItemScrollController();
@@ -25,7 +25,7 @@ class CustomVerticalList extends StatelessWidget {
   }
 
   scrollRight() {
-    if (listIndex < listObjects.objects.length) {
+    if (listIndex < buttons.length) {
       listIndex++;
       itemScrollController.scrollTo(
           index: listIndex,
@@ -33,6 +33,7 @@ class CustomVerticalList extends StatelessWidget {
             seconds: 1,
           ),
           alignment: 0);
+      this.setButtonFocus();
     }
   }
 
@@ -45,6 +46,25 @@ class CustomVerticalList extends StatelessWidget {
             seconds: 1,
           ),
           alignment: 0);
+      this.setButtonFocus();
+    }
+  }
+
+  void setButtonFocus() {
+    if (currentFocusButton == null) {
+      currentFocusButton = buttons[0];
+      currentFocusButton = buttons[listIndex];
+      currentFocusButton.state.setFocus();
+    } else {
+      currentFocusButton.state.removeFocus();
+      currentFocusButton = buttons[listIndex];
+      currentFocusButton.state.setFocus();
+    }
+  }
+
+  void removeButtonFocus() {
+    if (currentFocusButton != null) {
+      currentFocusButton.state.removeFocus();
     }
   }
 
@@ -64,7 +84,7 @@ class CustomVerticalList extends StatelessWidget {
                   initialScrollIndex: 0,
                   itemScrollController: itemScrollController,
                   itemPositionsListener: itemPositionsListener,
-                  itemCount: listObjects.objects.length,
+                  itemCount: buttons.length,
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) => Row(
                         children: [
@@ -74,8 +94,7 @@ class CustomVerticalList extends StatelessWidget {
                                   MediaQuery.of(context).size.width * (0.285),
                               width:
                                   MediaQuery.of(context).size.width * (0.285),
-                              child: CustomPageButton(
-                                  listObjects.objects[index].toString()))
+                              child: buttons[index])
                         ],
                       )))),
     ]);
