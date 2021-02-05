@@ -29,4 +29,6 @@ class StaticColors{
   static int lightSlateGray = 0xFF74909E;
   static int lighterSlateGray = 0xFF7F99A6;
   static int lightestSlateGray = 0xFF8BA3AE;
+  static int charcoal = 0xFF3C4D56;
+  static int deepSpaceSparkle = 0xFF475C67;
 }
