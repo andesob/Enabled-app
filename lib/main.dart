@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'main_page/main_page.dart';
 import 'colors/colors.dart';
 import 'strings/strings.dart';
+import 'package:enabled_app/custom_page/CustomPage.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
         Strings.home: (context) => MyHomePage(),
         Strings.needs: (context) => NeedsPage(),
         Strings.contacts: (context) => MyHomePage(),
+        Strings.custom: (context) => CustomPageHome(),
       }, //home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
