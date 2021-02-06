@@ -2,26 +2,26 @@ import 'package:enabled_app/colors/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class KeyboardKey extends StatefulWidget {
-  KeyboardKey({
+class KeyboardBackspaceKey extends StatefulWidget {
+  KeyboardBackspaceKey({
     Key key,
-    this.text,
-    this.onTextInput,
+    this.icon,
+    this.onBackspace,
     this.flex = 1,
   }) : super(key: key);
-  final String text;
-  final ValueSetter<String> onTextInput;
+  final Icon icon;
+  final VoidCallback onBackspace;
   final int flex;
 
-  KeyboardKeyState createState() => KeyboardKeyState();
+  KeyboardBackspaceKeyState createState() => KeyboardBackspaceKeyState();
 }
 
-class KeyboardKeyState extends State<KeyboardKey> {
+class KeyboardBackspaceKeyState extends State<KeyboardBackspaceKey> {
   @override
   Widget build(BuildContext context) {
     int flex = widget.flex;
-    String text = widget.text;
-    ValueSetter<String> onTextInput = widget.onTextInput;
+    Icon icon = widget.icon;
+    VoidCallback onBackspace = widget.onBackspace;
 
     return Expanded(
       flex: flex,
@@ -31,17 +31,11 @@ class KeyboardKeyState extends State<KeyboardKey> {
           color: Color(StaticColors.lighterSlateGray),
           child: InkWell(
             onTap: () {
-              onTextInput?.call(text);
+              //onBackspace != null ? onBackspace.call() : null
+              onBackspace?.call();
             },
             child: Container(
-              child: Center(
-                child: Text(
-                  text,
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-              ),
+              child: Center(child: icon),
             ),
           ),
         ),
