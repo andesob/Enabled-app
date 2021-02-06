@@ -1,38 +1,65 @@
-import 'package:enabled_app/custom_page/CustomCategory.dart';
 import 'package:enabled_app/custom_page/CustomPageButton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-//TODO Find a solution to the "buggy" behavior on the last scrolls in the scrollable position list
-class CustomVerticalList extends StatelessWidget {
-  CustomVerticalList({Key key, this.listTitle, this.buttons}) : super(key: key);
+class CustomVerticalList extends StatefulWidget {
+  CustomVerticalList({Key key, this.categoryTitle, this.buttonList})
+      : super(key: key);
 
-  String listTitle;
+  final String categoryTitle;
+  List<CustomPageButton> buttonList = [];
+  bool isFocused = false;
+  _CustomVerticaList state;
+
+  @override
+  _CustomVerticaList createState() {
+    state = _CustomVerticaList();
+    return state;
+  }
+}
+
+//TODO Find a solution to the "buggy" behavior on the last scrolls in the scrollable position list
+class _CustomVerticaList extends State<CustomVerticalList> {
+  /// The name of the Category
   int listIndex = 0;
-  List<CustomPageButton> buttons = [];
   CustomPageButton currentFocusButton;
 
   /// Controller to scroll or jump to a particular item.
-  final ItemScrollController itemScrollController = ItemScrollController();
+  final ItemScrollController scrollController = ItemScrollController();
 
   /// Listener that reports the position of items when the list is scrolled.
   final ItemPositionsListener itemPositionsListener =
       ItemPositionsListener.create();
 
-  getScrollController() {
-    return itemScrollController;
+  void setFocus() {
+    if (this.mounted) {
+      setState(() {
+        widget.isFocused = true;
+      });
+    } else {
+      print("not mounted");
+    }
   }
 
+  void removeFocus() {
+    setState(() {
+      widget.isFocused = false;
+    });
+  }
+
+  // TODO create a scroll-check.
   scrollRight() {
-    if (listIndex < buttons.length) {
+    if (listIndex < widget.buttonList.length - 1) {
       listIndex++;
-      itemScrollController.scrollTo(
-          index: listIndex,
-          duration: Duration(
-            seconds: 1,
-          ),
-          alignment: 0);
+      if (listIndex < widget.buttonList.length - 3) {
+        scrollController.scrollTo(
+            index: listIndex,
+            duration: Duration(
+              seconds: 1,
+            ),
+            curve: Curves.ease);
+      }
       this.setButtonFocus();
     }
   }
@@ -40,24 +67,26 @@ class CustomVerticalList extends StatelessWidget {
   scrollLeft() {
     if (listIndex > 0) {
       listIndex--;
-      itemScrollController.scrollTo(
-          index: listIndex,
-          duration: Duration(
-            seconds: 1,
-          ),
-          alignment: 0);
+      if (listIndex < widget.buttonList.length - 3) {
+        scrollController.scrollTo(
+            index: listIndex,
+            duration: Duration(
+              seconds: 1,
+            ),
+            curve: Curves.ease);
+      }
       this.setButtonFocus();
     }
   }
 
   void setButtonFocus() {
     if (currentFocusButton == null) {
-      currentFocusButton = buttons[0];
-      currentFocusButton = buttons[listIndex];
+      currentFocusButton = widget.buttonList[0];
+      currentFocusButton = widget.buttonList[listIndex];
       currentFocusButton.state.setFocus();
     } else {
       currentFocusButton.state.removeFocus();
-      currentFocusButton = buttons[listIndex];
+      currentFocusButton = widget.buttonList[listIndex];
       currentFocusButton.state.setFocus();
     }
   }
@@ -71,30 +100,33 @@ class CustomVerticalList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(mainAxisSize: MainAxisSize.min, children: [
-      Align(alignment: Alignment.topCenter, child: Text(this.listTitle)),
+      Align(alignment: Alignment.topCenter, child: Text(widget.categoryTitle)),
       Flexible(
           child: Container(
+              //color: Colors.grey,
+              decoration: BoxDecoration(
+                  border: widget.isFocused
+                      ? Border(
+                          top: BorderSide(width: 16, color: Colors.grey),
+                          bottom: BorderSide(width: 16, color: Colors.grey))
+                      : null),
               margin: EdgeInsets.fromLTRB(12, 12, 12, 12),
               height: (MediaQuery.of(context).size.height -
                       AppBar().preferredSize.height) /
-                  6,
-              //width: 800,
-              color: Colors.black12,
+                  6.0,
               child: ScrollablePositionedList.builder(
                   initialScrollIndex: 0,
-                  itemScrollController: itemScrollController,
+                  itemScrollController: scrollController,
                   itemPositionsListener: itemPositionsListener,
-                  itemCount: buttons.length,
+                  itemCount: widget.buttonList.length,
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) => Row(
                         children: [
-                          // for (var item in listObjects.objects)
                           Container(
                               height:
-                                  MediaQuery.of(context).size.width * (0.285),
-                              width:
-                                  MediaQuery.of(context).size.width * (0.285),
-                              child: buttons[index])
+                                  MediaQuery.of(context).size.width * (0.24),
+                              width: MediaQuery.of(context).size.width * (0.24),
+                              child: widget.buttonList[index])
                         ],
                       )))),
     ]);
