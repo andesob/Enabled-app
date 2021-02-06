@@ -8,8 +8,6 @@ import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 //TODO Find a solution to the "buggy" behavior on the last scrolls in the scrollable position list.
-// TODO turn scrolling into functions.
-//TODO refactor code for redablility.
 
 class CustomPageHome extends StatefulWidget {
   CustomPageHome({Key key, this.title}) : super(key: key);
@@ -80,10 +78,78 @@ class _CustomPageHome extends State<CustomPageHome> {
       }
     }
 
+    void scrollDown() {
+      itemScrollController.scrollTo(
+          index: verticalListIndex,
+          duration: Duration(
+            seconds: 1,
+          ),
+          curve: Curves.ease);
+    }
+
+    void scrollUp() {
+      itemScrollController.scrollTo(
+          index: verticalListIndex,
+          duration: Duration(
+            seconds: 1,
+          ),
+          curve: Curves.ease);
+    }
+
+    void scrollRight() {
+      verticalList[verticalListIndex].state.scrollRight();
+    }
+
+    void scrollLeft() {
+      verticalList[verticalListIndex].state.scrollLeft();
+    }
+
+    bool canScroll() {
+      bool canScroll = false;
+      if (verticalListIndex < verticalList.length - 3) {
+        canScroll = true;
+      }
+      return canScroll;
+    }
+
     void removeListFocus() {
       if (focusedList != null) {
         focusedList.state.removeFocus();
       }
+    }
+
+    void downCommand() {
+      if (!inChildLevel && verticalListIndex < verticalList.length - 1) {
+        verticalListIndex++;
+        if (canScroll()) {
+          scrollDown();
+        }
+        setListFocus();
+      } else if (inChildLevel) {
+        scrollRight();
+      }
+    }
+
+    void upCommand() {
+      if (!inChildLevel && verticalListIndex > 0) {
+        verticalListIndex--;
+        if (canScroll()) {
+          scrollUp();
+        }
+        setListFocus();
+      } else if (inChildLevel) {
+        scrollLeft();
+      }
+    }
+
+    void selectCommand() {
+      verticalList[verticalListIndex].state.setButtonFocus();
+      inChildLevel = true;
+    }
+
+    void backCommand() {
+      inChildLevel = false;
+      verticalList[verticalListIndex].state.removeButtonFocus();
     }
 
     return Container(
@@ -104,7 +170,6 @@ class _CustomPageHome extends State<CustomPageHome> {
                   )
                 ])),
         body: Container(
-          //color: Colors.black12,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -129,22 +194,7 @@ class _CustomPageHome extends State<CustomPageHome> {
                     child: FlatButton(
                       child: new Text("Opp"),
                       onPressed: () {
-                        if (!inChildLevel) {
-                          if (verticalListIndex > 0) {
-                            verticalListIndex--;
-                            if (verticalListIndex < verticalList.length - 3) {
-                              itemScrollController.scrollTo(
-                                  index: verticalListIndex,
-                                  duration: Duration(
-                                    seconds: 1,
-                                  ),
-                                  curve: Curves.ease);
-                            }
-                            setListFocus();
-                          }
-                        } else if (inChildLevel) {
-                          verticalList[verticalListIndex].state.scrollLeft();
-                        }
+                        upCommand();
                       },
                     ),
                   ),
@@ -152,20 +202,7 @@ class _CustomPageHome extends State<CustomPageHome> {
                     child: FlatButton(
                       child: new Text("Ned"),
                       onPressed: () {
-                        if (!inChildLevel) {
-                          verticalListIndex++;
-                          if (verticalListIndex < verticalList.length - 3) {
-                            itemScrollController.scrollTo(
-                                index: verticalListIndex,
-                                duration: Duration(
-                                  seconds: 1,
-                                ),
-                                curve: Curves.ease);
-                          }
-                          setListFocus();
-                        } else if (inChildLevel) {
-                          verticalList[verticalListIndex].state.scrollRight();
-                        }
+                        downCommand();
                       },
                     ),
                   ),
@@ -173,8 +210,7 @@ class _CustomPageHome extends State<CustomPageHome> {
                     child: FlatButton(
                       child: new Text("Ok"),
                       onPressed: () {
-                        verticalList[verticalListIndex].state.setButtonFocus();
-                        inChildLevel = true;
+                        selectCommand();
                       },
                     ),
                   ),
@@ -183,10 +219,7 @@ class _CustomPageHome extends State<CustomPageHome> {
                     child: FlatButton(
                       child: new Text("Tilbake"),
                       onPressed: () {
-                        inChildLevel = false;
-                        verticalList[verticalListIndex]
-                            .state
-                            .removeButtonFocus();
+                        backCommand();
                       },
                     ),
                   ),

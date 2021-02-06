@@ -26,7 +26,7 @@ class _CustomVerticaList extends State<CustomVerticalList> {
   CustomPageButton currentFocusButton;
 
   /// Controller to scroll or jump to a particular item.
-  final ItemScrollController itemScrollController = ItemScrollController();
+  final ItemScrollController scrollController = ItemScrollController();
 
   /// Listener that reports the position of items when the list is scrolled.
   final ItemPositionsListener itemPositionsListener =
@@ -53,7 +53,7 @@ class _CustomVerticaList extends State<CustomVerticalList> {
     if (listIndex < widget.buttonList.length - 1) {
       listIndex++;
       if (listIndex < widget.buttonList.length - 3) {
-        itemScrollController.scrollTo(
+        scrollController.scrollTo(
             index: listIndex,
             duration: Duration(
               seconds: 1,
@@ -68,7 +68,7 @@ class _CustomVerticaList extends State<CustomVerticalList> {
     if (listIndex > 0) {
       listIndex--;
       if (listIndex < widget.buttonList.length - 3) {
-        itemScrollController.scrollTo(
+        scrollController.scrollTo(
             index: listIndex,
             duration: Duration(
               seconds: 1,
@@ -116,7 +116,7 @@ class _CustomVerticaList extends State<CustomVerticalList> {
                   6.0,
               child: ScrollablePositionedList.builder(
                   initialScrollIndex: 0,
-                  itemScrollController: itemScrollController,
+                  itemScrollController: scrollController,
                   itemPositionsListener: itemPositionsListener,
                   itemCount: widget.buttonList.length,
                   scrollDirection: Axis.horizontal,
