@@ -10,14 +10,22 @@ class CustomDictionary extends StatefulWidget {
 }
 
 class CustomDictionaryState extends State<CustomDictionary> {
+  void _onDictChosenHandler(String text) => widget.onDictItemChosen.call(text);
+
+  List<String> dictionary = ["Sunde", "Trymjjj", "Eskilet", "Anders"];
+
   @override
   Widget build(BuildContext context) {
-    return
-      Container(
+    return Container(
       child: Column(
-        children: [
-          DictionaryItem(),
-        ],
+        children: dictionary
+            .map(
+              (text) => DictionaryItem(
+                onDictItemChosen: _onDictChosenHandler,
+                text: text,
+              ),
+            )
+            .toList(),
       ),
     );
   }

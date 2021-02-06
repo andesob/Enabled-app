@@ -1,3 +1,4 @@
+import 'package:enabled_app/Contacts/contacts.dart';
 import 'package:enabled_app/keyboard_page/keyboard-page.dart';
 import 'package:enabled_app/needs/needs.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
       routes: {
         Strings.home: (context) => MyHomePage(),
         Strings.needs: (context) => NeedsPage(),
-        Strings.contacts: (context) => MyHomePage(),
+        Strings.contacts: (context) => contacts(),
         Strings.custom: (context) => CustomPageHome(),
         Strings.keyboard: (context) => KeyboardPage(),
 

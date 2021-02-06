@@ -20,6 +20,7 @@ class _KeyboardPageState extends State<KeyboardPage> {
 
   bool darkmode = false;
 
+
   void _changeDarkmode() {
     setState(() {
       darkmode = !darkmode;
@@ -84,18 +85,28 @@ class _KeyboardPageState extends State<KeyboardPage> {
     );
   }
 
+  void _onDictItemChosen(String myText) {
+    final text = _controller.text;
+    final textSelection = _controller.selection;
+    final newText = text.replaceRange(
+      textSelection.start,
+      textSelection.end,
+      myText,
+    );
+    final myTextLength = myText.length;
+    _controller.text = newText;
+    _controller.selection = textSelection.copyWith(
+      baseOffset: textSelection.start + myTextLength,
+      extentOffset: textSelection.start + myTextLength,
+    );
+  }
+
   bool _isUtf16Surrogate(int value) {
     return value & 0xF800 == 0xD800;
   }
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight
-    ]);
 
     return Container(
       child: Scaffold(
@@ -143,7 +154,9 @@ class _KeyboardPageState extends State<KeyboardPage> {
                 ),
               ),
               Expanded(
-                child: CustomDictionary(),
+                child: CustomDictionary(
+                  onDictItemChosen: _onDictItemChosen,
+                ),
                 flex: 1,
               )
             ]),
