@@ -4,14 +4,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class NeedsPageButton extends StatelessWidget {
-  String text;
+  NeedsPageButton({Key key,this.text}) : super(key:key);
+  final String text;
 
   //TODO
   //var picture;
 
-  NeedsPageButton(String text) {
-    this.text = text;
-  }
 
   @override
   Widget build(BuildContext context) {
