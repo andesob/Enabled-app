@@ -58,7 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
     mainPageBtnList.add(MainPageButton(text: Strings.emergency));
   }
 
-  void _changeText() {
+  void _changeDarkmode() {
     setState(() {
       darkmode = !darkmode;
     });
@@ -153,7 +153,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     splashColor: Color(Colors.grey.value),
                     padding: EdgeInsets.zero,
                     onPressed: () {
-                      _changeText();
+                      _changeDarkmode();
                     }),
               )
             ],

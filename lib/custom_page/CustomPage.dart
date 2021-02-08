@@ -1,5 +1,6 @@
 import 'package:enabled_app/colors/colors.dart';
 import 'package:enabled_app/custom_page/CustomCategory.dart';
+import 'package:enabled_app/custom_page/CustomPopup.dart';
 import 'package:enabled_app/custom_page/CustomVerticalList.dart';
 import 'package:enabled_app/custom_page/VerticalListButtons.dart';
 import 'package:flutter/material.dart';
@@ -22,8 +23,14 @@ class _CustomPageHome extends State<CustomPageHome> {
   List<CustomCategory> categoryList = [];
   List<CustomVerticalList> verticalList = [];
   List<VerticalListButtons> buttonList = [];
+
   int verticalListIndex = 0;
+  int lastScrollIndexDown = 0;
+  int lastCrollIndexUp = 0;
+
   ItemScrollController childController;
+  CustomVerticalList focusedList;
+
   bool inChildLevel = false;
 
   // TODO remove test objects.
@@ -31,7 +38,7 @@ class _CustomPageHome extends State<CustomPageHome> {
   void initState() {
     super.initState();
 
-    // For testing purposes
+    /// For testing purposes
     List<String> testObjects = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
     CustomCategory customCategory = new CustomCategory();
     customCategory.categoryName = "Eskil";
@@ -43,11 +50,13 @@ class _CustomPageHome extends State<CustomPageHome> {
 
     for (var item in categoryList) {
       CustomVerticalList list = new CustomVerticalList(
-        listTitle: item.categoryName,
-        buttons: item.allButtons(),
+        categoryTitle: item.categoryName,
+        buttonList: item.allButtons(),
       );
       verticalList.add(list);
     }
+    focusedList = verticalList[0];
+    focusedList.isFocused = true;
   }
 
   @override
@@ -64,10 +73,122 @@ class _CustomPageHome extends State<CustomPageHome> {
     final ItemPositionsListener itemPositionsListener =
         ItemPositionsListener.create();
 
-    // For testing purposes
-    List<String> testObjects = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
-    final customCategory =
-        CustomCategory(categoryName: "Eskil", categoryObjects: testObjects);
+    /// Sets the focus around the selected list.
+    void setListFocus() {
+      if (focusedList == null) {
+        focusedList = verticalList[0];
+        focusedList.state.setFocus();
+      } else {
+        focusedList.state.removeFocus();
+        focusedList = verticalList[verticalListIndex];
+        focusedList.state.setFocus();
+      }
+    }
+
+    /// Scrolls the list down to the selected index.
+    void scrollDown() {
+      itemScrollController.scrollTo(
+          index: verticalListIndex,
+          duration: Duration(
+            seconds: 1,
+          ),
+          alignment: 0.75,
+          curve: Curves.ease);
+    }
+
+    /// Scrolls the list up to the selected index.
+    void scrollUp() {
+      itemScrollController.scrollTo(
+          index: verticalListIndex,
+          duration: Duration(
+            seconds: 1,
+          ),
+          alignment: 0,
+          curve: Curves.ease);
+    }
+
+    ///Scrolls one of the child list right.
+    void scrollRight() {
+      verticalList[verticalListIndex].state.scrollRight();
+    }
+
+    /// Scrolls one of the child list left.
+    void scrollLeft() {
+      verticalList[verticalListIndex].state.scrollLeft();
+    }
+
+    /// Checks if the list can scroll down or not.
+    /// Returns a true if it can scroll and a false if it can't.
+    bool canScrollDown() {
+      bool canScroll = false;
+      if (verticalListIndex < verticalList.length && verticalListIndex > 3) {
+        if (verticalListIndex > lastCrollIndexUp + 3) {
+          canScroll = true;
+        }
+      }
+      return canScroll;
+    }
+
+    /// Checks if the list can scroll up or not.
+    /// Returns a true if it can scroll and a false if it can't.
+    bool canScrollUp() {
+      bool canScroll = false;
+      if (verticalListIndex < verticalList.length - 4) {
+        if (lastScrollIndexDown != 0 &&
+            verticalListIndex < lastScrollIndexDown - 3) {
+          canScroll = true;
+        }
+      }
+      return canScroll;
+    }
+
+    /// Removes the focus frpom the selected list.
+    void removeListFocus() {
+      if (focusedList != null) {
+        focusedList.state.removeFocus();
+      }
+    }
+
+    /// Takes a input from the EEG-brainwear to simulate a down-command.
+    void downCommand() {
+      if (!inChildLevel && verticalListIndex < verticalList.length - 1) {
+        verticalListIndex++;
+        if (canScrollDown()) {
+          lastScrollIndexDown = verticalListIndex;
+          scrollDown();
+        }
+        setListFocus();
+      } else if (inChildLevel) {
+        scrollRight();
+      }
+    }
+
+    /// Takes a input from the EEG-brainwear to simulate an up-command.
+    void upCommand() {
+      if (!inChildLevel && verticalListIndex > 0) {
+        verticalListIndex--;
+        if (canScrollUp()) {
+          lastCrollIndexUp = verticalListIndex;
+          ;
+          scrollUp();
+        }
+        setListFocus();
+      } else if (inChildLevel) {
+        scrollLeft();
+      }
+    }
+
+    /// Takes a input from the EEG-brainwear to simulate a select-command.
+    void selectCommand() {
+      verticalList[verticalListIndex].state.setButtonFocus();
+      inChildLevel = true;
+    }
+
+    /// Takes a input from the EEG-brainwear to simulate a back-command.
+    void backCommand() {
+      inChildLevel = false;
+      verticalList[verticalListIndex].state.removeButtonFocus();
+    }
 
     return Container(
       decoration: new BoxDecoration(
@@ -87,12 +208,22 @@ class _CustomPageHome extends State<CustomPageHome> {
                   )
                 ])),
         body: Container(
-          color: Colors.black12,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
+              Container(
+                  child: Align(
+                      alignment: Alignment.centerRight,
+                      child: FlatButton(
+                        child: Text("Add more"),
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return CustomPopup();
+                              });
+                        },
+                      ))),
               Expanded(
                 child: ScrollablePositionedList.builder(
                     initialScrollIndex: 0,
@@ -100,81 +231,47 @@ class _CustomPageHome extends State<CustomPageHome> {
                     itemPositionsListener: itemPositionsListener,
                     itemCount: verticalList.length,
                     scrollDirection: Axis.vertical,
-                    itemBuilder: (context, index) => verticalList[index]
-
-                    //verticalList.cast<Widget>()
-                    /*  Container(
-                      margin: EdgeInsets.all(10),
-                      child: Align(
-                          alignment: Alignment.centerRight,
-                          child: Text("Add more"))),
-
-                 */
-                    ),
+                    itemBuilder: (context, index) => verticalList[index]),
               ),
-              //TODO mark the box or list in focus.
               Center(
-                  child: Row(
-                children: [
-                  Container(
-                    child: FlatButton(
-                      child: new Text("Opp"),
-                      onPressed: () {
-                        if (!inChildLevel) {
-                          if (verticalListIndex > 0) {
-                            verticalListIndex--;
-                            itemScrollController.scrollTo(
-                                index: verticalListIndex,
-                                duration: Duration(
-                                  seconds: 1,
-                                ),
-                                alignment: 0);
-                          }
-                        } else if (inChildLevel) {
-                          verticalList[verticalListIndex].scrollLeft();
-                        }
-                      },
+                child: Row(
+                  children: [
+                    Container(
+                      child: FlatButton(
+                        child: new Text("Opp"),
+                        onPressed: () {
+                          upCommand();
+                        },
+                      ),
                     ),
-                  ),
-                  Container(
-                    child: FlatButton(
-                      child: new Text("Ned"),
-                      onPressed: () {
-                        if (!inChildLevel) {
-                          verticalListIndex++;
-                          itemScrollController.scrollTo(
-                              index: verticalListIndex,
-                              duration: Duration(
-                                seconds: 1,
-                              ),
-                              alignment: 0);
-                        } else if (inChildLevel) {
-                          verticalList[verticalListIndex].scrollRight();
-                        }
-                      },
+                    Container(
+                      child: FlatButton(
+                        child: new Text("Ned"),
+                        onPressed: () {
+                          downCommand();
+                        },
+                      ),
                     ),
-                  ),
-                  Container(
-                    child: FlatButton(
-                      child: new Text("Ok"),
-                      onPressed: () {
-                        verticalList[verticalListIndex].setButtonFocus();
-                        inChildLevel = true;
-                      },
+                    Container(
+                      child: FlatButton(
+                        child: new Text("Ok"),
+                        onPressed: () {
+                          selectCommand();
+                        },
+                      ),
                     ),
-                  ),
-                  //TODO Add back logic
-                  Container(
-                    child: FlatButton(
-                      child: new Text("Tilbake"),
-                      onPressed: () {
-                        inChildLevel = false;
-                        verticalList[verticalListIndex].removeButtonFocus();
-                      },
+                    //TODO Add back logic
+                    Container(
+                      child: FlatButton(
+                        child: new Text("Tilbake"),
+                        onPressed: () {
+                          backCommand();
+                        },
+                      ),
                     ),
-                  ),
-                ],
-              ))
+                  ],
+                ),
+              )
             ],
           ),
         ),
