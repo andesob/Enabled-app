@@ -1,5 +1,6 @@
 import 'package:enabled_app/colors/colors.dart';
 import 'package:enabled_app/custom_page/CustomCategory.dart';
+import 'package:enabled_app/custom_page/CustomPopup.dart';
 import 'package:enabled_app/custom_page/CustomVerticalList.dart';
 import 'package:enabled_app/custom_page/VerticalListButtons.dart';
 import 'package:flutter/material.dart';
@@ -22,10 +23,15 @@ class _CustomPageHome extends State<CustomPageHome> {
   List<CustomCategory> categoryList = [];
   List<CustomVerticalList> verticalList = [];
   List<VerticalListButtons> buttonList = [];
+
   int verticalListIndex = 0;
+  int lastScrollIndexDown = 0;
+  int lastCrollIndexUp = 0;
+
   ItemScrollController childController;
-  bool inChildLevel = false;
   CustomVerticalList focusedList;
+
+  bool inChildLevel = false;
 
   // TODO remove test objects.
   @override
@@ -67,6 +73,7 @@ class _CustomPageHome extends State<CustomPageHome> {
     final ItemPositionsListener itemPositionsListener =
         ItemPositionsListener.create();
 
+    /// Sets the focus around the selected list.
     void setListFocus() {
       if (focusedList == null) {
         focusedList = verticalList[0];
@@ -78,50 +85,76 @@ class _CustomPageHome extends State<CustomPageHome> {
       }
     }
 
+    /// Scrolls the list down to the selected index.
     void scrollDown() {
       itemScrollController.scrollTo(
           index: verticalListIndex,
           duration: Duration(
             seconds: 1,
           ),
+          alignment: 0.75,
           curve: Curves.ease);
     }
 
+    /// Scrolls the list up to the selected index.
     void scrollUp() {
       itemScrollController.scrollTo(
           index: verticalListIndex,
           duration: Duration(
             seconds: 1,
           ),
+          alignment: 0,
           curve: Curves.ease);
     }
 
+    ///Scrolls one of the child list right.
     void scrollRight() {
       verticalList[verticalListIndex].state.scrollRight();
     }
 
+    /// Scrolls one of the child list left.
     void scrollLeft() {
       verticalList[verticalListIndex].state.scrollLeft();
     }
 
-    bool canScroll() {
+    /// Checks if the list can scroll down or not.
+    /// Returns a true if it can scroll and a false if it can't.
+    bool canScrollDown() {
       bool canScroll = false;
-      if (verticalListIndex < verticalList.length - 3) {
-        canScroll = true;
+      if (verticalListIndex < verticalList.length && verticalListIndex > 3) {
+        if (verticalListIndex > lastCrollIndexUp + 3) {
+          canScroll = true;
+        }
       }
       return canScroll;
     }
 
+    /// Checks if the list can scroll up or not.
+    /// Returns a true if it can scroll and a false if it can't.
+    bool canScrollUp() {
+      bool canScroll = false;
+      if (verticalListIndex < verticalList.length - 4) {
+        if (lastScrollIndexDown != 0 &&
+            verticalListIndex < lastScrollIndexDown - 3) {
+          canScroll = true;
+        }
+      }
+      return canScroll;
+    }
+
+    /// Removes the focus frpom the selected list.
     void removeListFocus() {
       if (focusedList != null) {
         focusedList.state.removeFocus();
       }
     }
 
+    /// Takes a input from the EEG-brainwear to simulate a down-command.
     void downCommand() {
       if (!inChildLevel && verticalListIndex < verticalList.length - 1) {
         verticalListIndex++;
-        if (canScroll()) {
+        if (canScrollDown()) {
+          lastScrollIndexDown = verticalListIndex;
           scrollDown();
         }
         setListFocus();
@@ -130,10 +163,13 @@ class _CustomPageHome extends State<CustomPageHome> {
       }
     }
 
+    /// Takes a input from the EEG-brainwear to simulate an up-command.
     void upCommand() {
       if (!inChildLevel && verticalListIndex > 0) {
         verticalListIndex--;
-        if (canScroll()) {
+        if (canScrollUp()) {
+          lastCrollIndexUp = verticalListIndex;
+          ;
           scrollUp();
         }
         setListFocus();
@@ -142,11 +178,13 @@ class _CustomPageHome extends State<CustomPageHome> {
       }
     }
 
+    /// Takes a input from the EEG-brainwear to simulate a select-command.
     void selectCommand() {
       verticalList[verticalListIndex].state.setButtonFocus();
       inChildLevel = true;
     }
 
+    /// Takes a input from the EEG-brainwear to simulate a back-command.
     void backCommand() {
       inChildLevel = false;
       verticalList[verticalListIndex].state.removeButtonFocus();
@@ -175,9 +213,17 @@ class _CustomPageHome extends State<CustomPageHome> {
             children: <Widget>[
               Container(
                   child: Align(
-                alignment: Alignment.centerRight,
-                child: Text("Add more"),
-              )),
+                      alignment: Alignment.centerRight,
+                      child: FlatButton(
+                        child: Text("Add more"),
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return CustomPopup();
+                              });
+                        },
+                      ))),
               Expanded(
                 child: ScrollablePositionedList.builder(
                     initialScrollIndex: 0,
@@ -188,43 +234,44 @@ class _CustomPageHome extends State<CustomPageHome> {
                     itemBuilder: (context, index) => verticalList[index]),
               ),
               Center(
-                  child: Row(
-                children: [
-                  Container(
-                    child: FlatButton(
-                      child: new Text("Opp"),
-                      onPressed: () {
-                        upCommand();
-                      },
+                child: Row(
+                  children: [
+                    Container(
+                      child: FlatButton(
+                        child: new Text("Opp"),
+                        onPressed: () {
+                          upCommand();
+                        },
+                      ),
                     ),
-                  ),
-                  Container(
-                    child: FlatButton(
-                      child: new Text("Ned"),
-                      onPressed: () {
-                        downCommand();
-                      },
+                    Container(
+                      child: FlatButton(
+                        child: new Text("Ned"),
+                        onPressed: () {
+                          downCommand();
+                        },
+                      ),
                     ),
-                  ),
-                  Container(
-                    child: FlatButton(
-                      child: new Text("Ok"),
-                      onPressed: () {
-                        selectCommand();
-                      },
+                    Container(
+                      child: FlatButton(
+                        child: new Text("Ok"),
+                        onPressed: () {
+                          selectCommand();
+                        },
+                      ),
                     ),
-                  ),
-                  //TODO Add back logic
-                  Container(
-                    child: FlatButton(
-                      child: new Text("Tilbake"),
-                      onPressed: () {
-                        backCommand();
-                      },
+                    //TODO Add back logic
+                    Container(
+                      child: FlatButton(
+                        child: new Text("Tilbake"),
+                        onPressed: () {
+                          backCommand();
+                        },
+                      ),
                     ),
-                  ),
-                ],
-              ))
+                  ],
+                ),
+              )
             ],
           ),
         ),

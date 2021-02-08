@@ -18,6 +18,8 @@ class CustomPageButton extends StatefulWidget {
 }
 
 class _CustomPageButton extends State<CustomPageButton> {
+  String text;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -26,7 +28,7 @@ class _CustomPageButton extends State<CustomPageButton> {
     text = widget.text;
   }
 
-  String text;
+  /// Sets the focus the button to true
   void setFocus() {
     if (this.mounted) {
       setState(() {
@@ -37,6 +39,7 @@ class _CustomPageButton extends State<CustomPageButton> {
     }
   }
 
+  /// Removes the focus of the button.
   void removeFocus() {
     setState(() {
       widget.isFocused = false;
@@ -51,7 +54,7 @@ class _CustomPageButton extends State<CustomPageButton> {
     return Container(
       padding: EdgeInsets.all(10),
       child: RaisedButton(
-        highlightColor: widget.isFocused ? Colors.pink : Colors.purpleAccent,
+        highlightColor: Color(StaticColors.deepSpaceSparkle),
         color: widget.isFocused
             ? Color(StaticColors.deepSpaceSparkle)
             : Color(StaticColors.lighterSlateGray),

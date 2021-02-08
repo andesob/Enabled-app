@@ -16,7 +16,6 @@ class _CustomPopup extends State<CustomPopup> {
   final firstNameController = TextEditingController();
   final surnameController = TextEditingController();
   final numberController = TextEditingController();
-
   FocusNode firstFocusNode;
   FocusNode lastFocusNode;
   FocusNode numberFocusNode;
