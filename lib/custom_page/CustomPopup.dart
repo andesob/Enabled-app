@@ -1,10 +1,12 @@
 import 'package:enabled_app/Contacts/ContactItem.dart';
 import 'package:enabled_app/colors/colors.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'CustomCategory.dart';
 
 class CustomPopup extends StatefulWidget {
-  List<ContactItem> items;
+  List<CustomCategory> items;
 
   CustomPopup({Key key, this.items}) : super(key: key);
 
@@ -17,14 +19,14 @@ class _CustomPopup extends State<CustomPopup> {
   final surnameController = TextEditingController();
   final numberController = TextEditingController();
   FocusNode firstFocusNode;
-  FocusNode lastFocusNode;
-  FocusNode numberFocusNode;
+
+  List<DropdownMenuItem<CustomCategory>> dropDownItems;
+  CustomCategory selectedCategory;
 
   @override
   void dispose() {
     firstFocusNode.dispose();
-    lastFocusNode.dispose();
-    numberFocusNode.dispose();
+
     super.dispose();
   }
 
@@ -32,12 +34,33 @@ class _CustomPopup extends State<CustomPopup> {
   void initState() {
     super.initState();
     firstFocusNode = new FocusNode();
-    lastFocusNode = new FocusNode();
-    numberFocusNode = new FocusNode();
-
     firstFocusNode.addListener(_onOnFocusNodeEvent);
-    lastFocusNode.addListener(_onOnFocusNodeEvent);
-    numberFocusNode.addListener(_onOnFocusNodeEvent);
+
+    dropDownItems = buildDropDownMenuItems(widget.items);
+    //selectedCategory = dropDownItems[0].value;
+  }
+
+  List<DropdownMenuItem<CustomCategory>> buildDropDownMenuItems(
+      List categories) {
+    List<DropdownMenuItem<CustomCategory>> items = [];
+    for (CustomCategory item in categories) {
+      items.add(
+        DropdownMenuItem(
+          child: Center(
+            child: Text(
+              item.categoryName,
+              style: TextStyle(
+                decoration: TextDecoration.underline,
+                fontSize: 16,
+                //fontStyle: FontStyle.italic,
+              ),
+            ),
+          ),
+          value: item,
+        ),
+      );
+    }
+    return items;
   }
 
   _onOnFocusNodeEvent() {
@@ -54,84 +77,96 @@ class _CustomPopup extends State<CustomPopup> {
   Widget build(BuildContext context) {
     return AlertDialog(
       scrollable: true,
-      title: Text('Add New Contact'),
+      title: Text('Legg til en ny snarvei'),
       content: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Form(
           child: Column(
             children: <Widget>[
+              InputDecorator(
+                isFocused: true,
+                decoration: InputDecoration(
+                  labelStyle: Theme.of(context)
+                      .primaryTextTheme
+                      .caption
+                      .copyWith(color: Colors.black),
+                  border: OutlineInputBorder(),
+                ),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton(
+                    focusColor: Color(StaticColors.darkPeach),
+                    isDense: true,
+                    hint: selectedCategory == null
+                        ? Text('Kategori',
+                            style: TextStyle(
+                                color: Color(StaticColors.lightSlateGray)))
+                        : Text(
+                            selectedCategory.categoryName,
+                            style: TextStyle(
+                              color: Color(StaticColors.lightSlateGray),
+                            ),
+                          ),
+                    isExpanded: true,
+                    iconSize: 25.0,
+                    style: TextStyle(
+                      color: Color(
+                        StaticColors.darkPeach,
+                      ),
+                    ),
+                    items: dropDownItems,
+                    onChanged: (item) {
+                      setState(
+                        () {
+                          selectedCategory = item;
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ),
               TextFormField(
                 focusNode: firstFocusNode,
                 controller: firstNameController,
                 decoration: InputDecoration(
                   labelStyle:
                       new TextStyle(color: _getLabelColor(firstFocusNode)),
-                  labelText: 'First Name',
+                  labelText: 'Tekst',
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
                       color: _getLabelColor(firstFocusNode),
                     ),
                   ),
-                  icon: Icon(
-                    Icons.account_box,
-                    color: _getLabelColor(firstFocusNode),
-                  ),
                 ),
               ),
-              TextFormField(
-                focusNode: lastFocusNode,
-                controller: surnameController,
-                decoration: InputDecoration(
-                  labelStyle:
-                      new TextStyle(color: _getLabelColor(lastFocusNode)),
-                  labelText: 'Surname',
-                  border: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: _getLabelColor(lastFocusNode),
+              Container(
+                margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    RaisedButton(
+                      child: Text("Lukk"),
+                      color: Color(StaticColors.lightSlateGray),
+                      onPressed: () {
+                        FocusScope.of(context).unfocus();
+                        Navigator.pop(context);
+                      },
                     ),
-                  ),
-                  icon: Icon(
-                    Icons.edit_sharp,
-                    color: _getLabelColor(lastFocusNode),
-                  ),
-                ),
-              ),
-              TextFormField(
-                focusNode: numberFocusNode,
-                controller: numberController,
-                keyboardType: TextInputType.phone,
-                decoration: InputDecoration(
-                  labelStyle:
-                      new TextStyle(color: _getLabelColor(numberFocusNode)),
-                  labelText: 'Number',
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: _getLabelColor(numberFocusNode),
+                    RaisedButton(
+                      child: Text("Legg til"),
+                      color: Color(StaticColors.lightSlateGray),
+                      onPressed: () {
+                        FocusScope.of(context).unfocus();
+                        Navigator.pop(context, firstNameController.text);
+                      },
                     ),
-                  ),
-                  icon: Icon(
-                    Icons.add_ic_call,
-                    color: _getLabelColor(numberFocusNode),
-                  ),
+                  ],
                 ),
               ),
             ],
           ),
         ),
       ),
-      actions: [
-        RaisedButton(
-            child: Text("Submit"),
-            color: Color(StaticColors.lightSlateGray),
-            onPressed: () {
-              widget.items.add(ContactItem(firstNameController.text,
-                  surnameController.text, numberController.text));
-              firstNameController.clear();
-              surnameController.clear();
-              numberController.clear();
-              Navigator.pop(context);
-            })
-      ],
     );
   }
 }
