@@ -38,7 +38,7 @@ class _contactState extends State<contacts> {
 Scrolls up to the previous contact on the list.
  */
   scrollDown() {
-    if (focusIndex < items.length) {
+    if (focusIndex < items.length-1) {
       removeHighlight();
       focusIndex++;
       addHighlight();

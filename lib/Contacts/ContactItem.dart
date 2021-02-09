@@ -58,7 +58,7 @@ class _ContactItem extends State<ContactItem>{
       child: ListTile(
         onTap: () => _launchURL(number),
         leading: CircleAvatar(
-          backgroundColor: Color(StaticColors.lighterSlateGray),
+          backgroundColor: boldFont ? Color(StaticColors.apricot): Color(StaticColors.lighterSlateGray),
           child: Text(
             firstname[0],
             style: TextStyle(color: Color(StaticColors.white)),
