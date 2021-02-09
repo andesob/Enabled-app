@@ -19,11 +19,12 @@ class CustomVerticalList extends StatefulWidget {
   }
 }
 
-//TODO Find a solution to the "buggy" behavior on the last scrolls in the scrollable position list
+// TODO - See if i can change "container" with raised button for elevation effect when focused.
 class _CustomVerticaList extends State<CustomVerticalList> {
   int listIndex = 0;
   int lastScrollIndexLeft = 0;
   int lastScrollIndexRight = 0;
+  int lastScrollIndex = 0;
   CustomPageButton currentFocusButton;
 
   /// Controller to scroll or jump to a particular item.
@@ -57,6 +58,8 @@ class _CustomVerticaList extends State<CustomVerticalList> {
       listIndex++;
       if (canScrollRight()) {
         lastScrollIndexRight = listIndex;
+        lastScrollIndex = listIndex;
+        print("last scroll right :" + lastScrollIndexRight.toString());
         scrollController.scrollTo(
             index: listIndex,
             duration: Duration(
@@ -75,6 +78,7 @@ class _CustomVerticaList extends State<CustomVerticalList> {
       listIndex--;
       if (canScrollLeft()) {
         lastScrollIndexLeft = listIndex;
+        lastScrollIndex = listIndex;
         scrollController.scrollTo(
             index: listIndex,
             duration: Duration(
@@ -91,7 +95,7 @@ class _CustomVerticaList extends State<CustomVerticalList> {
   bool canScrollRight() {
     bool canScroll = false;
     if (listIndex < widget.buttonList.length && listIndex > 3) {
-      if (listIndex > lastScrollIndexLeft + 3) {
+      if (listIndex > lastScrollIndexLeft + 3 && listIndex > lastScrollIndex) {
         canScroll = true;
       }
     }

@@ -8,7 +8,7 @@ import 'package:flutter/rendering.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-//TODO Find a solution to the "buggy" behavior on the last scrolls in the scrollable position list.
+//TODO create a solution for the "result" object returned from the alert dialog.
 
 class CustomPageHome extends StatefulWidget {
   CustomPageHome({Key key, this.title}) : super(key: key);
@@ -26,7 +26,8 @@ class _CustomPageHome extends State<CustomPageHome> {
 
   int verticalListIndex = 0;
   int lastScrollIndexDown = 0;
-  int lastCrollIndexUp = 0;
+  int lastScrollIndexUp = 0;
+  int lastScrollIndex = 0;
 
   ItemScrollController childController;
   CustomVerticalList focusedList;
@@ -122,7 +123,8 @@ class _CustomPageHome extends State<CustomPageHome> {
     bool canScrollDown() {
       bool canScroll = false;
       if (verticalListIndex < verticalList.length && verticalListIndex > 3) {
-        if (verticalListIndex > lastCrollIndexUp + 3) {
+        if (verticalListIndex > lastScrollIndexUp + 3 &&
+            verticalListIndex > lastScrollIndex) {
           canScroll = true;
         }
       }
@@ -142,7 +144,7 @@ class _CustomPageHome extends State<CustomPageHome> {
       return canScroll;
     }
 
-    /// Removes the focus frpom the selected list.
+    /// Removes the focus from the selected list.
     void removeListFocus() {
       if (focusedList != null) {
         focusedList.state.removeFocus();
@@ -155,6 +157,7 @@ class _CustomPageHome extends State<CustomPageHome> {
         verticalListIndex++;
         if (canScrollDown()) {
           lastScrollIndexDown = verticalListIndex;
+          lastScrollIndex = verticalListIndex;
           scrollDown();
         }
         setListFocus();
@@ -168,8 +171,8 @@ class _CustomPageHome extends State<CustomPageHome> {
       if (!inChildLevel && verticalListIndex > 0) {
         verticalListIndex--;
         if (canScrollUp()) {
-          lastCrollIndexUp = verticalListIndex;
-          ;
+          lastScrollIndexUp = verticalListIndex;
+          lastScrollIndex = verticalListIndex;
           scrollUp();
         }
         setListFocus();
@@ -215,13 +218,26 @@ class _CustomPageHome extends State<CustomPageHome> {
                   child: Align(
                       alignment: Alignment.centerRight,
                       child: FlatButton(
-                        child: Text("Add more"),
+                        child: Text("Legg til"),
                         onPressed: () {
                           showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return CustomPopup();
-                              });
+                                return CustomPopup(
+                                  items: categoryList,
+                                );
+                              }).then((value) {
+                            setState(() {
+                              print("reached: " + value);
+                              CustomCategory customCategory =
+                                  new CustomCategory(
+                                      categoryObjects: ['1', '2', '3'],
+                                      categoryName: value);
+                              categoryList.add(customCategory);
+                            });
+                          }).catchError((error) {
+                            print(error);
+                          });
                         },
                       ))),
               Expanded(

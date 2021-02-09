@@ -58,7 +58,7 @@ class _CustomPageButton extends State<CustomPageButton> {
         color: widget.isFocused
             ? Color(StaticColors.deepSpaceSparkle)
             : Color(StaticColors.lighterSlateGray),
-        elevation: widget.isFocused ? 1 : 0,
+        elevation: widget.isFocused ? 10 : 0,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
             side: BorderSide(
