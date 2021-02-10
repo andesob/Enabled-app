@@ -1,6 +1,7 @@
 import 'package:enabled_app/colors/colors.dart';
 import 'package:enabled_app/keyboard_page/keyboard-backspace-key.dart';
 import 'package:enabled_app/keyboard_page/keyboard-capslock-key.dart';
+import 'package:enabled_app/keyboard_page/keyboard-dictionary-key.dart';
 import 'package:enabled_app/keyboard_page/keyboard-key.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
   void _backSpaceHandler() => widget.onBackspace.call();
 
   bool isUpperCase = true;
+  int rowFocused = 0;
 
   List<String> firstRow = [" ", "E", "A", "N", "L", "F"];
   List<String> secondRow = [
@@ -43,6 +45,19 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
   ];
   List<String> fourthRow = ["H", "U", "W", "K", "Q", "?"];
   List<String> fifthRow = ["M", "Y", "X", "Z", ",", "!"];
+  List<List<String>> allLetters = [];
+  List<List<KeyboardKey>> allButtons = [];
+
+  @override
+  void initState() {
+    super.initState();
+
+    allLetters.add(firstRow);
+    allLetters.add(secondRow);
+    allLetters.add(thirdRow);
+    allLetters.add(fourthRow);
+    allLetters.add(fifthRow);
+  }
 
   void _onCapslockHandler() {
     setState(() {
@@ -51,40 +66,20 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
   }
 
   void toUpperCase() {
-    for (int i = 0; i < firstRow.length; i++) {
-      firstRow[i] = firstRow[i].toUpperCase();
-    }
-    for (int i = 0; i < secondRow.length; i++) {
-      secondRow[i] = secondRow[i].toUpperCase();
-    }
-    for (int i = 0; i < thirdRow.length; i++) {
-      thirdRow[i] = thirdRow[i].toUpperCase();
-    }
-    for (int i = 0; i < fourthRow.length; i++) {
-      fourthRow[i] = fourthRow[i].toUpperCase();
-    }
-    for (int i = 0; i < fifthRow.length; i++) {
-      fifthRow[i] = fifthRow[i].toUpperCase();
+    for (int i = 0; i < allLetters.length; i++) {
+      for (int j = 0; j < allLetters[i].length; j++) {
+        allLetters[i][j] = allLetters[i][j].toUpperCase();
+      }
     }
 
     isUpperCase = true;
   }
 
   void toLowerCase() {
-    for (int i = 0; i < firstRow.length; i++) {
-      firstRow[i] = firstRow[i].toLowerCase();
-    }
-    for (int i = 0; i < secondRow.length; i++) {
-      secondRow[i] = secondRow[i].toLowerCase();
-    }
-    for (int i = 0; i < thirdRow.length; i++) {
-      thirdRow[i] = thirdRow[i].toLowerCase();
-    }
-    for (int i = 0; i < fourthRow.length; i++) {
-      fourthRow[i] = fourthRow[i].toLowerCase();
-    }
-    for (int i = 0; i < fifthRow.length; i++) {
-      fifthRow[i] = fifthRow[i].toLowerCase();
+    for (int i = 0; i < allLetters.length; i++) {
+      for (int j = 0; j < allLetters[i].length; j++) {
+        allLetters[i][j] = allLetters[i][j].toLowerCase();
+      }
     }
 
     isUpperCase = false;
@@ -92,108 +87,64 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
 
   @override
   Widget build(BuildContext context) {
+    allButtons = [];
     return Container(
       color: Color(StaticColors.apricot),
       child: Column(
         // <-- Column
-        children: [
-          buildRowOne(), // <-- Row
-          buildRowTwo(), // <-- Row
-          buildRowThree(),
-          buildRowFour(),
-          buildRowFive(), // <-- Row
-          buildRowSix(),
-        ],
+        children: buildKeyboard(),
       ),
     );
   }
 
-  Expanded buildRowOne() {
+  List<Widget> buildKeyboard() {
+    for (int i = 0; i < allLetters.length; i++) {
+      allButtons.add(allLetters[i].map(
+            (letter) {
+          return new KeyboardKey(
+            text: letter,
+            onTextInput: _textInputHandler,
+          );
+        },
+      ).toList());
+    }
+
+    List<Widget> keyboard = [];
+
+    for (int i = 0; i < allButtons.length; i++) {
+      keyboard.add(buildRows(i));
+    }
+
+    keyboard.add(buildBottomRow());
+
+    return keyboard;
+  }
+
+  Expanded buildRows(i) {
+    if (rowFocused == i) {}
     return Expanded(
-      child: Row(
-        children: firstRow
-            .map(
-              (letter) => new KeyboardKey(
-                text: letter,
-                onTextInput: _textInputHandler,
-              ),
-            )
-            .toList(),
+      child: Container(
+        padding: const EdgeInsets.all(0),
+        child: Row(
+          children: allButtons[i],
+        ),
+        decoration: BoxDecoration(
+            border: Border.all(
+                width: 5,
+                color: rowFocused == i ? Color(StaticColors.patriarch) : Colors
+                    .transparent)
+        ),
       ),
     );
   }
 
-  Expanded buildRowTwo() {
-    return Expanded(
-      child: Row(
-        children: secondRow
-            .map(
-              (letter) => new KeyboardKey(
-                text: letter,
-                onTextInput: _textInputHandler,
-              ),
-            )
-            .toList(),
-      ),
-    );
-  }
-
-  Expanded buildRowThree() {
-    return Expanded(
-      child: Row(
-        children: thirdRow
-            .map(
-              (letter) => new KeyboardKey(
-                text: letter,
-                onTextInput: _textInputHandler,
-              ),
-            )
-            .toList(),
-      ),
-    );
-  }
-
-  Expanded buildRowFour() {
-    return Expanded(
-      child: Row(
-        children: fourthRow
-            .map(
-              (letter) => new KeyboardKey(
-                text: letter,
-                onTextInput: _textInputHandler,
-              ),
-            )
-            .toList(),
-      ),
-    );
-  }
-
-  Expanded buildRowFive() {
-    return Expanded(
-      child: Row(
-        children: fifthRow
-            .map(
-              (letter) => new KeyboardKey(
-                text: letter,
-                onTextInput: _textInputHandler,
-              ),
-            )
-            .toList(),
-      ),
-    );
-  }
-
-  Expanded buildRowSix() {
+  Expanded buildBottomRow() {
     return Expanded(
       child: Row(children: [
         KeyboardCapslockKey(
           onCapslock: _onCapslockHandler,
         ),
-        KeyboardKey(
-          text: " ",
-          onTextInput: _textInputHandler,
-          flex: 4,
-        ),
+        KeyboardDictionaryKey(),
         KeyboardBackspaceKey(
           icon: Icon(
             Icons.backspace,

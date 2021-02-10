@@ -2,6 +2,7 @@ import 'package:enabled_app/colors/colors.dart';
 import 'package:enabled_app/keyboard_page/custom-keyboard.dart';
 import 'package:enabled_app/keyboard_page/custom-dictionary.dart';
 import 'package:enabled_app/main_page/main_page.dart';
+import 'package:enabled_app/strings/strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,11 +21,17 @@ class _KeyboardPageState extends State<KeyboardPage> {
 
   bool darkmode = false;
 
-
   void _changeDarkmode() {
     setState(() {
       darkmode = !darkmode;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+
   }
 
   void _insertText(String myText) {
@@ -107,7 +114,6 @@ class _KeyboardPageState extends State<KeyboardPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       child: Scaffold(
         appBar: PreferredSize(
@@ -143,6 +149,7 @@ class _KeyboardPageState extends State<KeyboardPage> {
             ),
           ),
           Expanded(
+            flex: 9,
             child: Row(children: [
               Expanded(
                 flex: 3,
@@ -160,6 +167,45 @@ class _KeyboardPageState extends State<KeyboardPage> {
                 flex: 1,
               )
             ]),
+          ),
+          Expanded(
+            flex: 1,
+            child: Row(
+              children: <Widget>[
+                FlatButton(
+                  onPressed: () {},
+                  child: Text(Strings.down),
+                  color: Color(StaticColors.lighterSlateGray),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+                FlatButton(
+                  onPressed: () {},
+                  child: Text(Strings.right),
+                  color: Color(StaticColors.lighterSlateGray),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+                FlatButton(
+                  onPressed: () {},
+                  child: Text(Strings.enter),
+                  color: Color(StaticColors.lighterSlateGray),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+                FlatButton(
+                  onPressed: () {},
+                  child: Text(Strings.back),
+                  color: Color(StaticColors.lighterSlateGray),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+              ],
+            ),
           )
         ]),
       ),
