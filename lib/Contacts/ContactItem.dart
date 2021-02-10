@@ -55,10 +55,11 @@ class _ContactItem extends State<ContactItem>{
     String number = widget.number;
 
     return Container(
+      height: (MediaQuery.of(context).size.height - Scaffold.of(context).appBarMaxHeight) * (0.14),
       child: ListTile(
         onTap: () => _launchURL(number),
         leading: CircleAvatar(
-          backgroundColor: boldFont ? Color(StaticColors.apricot): Color(StaticColors.lighterSlateGray),
+          backgroundColor: boldFont ? Color(StaticColors.charcoal): Color(StaticColors.lighterSlateGray),
           child: Text(
             firstname[0],
             style: TextStyle(color: Color(StaticColors.white)),

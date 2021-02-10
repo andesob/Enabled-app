@@ -23,6 +23,9 @@ class contacts extends StatefulWidget {
 class _contactState extends State<contacts> {
   List<ContactItem> items = [];
   int focusIndex = 0;
+  int lastFocusIndex = 0;
+  final int maxScrollLength = 3;
+
   bool firstRun = true;
   final ItemScrollController itemScrollController = ItemScrollController();
   final ItemPositionsListener itemPositionsListener =
@@ -38,7 +41,7 @@ class _contactState extends State<contacts> {
 Scrolls up to the previous contact on the list.
  */
   scrollDown() {
-    if (focusIndex < items.length-1) {
+    if (focusIndex < items.length - 1) {
       removeHighlight();
       focusIndex++;
       addHighlight();
@@ -63,7 +66,7 @@ Scrolls down to the next contact on the list.
   /*
   Adds bold font to the item in focus.
    */
-  addHighlight(){
+  addHighlight() {
     setState(() {
       items[focusIndex].state.setBold();
     });
@@ -72,7 +75,7 @@ Scrolls down to the next contact on the list.
   /*
   Removes bold font to the item not in focus any more.
    */
-  removeHighlight(){
+  removeHighlight() {
     setState(() {
       items[focusIndex].state.removeBold();
     });
@@ -114,7 +117,7 @@ Scrolls down to the next contact on the list.
         body: ScrollablePositionedList.builder(
           padding: EdgeInsets.all(8),
           itemCount: items.length,
-          itemBuilder: (context, index) {
+          itemBuilder: (context, index){
             final ContactItem item = items[index];
             return item;
           },
