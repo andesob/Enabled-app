@@ -23,8 +23,13 @@ class contacts extends StatefulWidget {
 class _contactState extends State<contacts> {
   List<ContactItem> items = [];
   int focusIndex = 0;
+  int lastFocusIndex = 0;
+  final int maxScrollLength = 3;
+
+  bool firstRun = true;
   final ItemScrollController itemScrollController = ItemScrollController();
-  final ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
+  final ItemPositionsListener itemPositionsListener =
+      ItemPositionsListener.create();
 
   bool popupActive = false;
 
@@ -32,31 +37,67 @@ class _contactState extends State<contacts> {
     popupActive = active;
   }
 
-  scrollUp(){
-    focusIndex++;
-    itemScrollController.scrollTo(index: focusIndex, duration: Duration(seconds: 1));
+  /*
+Scrolls up to the previous contact on the list.
+ */
+  scrollDown() {
+    if (focusIndex < items.length - 1) {
+      removeHighlight();
+      focusIndex++;
+      addHighlight();
+      itemScrollController.scrollTo(
+          index: focusIndex, duration: Duration(seconds: 1));
+    }
   }
 
-  scrollDown(){
-    focusIndex--;
-    itemScrollController.scrollTo(index: focusIndex, duration: Duration(seconds: 1));
+/*
+Scrolls down to the next contact on the list.
+ */
+  scrollUp() {
+    if (focusIndex > 0) {
+      removeHighlight();
+      focusIndex--;
+      addHighlight();
+      itemScrollController.scrollTo(
+          index: focusIndex, duration: Duration(seconds: 1));
+    }
   }
 
-  bottomButtonPressed(int index){
-    print("hello");
+  /*
+  Adds bold font to the item in focus.
+   */
+  addHighlight() {
+    setState(() {
+      items[focusIndex].state.setBold();
+    });
   }
 
+  /*
+  Removes bold font to the item not in focus any more.
+   */
+  removeHighlight() {
+    setState(() {
+      items[focusIndex].state.removeBold();
+    });
+  }
+
+  bottomButtonPressed(int index) {
+    if (index == 0) {
+      scrollUp();
+    }
+    if (index == 1) {
+      scrollDown();
+    }
+    if (index == 2) {
+      print("Send");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     const Color lightPeach = Color(0xffffecd2);
     const Color darkPeach = Color(0xfffcb7a0);
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
-
-    // TODO: REMOVE AFTER TESTING
-    for (var i = 0; i < 5; i++) {
-      items.add(ContactItem("Test", "Tester", "12345678"));
-    }
 
     return Container(
       decoration: new BoxDecoration(
@@ -73,13 +114,12 @@ class _contactState extends State<contacts> {
             gradient: LinearGradient(colors: [lightPeach, darkPeach]),
           ),
         ),
-        body:
-        ScrollablePositionedList.builder(
+        body: ScrollablePositionedList.builder(
           padding: EdgeInsets.all(8),
           itemCount: items.length,
-          itemBuilder: (context, index) {
-          final ContactItem item = items[index];
-          return item;
+          itemBuilder: (context, index){
+            final ContactItem item = items[index];
+            return item;
           },
           itemScrollController: itemScrollController,
           itemPositionsListener: itemPositionsListener,
