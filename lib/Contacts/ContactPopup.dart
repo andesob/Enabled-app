@@ -126,8 +126,11 @@ class _ContactPopupState extends State<ContactPopup> {
             child: Text("Submit"),
             color: Color(StaticColors.lightSlateGray),
             onPressed: () {
-              widget.items.add(ContactItem(firstNameController.text,
-                  surnameController.text, numberController.text));
+              ContactItem cItem = ContactItem(firstname : firstNameController.text,
+                  surname : surnameController.text, number : numberController.text);
+              widget.items.add(cItem);
+              int cIndex = widget.items.indexOf(cItem);
+              cItem.cIndex = cIndex;
               firstNameController.clear();
               surnameController.clear();
               numberController.clear();

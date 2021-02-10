@@ -67,8 +67,8 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = ADE86197C9EC7D5D7AB212E24AE13395;
-			remoteInfo = integration_test;
+			remoteGlobalIDString = 1EFDDC32A34D56D411E640A81DCD9E73;
+			remoteInfo = Flutter;
 		};
 		A6F843C6FF6225C0521F643F0995488F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -190,6 +190,24 @@
 			children = (
 				FEFC200D244202EF973EDAA02EEFE8F0 /* .. */,
 			);
+			name = Skole;
+			path = Skole;
+			sourceTree = "<group>";
+		};
+		0232B6E755A8F6AE5C002659908EDC26 /* EEG */ = {
+			isa = PBXGroup;
+			children = (
+				DBADAB1C5253F92D8F014E5B199D20DE /* enabled_app */,
+			);
+			name = EEG;
+			path = EEG;
+			sourceTree = "<group>";
+		};
+		033F5EE34E84EA3C00C90B59226F11BC /* .. */ = {
+			isa = PBXGroup;
+			children = (
+				DE41EA7A3F02B6728FCF1E068EDE3FDA /* .. */,
+			);
 			name = ..;
 			path = "../../../../../../../../../.pub-cache/hosted/pub.dartlang.org/url_launcher-5.7.10/ios";
 			sourceTree = "<group>";
@@ -294,6 +312,25 @@
 				A2F1A6A5E53B4881E9508F6CD5E07B45 /* Flutter.debug.xcconfig */,
 				2AE29695F3467F9B07F61FF264C1CEA1 /* Flutter.release.xcconfig */,
 			);
+			name = ..;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		31FC2A2361B933EBAE74AD7543D634AA /* Documents */ = {
+			isa = PBXGroup;
+			children = (
+				0147316B056643B9BA2C4430E4CA0E4F /* Skole */,
+			);
+			name = Documents;
+			path = Documents;
+			sourceTree = "<group>";
+		};
+		3281EB4F492E2B41B1169DDDC494D12C /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				A2F1A6A5E53B4881E9508F6CD5E07B45 /* Flutter.debug.xcconfig */,
+				2AE29695F3467F9B07F61FF264C1CEA1 /* Flutter.release.xcconfig */,
+			);
 			name = "Support Files";
 			path = "../Pods/Target Support Files/Flutter";
 			sourceTree = "<group>";
@@ -350,7 +387,7 @@
 				3B921FB637EBF7F351431ECF0CF95EEE /* Documents */,
 			);
 			name = ..;
-			path = ..;
+			path = ../../../../../../../../../../../flutter/flutter/packages/integration_test/ios;
 			sourceTree = "<group>";
 		};
 		3B921FB637EBF7F351431ECF0CF95EEE /* Documents */ = {
@@ -376,6 +413,51 @@
 			children = (
 				AC4F382746840115AEAAB8F526D649C4 /* FLTURLLauncherPlugin.h */,
 				B5114D5CF408FDB4CF2F138113AF5E96 /* FLTURLLauncherPlugin.m */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		57ACA649B8C1E8CF421F020916F3335A /* plugins */ = {
+			isa = PBXGroup;
+			children = (
+				2B939E8804825C61D7A62F954709BEAC /* flutter_phone_direct_caller */,
+			);
+			name = plugins;
+			path = plugins;
+			sourceTree = "<group>";
+		};
+		5936E625D2829E3DBAB7F955303295DC /* .. */ = {
+			isa = PBXGroup;
+			children = (
+				F57CB4DDA5BA0A617F0B38AD4B4B28B3 /* Documents */,
+			);
+			name = ..;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		63472032DFBC0B2A8BE9870567F64F7A /* .. */ = {
+			isa = PBXGroup;
+			children = (
+				CE6DAE83BB5F410474B033EEF32BE79D /* .. */,
+			);
+			name = ..;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		64913CFC9CC5345F79B5BBF7AF28D1C2 /* EEG */ = {
+			isa = PBXGroup;
+			children = (
+				A44E9628C5C07F88892D5E77619000F9 /* enabled_app */,
+			);
+			name = EEG;
+			path = EEG;
+			sourceTree = "<group>";
+		};
+		64AEF8879A47BA837DB7353781011B6F /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				E4B7C73C85FE15631135EC8DCF0C34AA /* FlutterPhoneDirectCallerPlugin.h */,
+				E6E7BF09FFF8D157881044795B3A6139 /* FlutterPhoneDirectCallerPlugin.m */,
 			);
 			name = Classes;
 			path = Classes;
@@ -411,9 +493,10 @@
 		578452D2E740E91742655AC8F1636D1F /* iOS */ = {
 			isa = PBXGroup;
 			children = (
-				73010CC983E3809BECEE5348DA1BB8C6 /* Foundation.framework */,
+				1AF47241E83F00BDBFCF26AAAE7A550F /* enabled_app */,
 			);
-			name = iOS;
+			name = EEG;
+			path = EEG;
 			sourceTree = "<group>";
 		};
 		57C026C98C0307FA7F8F0CEE997FB0F7 /* .. */ = {
@@ -477,6 +560,17 @@
 			);
 			name = .symlinks;
 			path = .symlinks;
+			sourceTree = "<group>";
+		};
+		750DB3BA5F02EED568403397BF6B22F5 /* url_launcher */ = {
+			isa = PBXGroup;
+			children = (
+				53276DD72949E1D10D6E123839063CC7 /* .. */,
+				0639AA9AE1CF2B68B6425402AA469D50 /* Pod */,
+				BEFBB98A027A07DCEA1CECC0EB474482 /* Support Files */,
+			);
+			name = url_launcher;
+			path = ../.symlinks/plugins/url_launcher/ios;
 			sourceTree = "<group>";
 		};
 		791C6E4B424AF06279F8918FA67B8ED6 /* Targets Support Files */ = {
@@ -704,6 +798,15 @@
 			);
 			sourceTree = "<group>";
 		};
+		D0E102BEFF565F42CFDEEE81BAD63708 /* 6semester */ = {
+			isa = PBXGroup;
+			children = (
+				82D45F4B0B21961E97F85910ED18E985 /* Bachelor */,
+			);
+			name = 6semester;
+			path = 6semester;
+			sourceTree = "<group>";
+		};
 		D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -716,6 +819,15 @@
 			isa = PBXGroup;
 			children = (
 				8EED32CDB1453B67968F52663E468D33 /* .. */,
+			);
+			name = ntnu;
+			path = ntnu;
+			sourceTree = "<group>";
+		};
+		D28A30C8FE298A06D774E33B5AB83933 /* .. */ = {
+			isa = PBXGroup;
+			children = (
+				1E8C2A98CD30DDCA1B991A062694B376 /* .. */,
 			);
 			name = ..;
 			path = ..;
@@ -828,8 +940,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				81FA44C9966CBF5335C7A6B9B3A1BA9D /* integration_test-umbrella.h in Headers */,
-				B6C4D9EABB0B56BFBA171A6B4F481BD6 /* IntegrationTestIosTest.h in Headers */,
-				770E616BCA1943ABD14B7DD0DBB488FC /* IntegrationTestPlugin.h in Headers */,
+				133CCD67C57E8A6FBEB3FF78CF127395 /* IntegrationTestIosTest.h in Headers */,
+				DBF36138C0DEB762654C62213FAF230E /* IntegrationTestPlugin.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1035,8 +1147,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				E8898030F616B16E2CA8AB3AE52D606A /* integration_test-dummy.m in Sources */,
-				51089A6E4B6825B31C0AD9598EF2F1C5 /* IntegrationTestIosTest.m in Sources */,
-				E27749CA3F6D63D879552B5134911E7C /* IntegrationTestPlugin.m in Sources */,
+				E19F3F760D2E4DCC7BCEE1F51AAB4B89 /* IntegrationTestIosTest.m in Sources */,
+				0379D6389A7EBA92C7997A5F570488BB /* IntegrationTestPlugin.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1069,6 +1181,18 @@
 		};
 		58EC234D1210143B129AF1CF8D00FBE3 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			name = url_launcher;
+			target = 2849C0B4490FCCAD31E4AF4684E9397F /* url_launcher */;
+			targetProxy = F05CB7B2D53466BF3A9D6BCDE6200BD2 /* PBXContainerItemProxy */;
+		};
+		2C9F584F3BC4E4CC185B3639D142965E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = flutter_phone_direct_caller;
+			target = 3D03AC73DD241C74C28BF41D9015E5D6 /* flutter_phone_direct_caller */;
+			targetProxy = 8A75C227D708A9E1958247BC2AC1E2A2 /* PBXContainerItemProxy */;
+		};
+		3F2DFF2F5C8BD4859B5632BC2257E12B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
 			name = Flutter;
 			target = 1EFDDC32A34D56D411E640A81DCD9E73 /* Flutter */;
 			targetProxy = EA8BA65670CBDD7B1A3EC2ACD60CD623 /* PBXContainerItemProxy */;
@@ -1097,11 +1221,11 @@
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO;
 				ENABLE_BITCODE = NO;
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = (
-					"\"/Users/andreassunde/flutter/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-armv7_arm64\"",
+					"\"/Users/trymj/Documents/flutter/flutter/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-armv7_arm64\"",
 					"$(inherited)",
 				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphonesimulator*]" = (
-					"\"/Users/andreassunde/flutter/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-x86_64-simulator\"",
+					"\"/Users/trymj/Documents/flutter/flutter/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-x86_64-simulator\"",
 					"$(inherited)",
 				);
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1231,11 +1355,11 @@
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO;
 				ENABLE_BITCODE = NO;
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = (
-					"\"/Users/andreassunde/flutter/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-armv7_arm64\"",
+					"\"/Users/trymj/Documents/flutter/flutter/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-armv7_arm64\"",
 					"$(inherited)",
 				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphonesimulator*]" = (
-					"\"/Users/andreassunde/flutter/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-x86_64-simulator\"",
+					"\"/Users/trymj/Documents/flutter/flutter/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-x86_64-simulator\"",
 					"$(inherited)",
 				);
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1311,11 +1435,11 @@
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO;
 				ENABLE_BITCODE = NO;
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = (
-					"\"/Users/andreassunde/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-armv7_arm64\"",
+					"\"/Users/trymj/Documents/flutter/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-armv7_arm64\"",
 					"$(inherited)",
 				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphonesimulator*]" = (
-					"\"/Users/andreassunde/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-x86_64-simulator\"",
+					"\"/Users/trymj/Documents/flutter/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-x86_64-simulator\"",
 					"$(inherited)",
 				);
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1346,11 +1470,11 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_BITCODE = NO;
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = (
-					"\"/Users/andreassunde/flutter/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-armv7_arm64\"",
+					"\"/Users/trymj/Documents/flutter/flutter/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-armv7_arm64\"",
 					"$(inherited)",
 				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphonesimulator*]" = (
-					"\"/Users/andreassunde/flutter/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-x86_64-simulator\"",
+					"\"/Users/trymj/Documents/flutter/flutter/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-x86_64-simulator\"",
 					"$(inherited)",
 				);
 				GCC_PREFIX_HEADER = "Target Support Files/integration_test/integration_test-prefix.pch";
@@ -1777,11 +1901,11 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_BITCODE = NO;
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = (
-					"\"/Users/andreassunde/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-armv7_arm64\"",
+					"\"/Users/trymj/Documents/flutter/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-armv7_arm64\"",
 					"$(inherited)",
 				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphonesimulator*]" = (
-					"\"/Users/andreassunde/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-x86_64-simulator\"",
+					"\"/Users/trymj/Documents/flutter/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-x86_64-simulator\"",
 					"$(inherited)",
 				);
 				GCC_PREFIX_HEADER = "Target Support Files/integration_test/integration_test-prefix.pch";
@@ -1875,7 +1999,54 @@
 					"$(inherited)",
 				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphonesimulator*]" = (
-					"\"/Users/andreassunde/flutter/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-x86_64-simulator\"",
+					"\"/Users/trymj/Documents/flutter/flutter/bin/cache/artifacts/engine/ios/Flutter.xcframework/ios-x86_64-simulator\"",
+					"$(inherited)",
+				);
+				GCC_PREFIX_HEADER = "Target Support Files/url_launcher/url_launcher-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/url_launcher/url_launcher-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/url_launcher/url_launcher.modulemap";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					Flutter,
+				);
+				PRODUCT_MODULE_NAME = url_launcher;
+				PRODUCT_NAME = url_launcher;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		D58447569DEA780BB98C04F3A1E42F36 /* Profile */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 56986CD9B59E9C740CD2AF11547895BA /* url_launcher.release.xcconfig */;
+			buildSettings = {
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_BITCODE = NO;
+				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = (
+					"\"/Users/trymj/Documents/flutter/flutter/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-armv7_arm64\"",
+					"$(inherited)",
+				);
+				"FRAMEWORK_SEARCH_PATHS[sdk=iphonesimulator*]" = (
+					"\"/Users/trymj/Documents/flutter/flutter/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-x86_64-simulator\"",
 					"$(inherited)",
 				);
 				GCC_PREFIX_HEADER = "Target Support Files/url_launcher/url_launcher-prefix.pch";
@@ -1922,11 +2093,11 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_BITCODE = NO;
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]" = (
-					"\"/Users/andreassunde/flutter/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-armv7_arm64\"",
+					"\"/Users/trymj/Documents/flutter/flutter/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-armv7_arm64\"",
 					"$(inherited)",
 				);
 				"FRAMEWORK_SEARCH_PATHS[sdk=iphonesimulator*]" = (
-					"\"/Users/andreassunde/flutter/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-x86_64-simulator\"",
+					"\"/Users/trymj/Documents/flutter/flutter/bin/cache/artifacts/engine/ios-release/Flutter.xcframework/ios-x86_64-simulator\"",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "Target Support Files/Pods-Runner/Pods-Runner-Info.plist";
