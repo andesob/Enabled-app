@@ -1,4 +1,5 @@
 import 'package:enabled_app/needs/needsPageButton.dart';
+import 'package:enabled_app/strings/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 
@@ -53,26 +54,29 @@ class _NeedsPageState extends State<NeedsPage> {
                     )
                   ])),
           body: GridView.count(
-            crossAxisCount: isPortrait ? 3:4,
+            crossAxisCount: isPortrait ? 3 : 4,
             children: <Widget>[
-              NeedsPageButton('WALLA'),
-              NeedsPageButton('WALLA'),
-              NeedsPageButton('WALLA'),
-              NeedsPageButton('WALLA'),
-              NeedsPageButton('WALLA'),
-              NeedsPageButton('WALLA'),
-              NeedsPageButton('WALLA'),
-              NeedsPageButton('WALLA'),
-              NeedsPageButton('WALLA'),
-              NeedsPageButton('WALLA'),
-              NeedsPageButton('WALLA'),
-              NeedsPageButton('WALLA'),
-              NeedsPageButton('WALLA'),
-              NeedsPageButton('WALLA'),
-              NeedsPageButton('WALLA'),
-              NeedsPageButton('WALLA'),
-              NeedsPageButton('WALLA'),
-              NeedsPageButton('WALLA'),
+              NeedsPageButton(Strings.needs),
+              NeedsPageButton(Strings.needs),
+              NeedsPageButton(Strings.needs),
+              NeedsPageButton(Strings.needs),
+              NeedsPageButton(Strings.needs),
+              NeedsPageButton(Strings.needs),
+              NeedsPageButton(Strings.needs),
+              NeedsPageButton(Strings.needs),
+              NeedsPageButton(Strings.needs),
+              NeedsPageButton(Strings.needs),
+              NeedsPageButton(Strings.needs),
+              NeedsPageButton(Strings.needs),
+              NeedsPageButton(Strings.needs),
+              NeedsPageButton(Strings.needs),
+              NeedsPageButton(Strings.needs),
+              NeedsPageButton(Strings.needs),
+              NeedsPageButton(Strings.needs),
+              NeedsPageButton(Strings.needs),
+              NeedsPageButton(Strings.needs),
+              NeedsPageButton(Strings.needs),
+              NeedsPageButton(Strings.needs),
             ],
           ),
         ));

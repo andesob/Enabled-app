@@ -31,8 +31,8 @@ class NeedsPageButton extends StatelessWidget {
         child: new Column(
           children: [
             Flexible(
-              child: new Container(
-                child: new Image.asset('assets/images/justatest69.png'),
+              child: new Center(
+                child: new Icon(Icons.accessibility),
               ),
             ),
             Align(
