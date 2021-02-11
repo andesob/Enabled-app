@@ -1,4 +1,4 @@
-import 'package:enabled_app/custom_page/CustomPageButton.dart';
+import 'package:enabled_app/custom_page/custom_page_button.dart';
 
 class VerticalListButtons {
   List<CustomPageButton> buttons;

@@ -1,8 +1,8 @@
 import 'package:enabled_app/colors/colors.dart';
-import 'package:enabled_app/custom_page/CustomCategory.dart';
-import 'package:enabled_app/custom_page/CustomPopup.dart';
-import 'package:enabled_app/custom_page/CustomVerticalList.dart';
-import 'package:enabled_app/custom_page/VerticalListButtons.dart';
+import 'package:enabled_app/custom_page/custom_category.dart';
+import 'package:enabled_app/custom_page/custom_popup.dart';
+import 'package:enabled_app/custom_page/custom_vertical_list.dart';
+import 'package:enabled_app/custom_page/vertical_list_buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';

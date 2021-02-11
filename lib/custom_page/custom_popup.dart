@@ -1,9 +1,9 @@
-import 'package:enabled_app/Contacts/ContactItem.dart';
+import 'package:enabled_app/Contacts/contact_item.dart';
 import 'package:enabled_app/colors/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'CustomCategory.dart';
+import 'custom_category.dart';
 
 class CustomPopup extends StatefulWidget {
   List<CustomCategory> items;
