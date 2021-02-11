@@ -53,11 +53,10 @@ class _ContactItem extends State<ContactItem>{
     String firstname = widget.firstname;
     String surname = widget.surname;
     String number = widget.number;
-
     return Container(
-      height: (MediaQuery.of(context).size.height - Scaffold.of(context).appBarMaxHeight) * (0.14),
+      height: (MediaQuery.of(context).size.height - Scaffold.of(context).appBarMaxHeight - kBottomNavigationBarHeight) * (0.14),
       child: ListTile(
-        onTap: () => _launchURL(number),
+        onTap: () => launchURL(number),
         leading: CircleAvatar(
           backgroundColor: boldFont ? Color(StaticColors.charcoal): Color(StaticColors.lighterSlateGray),
           child: Text(
@@ -72,7 +71,7 @@ class _ContactItem extends State<ContactItem>{
     throw UnimplementedError();
   }
 
-  _launchURL(number) async {
+  launchURL(number) async {
     bool res = await FlutterPhoneDirectCaller.callNumber(number);
   }
 

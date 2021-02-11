@@ -23,18 +23,25 @@ class contacts extends StatefulWidget {
 class _contactState extends State<contacts> {
   List<ContactItem> items = [];
   int focusIndex = 0;
-  int lastFocusIndex = 0;
-  final int maxScrollLength = 3;
 
   bool firstRun = true;
   final ItemScrollController itemScrollController = ItemScrollController();
-  final ItemPositionsListener itemPositionsListener =
-      ItemPositionsListener.create();
+  final ItemPositionsListener itemPositionsListener = ItemPositionsListener.create();
 
   bool popupActive = false;
 
   setPopup(bool active) {
     popupActive = active;
+  }
+
+  void initState(){
+    super.initState();
+    for (var i = 0; i < 10; i++) {
+      ContactItem cItem = ContactItem(firstname: "Trym", surname: "Jørgensen", number: "95945742",);
+      items.add(cItem);
+      int cIndex = items.indexOf(cItem);
+      cItem.cIndex = cIndex;
+    }
   }
 
   /*
@@ -45,8 +52,10 @@ Scrolls up to the previous contact on the list.
       removeHighlight();
       focusIndex++;
       addHighlight();
-      itemScrollController.scrollTo(
-          index: focusIndex, duration: Duration(seconds: 1));
+      if (canScrollDown()) {
+        itemScrollController.scrollTo(
+            index: focusIndex, duration: Duration(seconds: 1), alignment: 0.8572);
+      }
     }
   }
 
@@ -58,9 +67,27 @@ Scrolls down to the next contact on the list.
       removeHighlight();
       focusIndex--;
       addHighlight();
-      itemScrollController.scrollTo(
-          index: focusIndex, duration: Duration(seconds: 1));
+      if (canScrollUp()) {
+        itemScrollController.scrollTo(
+            index: focusIndex, duration: Duration(seconds: 1));
+      }
     }
+  }
+
+  bool canScrollUp(){
+    bool canScroll = false;
+    if(focusIndex < items.length - 7){
+      canScroll = true;
+    }
+    return canScroll;
+  }
+
+  bool canScrollDown(){
+    bool canScroll = false;
+    if(focusIndex > 6){
+      canScroll = true;
+    }
+    return canScroll;
   }
 
   /*
@@ -89,7 +116,8 @@ Scrolls down to the next contact on the list.
       scrollDown();
     }
     if (index == 2) {
-      print("Send");
+      ContactItem c = items[focusIndex];
+      c.state.launchURL(c.number);
     }
   }
 
