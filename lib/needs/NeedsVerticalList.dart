@@ -8,7 +8,7 @@ class NeedsVerticalList extends StatefulWidget {
   : super(key:key);
 
   final String categoryTitle;
-  final List<NeedsVerticalList> buttonList;
+  final List<NeedsPageButton> buttonList;
   _NeedsVerticalList state;
   bool isFocused = false;
 
