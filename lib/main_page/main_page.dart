@@ -137,7 +137,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       child: Scaffold(
-        backgroundColor: darkmode ? backgroundColor : Colors.transparent,
+        backgroundColor: darkmode ? backgroundColor : Colors.white,
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(50),
           child: GradientAppBar(

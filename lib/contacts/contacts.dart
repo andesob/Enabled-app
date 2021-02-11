@@ -1,4 +1,5 @@
-import 'package:enabled_app/Contacts/contact_popup.dart';
+import 'package:enabled_app/contacts/contact_item.dart';
+import 'package:enabled_app/contacts/contact_popup.dart';
 import 'package:enabled_app/colors/colors.dart';
 import 'package:enabled_app/main.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'contact_item.dart';
 
 class contacts extends StatefulWidget {
   contacts({Key key, this.title}) : super(key: key);

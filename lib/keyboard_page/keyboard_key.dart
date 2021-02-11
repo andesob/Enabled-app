@@ -8,15 +8,39 @@ class KeyboardKey extends StatefulWidget {
     this.text,
     this.onTextInput,
     this.flex = 1,
+    this.onFocused,
   }) : super(key: key);
   final String text;
   final ValueSetter<String> onTextInput;
   final int flex;
+  final VoidCallback onFocused;
 
   KeyboardKeyState createState() => KeyboardKeyState();
 }
 
 class KeyboardKeyState extends State<KeyboardKey> {
+  bool focused = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if(widget.text == " "){
+      setFocus();
+    }
+  }
+
+  setFocus() {
+    setState(() {
+      widget.onFocused?.call();
+    });
+  }
+
+  removeFocus(){
+    setState(() {
+      focused = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     int flex = widget.flex;
