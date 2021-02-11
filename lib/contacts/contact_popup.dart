@@ -2,7 +2,7 @@ import 'package:enabled_app/colors/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'ContactItem.dart';
+import 'contact_item.dart';
 
 class ContactPopup extends StatefulWidget {
   List<ContactItem> items;

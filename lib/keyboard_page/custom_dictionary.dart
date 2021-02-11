@@ -1,4 +1,4 @@
-import 'package:enabled_app/keyboard_page/dictionary-item.dart';
+import 'package:enabled_app/keyboard_page/dictionary_item.dart';
 import 'package:flutter/cupertino.dart';
 
 class CustomDictionary extends StatefulWidget {

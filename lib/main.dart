@@ -1,12 +1,12 @@
 import 'package:enabled_app/Contacts/contacts.dart';
-import 'package:enabled_app/keyboard_page/keyboard-page.dart';
+import 'package:enabled_app/keyboard_page/keyboard_page.dart';
 import 'package:enabled_app/needs/needs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'main_page/main_page.dart';
 import 'colors/colors.dart';
 import 'strings/strings.dart';
-import 'package:enabled_app/custom_page/CustomPage.dart';
+import 'package:enabled_app/custom_page/custom_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
