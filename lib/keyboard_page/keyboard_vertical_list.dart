@@ -1,4 +1,4 @@
-import 'package:enabled_app/custom_page/CustomPageButton.dart';
+import 'package:enabled_app/custom_page/custom_page_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
