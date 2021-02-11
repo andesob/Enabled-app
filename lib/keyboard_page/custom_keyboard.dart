@@ -1,7 +1,7 @@
 import 'package:enabled_app/colors/colors.dart';
-import 'package:enabled_app/keyboard_page/keyboard-backspace-key.dart';
-import 'package:enabled_app/keyboard_page/keyboard-capslock-key.dart';
-import 'package:enabled_app/keyboard_page/keyboard-key.dart';
+import 'package:enabled_app/keyboard_page/keyboard_backspace_key.dart';
+import 'package:enabled_app/keyboard_page/keyboard_capslock_key.dart';
+import 'package:enabled_app/keyboard_page/keyboard_key.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

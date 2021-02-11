@@ -1,6 +1,6 @@
-import 'package:enabled_app/custom_page/VerticalListButtons.dart';
+import 'package:enabled_app/custom_page/vertical_list_buttons.dart';
 
-import 'CustomPageButton.dart';
+import 'custom_page_button.dart';
 
 class CustomCategory {
   String categoryName;

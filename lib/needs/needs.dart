@@ -1,6 +1,6 @@
-import 'package:enabled_app/needs/NeedsCategory.dart';
-import 'package:enabled_app/needs/NeedsVerticalList.dart';
-import 'package:enabled_app/needs/needsPageButton.dart';
+import 'package:enabled_app/needs/needs_category.dart';
+import 'package:enabled_app/needs/needs_vertical_list.dart';
+import 'package:enabled_app/needs/needs_page_button.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
