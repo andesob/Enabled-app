@@ -18,6 +18,7 @@ class NeedsCategory {
     List<NeedsPageButton> buttonList = [];
     for(var i = 0; i<categoryObjects.length; i++){
       NeedsPageButton button = new NeedsPageButton(text: categoryObjects[i]);
+      buttonList.add(button);
     }
     return buttonList;
   }

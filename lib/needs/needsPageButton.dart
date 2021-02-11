@@ -3,13 +3,29 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class NeedsPageButton extends StatelessWidget {
-  NeedsPageButton({Key key,this.text}) : super(key:key);
+class NeedsPageButton extends StatefulWidget {
+  NeedsPageButton({Key key, this.text}) : super(key: key);
   final String text;
+  _NeedsPageButton state;
 
-  //TODO
-  //var picture;
+  @override
+  _NeedsPageButton createState() {
+    state = _NeedsPageButton();
+    return state;
+  }
 
+//TODO
+//var picture;
+}
+
+class _NeedsPageButton extends State<NeedsPageButton>{
+  String text;
+
+  @override
+  void initState(){
+    super.initState();
+    text = widget.text;
+  }
 
   @override
   Widget build(BuildContext context) {
