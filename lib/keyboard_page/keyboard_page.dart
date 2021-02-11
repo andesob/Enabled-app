@@ -30,8 +30,6 @@ class _KeyboardPageState extends State<KeyboardPage> {
   @override
   void initState() {
     super.initState();
-
-
   }
 
   void _insertText(String myText) {
