@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/android.iml" filepath="$PROJECT_DIR$/.idea/modules/android.iml" group="android" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="android/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-652103739/flutter_phone_direct_caller.iml" filepath="$PROJECT_DIR$/.idea/modules/-652103739/flutter_phone_direct_caller.iml" group="android/flutter_phone_direct_caller" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1750687138/flutter_video_cast.iml" filepath="$PROJECT_DIR$/.idea/modules/1750687138/flutter_video_cast.iml" group="android/flutter_video_cast" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/298447634/integration_test.iml" filepath="$PROJECT_DIR$/.idea/modules/298447634/integration_test.iml" group="android/integration_test" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1132540283/url_launcher.iml" filepath="$PROJECT_DIR$/.idea/modules/1132540283/url_launcher.iml" group="android/url_launcher" />
+    </modules>
+  </component>
+</project>
