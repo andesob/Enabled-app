@@ -32,7 +32,7 @@ class MainPageButtonState extends State<MainPageButton> {
     });
   }
 
-  removeFocus(){
+  removeFocus() {
     setState(() {
       widget.focused = false;
     });
@@ -51,7 +51,7 @@ class MainPageButtonState extends State<MainPageButton> {
     Color darkPeach = Color(StaticColors.darkPeach);
 
     return Container(
-      margin: EdgeInsets.all(20),
+      margin: EdgeInsets.all(5),
       decoration: new BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(20)),
         color: Color(widget.focused
@@ -67,8 +67,9 @@ class MainPageButtonState extends State<MainPageButton> {
         child: new GradientText(
           widget.text,
           style: TextStyle(
-              color: Color(
-                  widget.darkmode ? StaticColors.black : StaticColors.white)),
+            color: Color(
+                widget.darkmode ? StaticColors.black : StaticColors.white),
+          ),
           gradient: new LinearGradient(
             colors: [lightPeach, darkPeach],
             begin: FractionalOffset.centerLeft,

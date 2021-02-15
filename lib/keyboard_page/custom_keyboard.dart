@@ -93,7 +93,6 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color(StaticColors.apricot),
       child: Column(
         // <-- Column
         children: [

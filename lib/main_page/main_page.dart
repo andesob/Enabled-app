@@ -128,6 +128,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _buildLayout(useMobileLayout) {
+
     return Container(
       decoration: new BoxDecoration(
         gradient: new LinearGradient(
@@ -139,7 +140,10 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Scaffold(
         backgroundColor: darkmode ? backgroundColor : Colors.white,
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50),
+          preferredSize: Size.fromHeight(
+              MediaQuery.of(context).orientation == Orientation.portrait
+                  ? MediaQuery.of(context).size.height * 0.07
+                  : MediaQuery.of(context).size.height * 0.1),
           child: GradientAppBar(
             gradient:
                 LinearGradient(colors: [appBarColorLight, appBarColorDark]),
@@ -159,50 +163,53 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
           ),
         ),
-        body: new ListView(
-          children: <Widget>[
-            GridView.count(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              crossAxisCount: useMobileLayout ? 2 : 3,
-              children: mainPageBtnList.cast<Widget>(),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                FlatButton(
-                  onPressed: () {
-                    moveDown();
-                  },
-                  child: Text(Strings.down),
-                  color: Color(StaticColors.lighterSlateGray),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
+        body: Container(
+          height: MediaQuery.of(context).size.height,
+          child: new ListView(
+            children: <Widget>[
+              GridView.count(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                crossAxisCount: useMobileLayout ? 2 : 3,
+                children: mainPageBtnList.cast<Widget>(),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  FlatButton(
+                    onPressed: () {
+                      moveDown();
+                    },
+                    child: Text(Strings.down),
+                    color: Color(StaticColors.lighterSlateGray),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
-                ),
-                FlatButton(
+                  FlatButton(
                     onPressed: () {
                       moveRight();
                     },
                     child: Text(Strings.right),
-                  color: Color(StaticColors.lighterSlateGray),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
+                    color: Color(StaticColors.lighterSlateGray),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
-                ),
-                FlatButton(
+                  FlatButton(
                     onPressed: () {
                       goTo();
                     },
                     child: Text(Strings.enter),
-                  color: Color(StaticColors.lighterSlateGray),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
+                    color: Color(StaticColors.lighterSlateGray),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

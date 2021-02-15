@@ -62,6 +62,7 @@ class KeyboardKeyState extends State<KeyboardKey> {
                 child: Text(
                   text,
                   style: TextStyle(
+                    fontSize: MediaQuery.of(context).orientation == Orientation.portrait ? 24 : 12,
                     color: Colors.white,
                   ),
                 ),

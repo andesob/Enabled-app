@@ -30,8 +30,6 @@ class _KeyboardPageState extends State<KeyboardPage> {
   @override
   void initState() {
     super.initState();
-
-
   }
 
   void _insertText(String myText) {
@@ -116,6 +114,7 @@ class _KeyboardPageState extends State<KeyboardPage> {
   Widget build(BuildContext context) {
     return Container(
       child: Scaffold(
+        backgroundColor: darkmode ? Color(StaticColors.onyx) : Colors.white,
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(50),
           child: GradientAppBar(
@@ -138,14 +137,19 @@ class _KeyboardPageState extends State<KeyboardPage> {
           ),
         ),
         body: Column(children: [
-          TextField(
-            controller: _controller,
-            readOnly: true,
-            showCursor: true,
-            autofocus: true,
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: Color(StaticColors.greenSheen),
+          Container(
+            child: TextField(
+              controller: _controller,
+              readOnly: true,
+              showCursor: true,
+              autofocus: true,
+              style: TextStyle(
+                fontSize: MediaQuery.of(context).orientation == Orientation.portrait ? 24 : 12,
+              ),
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Color(StaticColors.greenSheen),
+              ),
             ),
           ),
           Expanded(
@@ -171,13 +175,14 @@ class _KeyboardPageState extends State<KeyboardPage> {
           Expanded(
             flex: 1,
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 FlatButton(
                   onPressed: () {},
                   child: Text(Strings.down),
                   color: Color(StaticColors.lighterSlateGray),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(10),
                   ),
                 ),
                 FlatButton(
@@ -185,7 +190,7 @@ class _KeyboardPageState extends State<KeyboardPage> {
                   child: Text(Strings.right),
                   color: Color(StaticColors.lighterSlateGray),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(10),
                   ),
                 ),
                 FlatButton(
@@ -193,7 +198,7 @@ class _KeyboardPageState extends State<KeyboardPage> {
                   child: Text(Strings.enter),
                   color: Color(StaticColors.lighterSlateGray),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(10),
                   ),
                 ),
                 FlatButton(
@@ -201,7 +206,7 @@ class _KeyboardPageState extends State<KeyboardPage> {
                   child: Text(Strings.back),
                   color: Color(StaticColors.lighterSlateGray),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(10),
                   ),
                 ),
               ],
