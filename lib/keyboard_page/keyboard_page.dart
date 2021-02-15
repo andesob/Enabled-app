@@ -144,7 +144,7 @@ class _KeyboardPageState extends State<KeyboardPage> {
               showCursor: true,
               autofocus: true,
               style: TextStyle(
-                height: MediaQuery.of(context).size.height*0.003,
+                fontSize: MediaQuery.of(context).orientation == Orientation.portrait ? 24 : 12,
               ),
               decoration: InputDecoration(
                 filled: true,
