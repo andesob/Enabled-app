@@ -11,5 +11,5 @@ class Strings{
   static String right = "Right";
   static String enter = "Enter";
   static String back = "Back";
-
+  static String hue = "Hue";
 }
