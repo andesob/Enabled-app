@@ -10,6 +10,12 @@
 @import flutter_phone_direct_caller;
 #endif
 
+#if __has_include(<flutter_video_cast/FlutterVideoCastPlugin.h>)
+#import <flutter_video_cast/FlutterVideoCastPlugin.h>
+#else
+@import flutter_video_cast;
+#endif
+
 #if __has_include(<integration_test/IntegrationTestPlugin.h>)
 #import <integration_test/IntegrationTestPlugin.h>
 #else
@@ -26,6 +32,7 @@
 
 + (void)registerWithRegistry:(NSObject<FlutterPluginRegistry>*)registry {
   [FlutterPhoneDirectCallerPlugin registerWithRegistrar:[registry registrarForPlugin:@"FlutterPhoneDirectCallerPlugin"]];
+  [FlutterVideoCastPlugin registerWithRegistrar:[registry registrarForPlugin:@"FlutterVideoCastPlugin"]];
   [IntegrationTestPlugin registerWithRegistrar:[registry registrarForPlugin:@"IntegrationTestPlugin"]];
   [FLTURLLauncherPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTURLLauncherPlugin"]];
 }

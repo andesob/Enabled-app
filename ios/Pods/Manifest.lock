@@ -2,22 +2,43 @@ PODS:
   - Flutter (1.0.0)
   - flutter_phone_direct_caller (0.0.1):
     - Flutter
+  - flutter_video_cast (0.0.1):
+    - Flutter
+    - google-cast-sdk-no-bluetooth
+  - google-cast-sdk-no-bluetooth (4.5.3):
+    - google-cast-sdk-no-bluetooth/Core (= 4.5.3)
+    - GTMSessionFetcher/Core (~> 1.1)
+    - Protobuf (~> 3.13)
+  - google-cast-sdk-no-bluetooth/Core (4.5.3):
+    - GTMSessionFetcher/Core (~> 1.1)
+    - Protobuf (~> 3.13)
+  - GTMSessionFetcher/Core (1.5.0)
   - integration_test (0.0.1):
     - Flutter
+  - Protobuf (3.14.0)
   - url_launcher (0.0.1):
     - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_phone_direct_caller (from `.symlinks/plugins/flutter_phone_direct_caller/ios`)
+  - flutter_video_cast (from `.symlinks/plugins/flutter_video_cast/ios`)
   - integration_test (from `.symlinks/plugins/integration_test/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
+
+SPEC REPOS:
+  trunk:
+    - google-cast-sdk-no-bluetooth
+    - GTMSessionFetcher
+    - Protobuf
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
   flutter_phone_direct_caller:
     :path: ".symlinks/plugins/flutter_phone_direct_caller/ios"
+  flutter_video_cast:
+    :path: ".symlinks/plugins/flutter_video_cast/ios"
   integration_test:
     :path: ".symlinks/plugins/integration_test/ios"
   url_launcher:
@@ -26,7 +47,11 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   flutter_phone_direct_caller: bd2ffd297f371a8a6c7bfbba0196964ffe3c4358
+  flutter_video_cast: f83031b564b79903bc4702165d995ba774bdefe4
+  google-cast-sdk-no-bluetooth: 815df973d547e06a90768f4a72220950cd32d8cb
+  GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   integration_test: 5ed24a436eb7ec17b6a13046e9bf7ca4a404e59e
+  Protobuf: 0cde852566359049847168e51bd1c690e0f70056
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
 
 PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
