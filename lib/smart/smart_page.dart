@@ -1,5 +1,6 @@
 import 'package:enabled_app/colors/colors.dart';
 import 'package:enabled_app/main_page/main_page_button.dart';
+import 'package:enabled_app/smart/hue/hue_api.dart';
 import 'package:enabled_app/strings/strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +42,7 @@ class SmartMainPageState extends State<SmartMainPage> {
     var shortestSide = MediaQuery.of(context).size.shortestSide;
     bool useMobileLayout = shortestSide < 600;
     double leftRightPadding = MediaQuery.of(context).size.width / 5;
+    HueApi api = new HueApi();
 
     return Container(
       decoration: new BoxDecoration(
@@ -96,23 +98,32 @@ class SmartMainPageState extends State<SmartMainPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                     FlatButton(
-                      onPressed: () {},
-                      child: Text(Strings.down),
+                      onPressed: () {
+                        api.changeColors(1.0, 0.5, 1.0);
+                      },
+                      child: Text("Pink"),
                       color: Color(StaticColors.lighterSlateGray),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
                     FlatButton(
-                      onPressed: () {},
-                      child: Text(Strings.right),
+                      onPressed: () {
+                        //api.changeColors(0, 1, 0.5);
+                        api.getScenes();
+                        api.getGroups();
+                      },
+                      child: Text("Green"),
                       color: Color(StaticColors.lighterSlateGray),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
                     FlatButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        api.findBridge();
+                        api.getLights();
+                      },
                       child: Text(Strings.enter),
                       color: Color(StaticColors.lighterSlateGray),
                       shape: RoundedRectangleBorder(
