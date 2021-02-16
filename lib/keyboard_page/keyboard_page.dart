@@ -9,8 +9,9 @@ import 'package:flutter/services.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 
 class KeyboardPage extends StatefulWidget {
-  KeyboardPage({Key key}) : super(key: key);
+  KeyboardPage({Key key, this.title}) : super(key: key);
 
+  final String title;
   _KeyboardPageState createState() => _KeyboardPageState();
 }
 

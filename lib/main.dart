@@ -1,6 +1,7 @@
 import 'package:enabled_app/Contacts/contacts.dart';
 import 'package:enabled_app/keyboard_page/keyboard_page.dart';
 import 'package:enabled_app/needs/needs.dart';
+import 'package:enabled_app/smart/smart_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'main_page/main_page.dart';
@@ -24,11 +25,13 @@ class MyApp extends StatelessWidget {
       title: Strings.enabled,
       initialRoute: Strings.home,
       routes: {
-        Strings.home: (context) => MyHomePage(),
-        Strings.needs: (context) => NeedsPage(),
-        Strings.contacts: (context) => contacts(),
-        Strings.custom: (context) => CustomPageHome(),
-        Strings.keyboard: (context) => KeyboardPage(),
+        Strings.home: (context) => MyHomePage(title: Strings.home),
+        Strings.needs: (context) => NeedsPage(title: Strings.needs),
+        Strings.contacts: (context) => contacts(title: Strings.contacts),
+        Strings.custom: (context) => CustomPageHome(title: Strings.custom),
+        Strings.keyboard: (context) => KeyboardPage(title: Strings.keyboard),
+        Strings.smart: (context) => SmartMainPage(title: Strings.smart),
+        
 
       }, //home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
