@@ -31,8 +31,6 @@ class MyApp extends StatelessWidget {
         Strings.custom: (context) => CustomPageHome(title: Strings.custom),
         Strings.keyboard: (context) => KeyboardPage(title: Strings.keyboard),
         Strings.smart: (context) => SmartMainPage(title: Strings.smart),
-        
-
       }, //home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }

@@ -9,6 +9,7 @@ class SmartMainPage extends StatefulWidget {
   SmartMainPage({Key key, this.title}) : super(key: key);
 
   final String title;
+
   SmartMainPageState createState() => SmartMainPageState();
 }
 
@@ -22,7 +23,7 @@ class SmartMainPageState extends State<SmartMainPage> {
   bool darkmode = false;
 
   List<MainPageButton> smartPageBtnList = [];
-  
+
   @override
   void initState() {
     // TODO: implement initState
@@ -37,7 +38,10 @@ class SmartMainPageState extends State<SmartMainPage> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+    var shortestSide = MediaQuery.of(context).size.shortestSide;
+    bool useMobileLayout = shortestSide < 600;
+    double leftRightPadding = MediaQuery.of(context).size.width / 5;
+
     return Container(
       decoration: new BoxDecoration(
         gradient: new LinearGradient(
@@ -74,50 +78,53 @@ class SmartMainPageState extends State<SmartMainPage> {
         ),
         body: Container(
           height: MediaQuery.of(context).size.height,
-          child: new ListView(
-            children: <Widget>[
-              GridView.count(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                crossAxisCount: 2,
-                children: smartPageBtnList.cast<Widget>(),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  FlatButton(
-                    onPressed: () {
-                    },
-                    child: Text(Strings.down),
-                    color: Color(StaticColors.lighterSlateGray),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
+          child: Column(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.fromLTRB(
+                      leftRightPadding, 0, leftRightPadding, 0),
+                  child: GridView.count(
+
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    crossAxisCount: useMobileLayout ? 1 : smartPageBtnList.length,
+                    children: smartPageBtnList.cast<Widget>(),
                   ),
-                  FlatButton(
-                    onPressed: () {
-                    },
-                    child: Text(Strings.right),
-                    color: Color(StaticColors.lighterSlateGray),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                ),
+                Spacer(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    FlatButton(
+                      onPressed: () {},
+                      child: Text(Strings.down),
+                      color: Color(StaticColors.lighterSlateGray),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
-                  ),
-                  FlatButton(
-                    onPressed: () {
-                    },
-                    child: Text(Strings.enter),
-                    color: Color(StaticColors.lighterSlateGray),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                    FlatButton(
+                      onPressed: () {},
+                      child: Text(Strings.right),
+                      color: Color(StaticColors.lighterSlateGray),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ],
+                    FlatButton(
+                      onPressed: () {},
+                      child: Text(Strings.enter),
+                      color: Color(StaticColors.lighterSlateGray),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
-      ),
     );
   }
 
