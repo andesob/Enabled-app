@@ -12,6 +12,7 @@ class KeyboardPage extends StatefulWidget {
   KeyboardPage({Key key, this.title}) : super(key: key);
 
   final String title;
+
   _KeyboardPageState createState() => _KeyboardPageState();
 }
 
@@ -137,7 +138,8 @@ class _KeyboardPageState extends State<KeyboardPage> {
             ],
           ),
         ),
-        body: Column(children: [
+        body: Column(
+            children: [
           Container(
             child: TextField(
               controller: _controller,
@@ -145,7 +147,10 @@ class _KeyboardPageState extends State<KeyboardPage> {
               showCursor: true,
               autofocus: true,
               style: TextStyle(
-                fontSize: MediaQuery.of(context).orientation == Orientation.portrait ? 24 : 12,
+                fontSize:
+                    MediaQuery.of(context).orientation == Orientation.portrait
+                        ? 24
+                        : 12,
               ),
               decoration: InputDecoration(
                 filled: true,
