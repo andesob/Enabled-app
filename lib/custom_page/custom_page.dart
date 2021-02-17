@@ -74,6 +74,8 @@ class _CustomPageHome extends State<CustomPageHome> {
     final ItemPositionsListener itemPositionsListener =
         ItemPositionsListener.create();
 
+    final String title = widget.title;
+
     /// Sets the focus around the selected list.
     void setListFocus() {
       if (focusedList == null) {
@@ -204,6 +206,7 @@ class _CustomPageHome extends State<CustomPageHome> {
         appBar: PreferredSize(
             preferredSize: Size.fromHeight(isPortrait ? 50 : 30),
             child: GradientAppBar(
+                title: Text(title),
                 gradient: LinearGradient(colors: [lightPeach, darkPeach]),
                 actions: <Widget>[
                   Material(

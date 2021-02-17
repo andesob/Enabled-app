@@ -1,6 +1,8 @@
 import 'package:enabled_app/colors/colors.dart';
+import 'package:enabled_app/smart/hue/hue_api.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_text/gradient_text.dart';
+import 'package:hue_dart/hue_dart.dart';
 
 // TODO Change the flatButton to raisedButton??
 class HueDropdown extends StatefulWidget {
@@ -18,8 +20,18 @@ class HueDropdown extends StatefulWidget {
 
 class _HueDropdown extends State<HueDropdown> {
   String text;
-  int dropdownValue = 1;
 
+  HueApi api = new HueApi();
+
+  Scene dropdownValue;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    dropdownValue = api.scenes.first;
+  }
   /// Sets the focus the button to true
   void setFocus() {
     if (this.mounted) {
@@ -51,7 +63,7 @@ class _HueDropdown extends State<HueDropdown> {
       padding: EdgeInsets.all(10),
       width: MediaQuery.of(context).size.width * (0.7),
       height: MediaQuery.of(context).size.width * (0.35),
-      child: DropdownButton<int>(
+      child: DropdownButton<Scene>(
         value: dropdownValue,
         icon: Align(child: Icon(Icons.arrow_drop_down), alignment: Alignment.centerRight,),
         iconSize: 24,
@@ -59,19 +71,19 @@ class _HueDropdown extends State<HueDropdown> {
         underline: Container(
           color: Color(StaticColors.charcoal),
         ),
-        onChanged: (int newValue) {
+        onChanged: (Scene newValue) {
           setState(() {
             dropdownValue = newValue;
+            api.changeScene(dropdownValue.id, api.currentGroup);
           });
         },
-        items: new List<DropdownMenuItem<int>>.generate(
-          50,
-              (int index) => new DropdownMenuItem<int>(
-            value: index,
-            child: new Text(index.toString()),
-          ),
+        items: api.scenes.map<DropdownMenuItem<Scene>>((Scene value){
+          return DropdownMenuItem<Scene>(
+            value: value,
+            child: Text(value.name),
+          );
+        }).toList(),
         ),
-      )
     );
   }
 }

@@ -1,5 +1,5 @@
 import 'package:enabled_app/smart/hue/user.dart';
-import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 import 'package:hue_dart/hue_dart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -7,7 +7,7 @@ class HueApi {
   static const String BRIDGE_IP = "192.168.100.33";
 
   static final HueApi _api = HueApi._internal();
-  final client = Client();
+  final client = http.Client();
 
   BridgeDiscovery discovery;
   DiscoveryResult discoveryResult;
@@ -81,11 +81,11 @@ class HueApi {
     }
   }
 
-  Future<void> getScenes() async {
+  Future<String> getScenes() async {
     if(bridge != null){
       scenes = await bridge.scenes();
       for(Scene scene in scenes){
-        print("SCENE: " + scene.toString());
+        return(scene.id.toString() + scene.name.toString());
       }
     }
   }
@@ -96,6 +96,26 @@ class HueApi {
       for(Group group in groups){
         print("GROUP: " + group.toString());
       }
+    }
+  }
+
+  void changeScene(String sceneId, String groupId) {
+    if (bridge != null) {
+      String url = "http://" +
+          discoveryResult.ipAddress +
+          "/api/" +
+          user.username +
+          "/groups/" +
+          groupId +
+          "/action";
+      String body = "{scene=" + sceneId + "}";
+      http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'text/html; charset=UTF-8',
+        },
+        body: body,
+      );
     }
   }
 }

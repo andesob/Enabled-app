@@ -4,9 +4,10 @@ import 'package:gradient_text/gradient_text.dart';
 
 // TODO Change the flatButton to raisedButton??
 class HuePageButton extends StatefulWidget {
-  HuePageButton({Key key, this.text}) : super(key: key);
+  HuePageButton({Key key, this.text, this.onPressed}) : super(key: key);
 
   final String text;
+  final VoidCallback onPressed;
   bool isFocused = false;
   _HuePageButton state;
 
@@ -19,6 +20,7 @@ class HuePageButton extends StatefulWidget {
 
 class _HuePageButton extends State<HuePageButton> {
   String text;
+
 
   @override
   void initState() {
@@ -77,7 +79,7 @@ class _HuePageButton extends State<HuePageButton> {
             end: FractionalOffset.centerRight,
           ),
         ),
-        onPressed: () {},
+        onPressed: () {widget.onPressed?.call();},
       ),
     );
   }

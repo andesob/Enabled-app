@@ -1,13 +1,18 @@
 import 'package:enabled_app/colors/colors.dart';
 import 'package:enabled_app/contacts/contact_popup.dart';
 import 'package:enabled_app/main_page/main_page_button.dart';
-import 'package:enabled_app/philips_hue/hue_button.dart';
-import 'package:enabled_app/philips_hue/hue_dropdown.dart';
+import 'package:enabled_app/smart/hue/hue_api.dart';
+import 'package:enabled_app/smart/philips_hue/hue_button.dart';
+import 'package:enabled_app/smart/philips_hue/hue_dropdown.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 
 class HuePage extends StatefulWidget{
+  HuePage({Key key, this.title}) : super(key: key);
+
+  final String title;
+
   @override
   State<StatefulWidget> createState() => _HuePageState();
 }
@@ -15,9 +20,12 @@ class HuePage extends StatefulWidget{
 class _HuePageState extends State<HuePage>{
   @override
   Widget build(BuildContext context) {
+    final title = widget.title;
     const Color lightPeach = Color(0xffffecd2);
     const Color darkPeach = Color(0xfffcb7a0);
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+
+    HueApi api = new HueApi();
 
     return Container(
       decoration: new BoxDecoration(
@@ -30,7 +38,7 @@ class _HuePageState extends State<HuePage>{
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(isPortrait ? 50 : 30),
           child: GradientAppBar(
-            title: Text("Hue Page"),
+            title: Text(title),
             gradient: LinearGradient(colors: [lightPeach, darkPeach]),
           ),
         ),

@@ -114,12 +114,15 @@ class _KeyboardPageState extends State<KeyboardPage> {
 
   @override
   Widget build(BuildContext context) {
+    final String title = widget.title;
+
     return Container(
       child: Scaffold(
         backgroundColor: darkmode ? Color(StaticColors.onyx) : Colors.white,
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(50),
           child: GradientAppBar(
+            title: Text(title),
             gradient:
                 LinearGradient(colors: [appBarColorLight, appBarColorDark]),
             actions: <Widget>[

@@ -95,6 +95,7 @@ Scrolls down to the next contact on the list.
 
   @override
   Widget build(BuildContext context) {
+    final String title = widget.title;
     const Color lightPeach = Color(0xffffecd2);
     const Color darkPeach = Color(0xfffcb7a0);
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
@@ -110,7 +111,7 @@ Scrolls down to the next contact on the list.
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(isPortrait ? 50 : 30),
           child: GradientAppBar(
-            title: Text("contacts Page"),
+            title: Text(title),
             gradient: LinearGradient(colors: [lightPeach, darkPeach]),
           ),
         ),

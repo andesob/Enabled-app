@@ -50,6 +50,8 @@ class _NeedsPageState extends State<NeedsPage> {
     final ItemPositionsListener itemPositionsListener =
     ItemPositionsListener.create();
 
+    final String title = widget.title;
+
     return Container(
         decoration: new BoxDecoration(
             gradient: new LinearGradient(
@@ -61,6 +63,7 @@ class _NeedsPageState extends State<NeedsPage> {
           appBar: PreferredSize(
               preferredSize: Size.fromHeight(isPortrait ? 50 : 30),
               child: GradientAppBar(
+                  title: Text(title),
                   gradient: LinearGradient(colors: [lightPeach, darkPeach]),
                   actions: <Widget>[
                     Material(

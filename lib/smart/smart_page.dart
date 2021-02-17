@@ -44,6 +44,8 @@ class SmartMainPageState extends State<SmartMainPage> {
     double leftRightPadding = MediaQuery.of(context).size.width / 5;
     HueApi api = new HueApi();
 
+    final String title = widget.title;
+
     return Container(
       decoration: new BoxDecoration(
         gradient: new LinearGradient(
@@ -60,6 +62,7 @@ class SmartMainPageState extends State<SmartMainPage> {
                   ? MediaQuery.of(context).size.height * 0.07
                   : MediaQuery.of(context).size.height * 0.1),
           child: GradientAppBar(
+            title: Text(title),
             gradient:
                 LinearGradient(colors: [appBarColorLight, appBarColorDark]),
             actions: <Widget>[
@@ -99,7 +102,7 @@ class SmartMainPageState extends State<SmartMainPage> {
                   children: <Widget>[
                     FlatButton(
                       onPressed: () {
-                        api.changeColors(1.0, 0.5, 1.0);
+                        api.getScenes();
                       },
                       child: Text("Pink"),
                       color: Color(StaticColors.lighterSlateGray),
@@ -110,8 +113,7 @@ class SmartMainPageState extends State<SmartMainPage> {
                     FlatButton(
                       onPressed: () {
                         //api.changeColors(0, 1, 0.5);
-                        api.getScenes();
-                        api.getGroups();
+                        api.createUser("trym");
                       },
                       child: Text("Green"),
                       color: Color(StaticColors.lighterSlateGray),
