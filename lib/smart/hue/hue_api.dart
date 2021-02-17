@@ -1,11 +1,12 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:enabled_app/smart/hue/user.dart';
 import 'package:http/http.dart';
 import 'package:hue_dart/hue_dart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HueApi {
-  static const String BRIDGE_IP = "192.168.100.33";
-
   static final HueApi _api = HueApi._internal();
   final client = Client();
 
@@ -16,6 +17,7 @@ class HueApi {
   List<Light> lights;
   List<Scene> scenes;
   List<Group> groups;
+  List<Rule> rules;
   SharedPreferences pref;
 
   factory HueApi() {
@@ -33,6 +35,10 @@ class HueApi {
     bridge = Bridge(client, discoveryResult.ipAddress);
     print("IP: " + discoveryResult.ipAddress);
 
+    lights = await getLights();
+    scenes = await getScenes();
+    groups = await getGroups();
+    rules = await getRules();
 
     pref = await SharedPreferences.getInstance();
     String username = await pref.get("username");
@@ -44,7 +50,7 @@ class HueApi {
     }
 
     if (user != null) {
-      print("USERNAME: " + user.username);
+      print("LOGGED IN USER: " + user.username);
     }
   }
 
@@ -56,16 +62,7 @@ class HueApi {
 
       await pref.setString("username", whiteListItem.username);
 
-      print("USERNAME: " + whiteListItem.username);
-    }
-  }
-
-  Future<void> getLights() async {
-    if (bridge != null && user != null && lights == null) {
-      lights = await bridge.lights();
-    }
-    for (Light light in lights) {
-      print("LIGHTS: " + light.name);
+      print("USER CREATED: " + whiteListItem.username);
     }
   }
 
@@ -81,20 +78,97 @@ class HueApi {
     }
   }
 
-  Future<void> getScenes() async {
-    if(bridge != null){
-      scenes = await bridge.scenes();
-      for(Scene scene in scenes){
-        print("SCENE: " + scene.toString());
+  Future<List<Rule>> getRules() async{
+    List<Rule> list;
+    if(bridge != null && user != null){
+      list = await bridge.rules();
+    }
+
+    return list;
+  }
+
+  Future<List<Light>> getLights() async {
+    List<Light> list;
+    if (bridge != null && user != null) {
+      list = await bridge.lights();
+    }
+
+    return list;
+  }
+
+  Future<List<Scene>> getScenes() async {
+    List<Scene> list;
+    if (bridge != null && user != null) {
+      list = await bridge.scenes();
+    }
+
+    return list;
+  }
+
+  Future<List<Group>> getGroups() async {
+    List<Group> list;
+    if (bridge != null && user != null) {
+      list = await bridge.groups();
+    }
+
+    return list;
+  }
+
+  Future<void> changeScene(String sceneId, String groupId) async {
+    if (bridge != null) {
+      String url = "http://" +
+          discoveryResult.ipAddress +
+          "/api/" +
+          user.username +
+          "/groups/" +
+          groupId +
+          "/action";
+      var body = json.encode({"scene": sceneId});
+
+      final response = await put(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: body,
+      );
+      print(body);
+      print(response.body);
+    }
+  }
+
+  Future<void> powerOnAll() async {
+    if (bridge != null) {
+      if (lights == null) {
+        lights = await bridge.lights();
+      }
+
+      for (Light l in lights) {
+        LightState state = LightState(
+          (s) => s..on = true,
+        );
+
+        await bridge.updateLightState(l.rebuild(
+          (l) => l..state = state.toBuilder(),
+        ));
       }
     }
   }
 
-  Future<void> getGroups() async {
-    if(bridge != null){
-      groups = await bridge.groups();
-      for(Group group in groups){
-        print("GROUP: " + group.toString());
+  Future<void> powerOffAll() async {
+    if (bridge != null) {
+      if (lights == null) {
+        lights = await bridge.lights();
+      }
+
+      for (Light l in lights) {
+        LightState state = LightState(
+          (s) => s..on = false,
+        );
+
+        await bridge.updateLightState(l.rebuild(
+          (l) => l..state = state.toBuilder(),
+        ));
       }
     }
   }
