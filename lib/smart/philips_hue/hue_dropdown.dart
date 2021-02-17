@@ -74,7 +74,7 @@ class _HueDropdown extends State<HueDropdown> {
         onChanged: (Scene newValue) {
           setState(() {
             dropdownValue = newValue;
-            api.changeScene(dropdownValue.id, api.currentGroup);
+            api.changeScene(dropdownValue.id, api.currentGroup.id.toString());
           });
         },
         items: api.scenes.map<DropdownMenuItem<Scene>>((Scene value){

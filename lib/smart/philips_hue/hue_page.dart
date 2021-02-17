@@ -25,8 +25,6 @@ class _HuePageState extends State<HuePage>{
     const Color darkPeach = Color(0xfffcb7a0);
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
 
-    HueApi api = new HueApi();
-
     return Container(
       decoration: new BoxDecoration(
           gradient: new LinearGradient(
@@ -46,13 +44,13 @@ class _HuePageState extends State<HuePage>{
         Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            HuePageButton(text: "On/Off",),
+            HuePageButton(text: "On/Off", onPressed: changePowerState,),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
               children:[
-                HuePageButton(text: "Dim",),
-                HuePageButton(text: "Brighten",),
+                HuePageButton(text: "Dim", onPressed: brightnessDown,),
+                HuePageButton(text: "Brighten", onPressed: brightnessUp,),
               ],
             ),
             HueDropdown(),
@@ -78,5 +76,22 @@ class _HuePageState extends State<HuePage>{
       ),
     );
     throw UnimplementedError();
+  }
+  void brightnessDown(){
+    HueApi api = new HueApi();
+    api.brightnessDown();
+  }
+  void brightnessUp(){
+    HueApi api = new HueApi();
+    api.brightnessUp();
+  }
+  void changePowerState(){
+    HueApi api = new HueApi();
+    if(api.currentGroup.state.allOn){
+      api.powerOffAll();
+    }
+    else{
+      api.powerOnAll();
+    }
   }
 }

@@ -2,13 +2,13 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:enabled_app/smart/hue/user.dart';
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 import 'package:hue_dart/hue_dart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HueApi {
   static final HueApi _api = HueApi._internal();
-  final client = http.Client();
+  final client = Client();
 
   BridgeDiscovery discovery;
   DiscoveryResult discoveryResult;
@@ -54,6 +54,7 @@ class HueApi {
       groups = await getGroups();
       rules = await getRules();
       print("LOGGED IN USER: " + user.username);
+      setCurrentGroup(groups.first.name);
     }
   }
 
@@ -163,12 +164,13 @@ class HueApi {
           (l) => l..state = state.toBuilder(),
         ));
       }
+      updateAll();
     }
   }
 
-  Future<void> setCurrentgroup(String name){
-    for(Group g in groups){
-      if(g.name == name){
+  Future<void> setCurrentGroup(String name) {
+    for (Group g in groups) {
+      if (g.name == name) {
         currentGroup = g;
         break;
       }
@@ -176,16 +178,16 @@ class HueApi {
   }
 
   Future<void> brightnessDown() async {
-    int brightness = lights.last.state.brightness - 25;
-    if(brightness < 0){
+    int brightness = lights.last.state.brightness - 50;
+    if (brightness < 0) {
       brightness = 0;
     }
     _setBrightness(brightness);
   }
 
   Future<void> brightnessUp() async {
-    int brightness = lights.last.state.brightness + 25;
-    if(brightness > 254){
+    int brightness = lights.last.state.brightness + 50;
+    if (brightness > 254) {
       brightness = 254;
     }
     _setBrightness(brightness);
@@ -203,6 +205,14 @@ class HueApi {
         ));
       }
     }
+    updateAll();
+  }
+
+  Future<void> updateAll() async {
     lights = await getLights();
+    scenes = await getScenes();
+    groups = await getGroups();
+    rules = await getRules();
+    setCurrentGroup(groups.first.name);
   }
 }
