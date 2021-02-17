@@ -18,6 +18,10 @@ class HueApi {
   List<Scene> scenes;
   List<Group> groups;
   List<Rule> rules;
+
+  Group currentGroup;
+  Scene currentScene;
+
   SharedPreferences pref;
 
   factory HueApi() {
@@ -35,11 +39,6 @@ class HueApi {
     bridge = Bridge(client, discoveryResult.ipAddress);
     print("IP: " + discoveryResult.ipAddress);
 
-    lights = await getLights();
-    scenes = await getScenes();
-    groups = await getGroups();
-    rules = await getRules();
-
     pref = await SharedPreferences.getInstance();
     String username = await pref.get("username");
     if (username != null) {
@@ -50,6 +49,10 @@ class HueApi {
     }
 
     if (user != null) {
+      lights = await getLights();
+      scenes = await getScenes();
+      groups = await getGroups();
+      rules = await getRules();
       print("LOGGED IN USER: " + user.username);
     }
   }
@@ -78,9 +81,9 @@ class HueApi {
     }
   }
 
-  Future<List<Rule>> getRules() async{
+  Future<List<Rule>> getRules() async {
     List<Rule> list;
-    if(bridge != null && user != null){
+    if (bridge != null && user != null) {
       list = await bridge.rules();
     }
 
@@ -138,6 +141,14 @@ class HueApi {
   }
 
   Future<void> powerOnAll() async {
+    _setPower(true);
+  }
+
+  Future<void> powerOffAll() async {
+    _setPower(false);
+  }
+
+  Future<void> _setPower(bool on) async {
     if (bridge != null) {
       if (lights == null) {
         lights = await bridge.lights();
@@ -145,7 +156,7 @@ class HueApi {
 
       for (Light l in lights) {
         LightState state = LightState(
-          (s) => s..on = true,
+          (s) => s..on = on,
         );
 
         await bridge.updateLightState(l.rebuild(
@@ -155,15 +166,36 @@ class HueApi {
     }
   }
 
-  Future<void> powerOffAll() async {
-    if (bridge != null) {
-      if (lights == null) {
-        lights = await bridge.lights();
+  Future<void> setCurrentgroup(String name){
+    for(Group g in groups){
+      if(g.name == name){
+        currentGroup = g;
+        break;
       }
+    }
+  }
 
+  Future<void> brightnessDown() async {
+    int brightness = lights.last.state.brightness - 25;
+    if(brightness < 0){
+      brightness = 0;
+    }
+    _setBrightness(brightness);
+  }
+
+  Future<void> brightnessUp() async {
+    int brightness = lights.last.state.brightness + 25;
+    if(brightness > 254){
+      brightness = 254;
+    }
+    _setBrightness(brightness);
+  }
+
+  Future<void> _setBrightness(int brightness) async {
+    if (bridge != null && lights != null) {
       for (Light l in lights) {
         LightState state = LightState(
-          (s) => s..on = false,
+          (s) => s..brightness = brightness,
         );
 
         await bridge.updateLightState(l.rebuild(
@@ -171,5 +203,6 @@ class HueApi {
         ));
       }
     }
+    lights = await getLights();
   }
 }

@@ -100,7 +100,8 @@ class SmartMainPageState extends State<SmartMainPage> {
                     FlatButton(
                       onPressed: () {
                         //api.changeColors(1, 0.1, 0.1);
-                        api.powerOnAll();
+                        //api.powerOnAll();
+                        api.brightnessDown();
                       },
                       child: Text("Pink"),
                       color: Color(StaticColors.lighterSlateGray),
@@ -114,7 +115,8 @@ class SmartMainPageState extends State<SmartMainPage> {
                         //api.getScenes();
                         //api.getGroups();
                         //api.changeScene("NoDii0A1l6pDsqt", "1");
-                        api.powerOffAll();
+                        //api.powerOffAll();
+                        api.brightnessUp();
 
                       },
                       child: Text("Green"),
