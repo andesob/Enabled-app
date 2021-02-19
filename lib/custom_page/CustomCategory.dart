@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:enabled_app/custom_page/VerticalListButtons.dart';
 
 import 'CustomPageButton.dart';
@@ -24,4 +26,9 @@ class CustomCategory {
     }
     return buttonList;
   }
+
+  Map<String, dynamic> toJson() => {
+        'categoryName': categoryName,
+        'categoryObjects': jsonEncode(categoryObjects),
+      };
 }

@@ -1,8 +1,12 @@
+import 'dart:convert';
+import 'dart:ffi';
+
 import 'package:enabled_app/colors/colors.dart';
 import 'package:enabled_app/custom_page/CustomCategory.dart';
 import 'package:enabled_app/custom_page/CustomPopup.dart';
 import 'package:enabled_app/custom_page/CustomVerticalList.dart';
 import 'package:enabled_app/custom_page/VerticalListButtons.dart';
+import 'package:enabled_app/tools/shared_prefs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
@@ -48,6 +52,7 @@ class _CustomPageHome extends State<CustomPageHome> {
     for (var i = 0; i < 7; i++) {
       categoryList.add(customCategory);
     }
+    var s = json.encode(categoryList);
 
     for (var item in categoryList) {
       CustomVerticalList list = new CustomVerticalList(
@@ -58,6 +63,11 @@ class _CustomPageHome extends State<CustomPageHome> {
     }
     focusedList = verticalList[0];
     focusedList.isFocused = true;
+  }
+
+  Future<Void> setCategory() async {
+    var s = jsonEncode(categoryList);
+    //SharedPrefs().setCategories(s);
   }
 
   @override
