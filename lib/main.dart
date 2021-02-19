@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: Strings.enabled,
-      initialRoute: Strings.home,
+      initialRoute: Strings.hue,
       routes: {
         Strings.home: (context) => MyHomePage(title: Strings.home),
         Strings.needs: (context) => NeedsPage(title: Strings.needs),
