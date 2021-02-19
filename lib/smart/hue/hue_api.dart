@@ -53,6 +53,7 @@ class HueApi {
       scenes = await getScenes();
       groups = await getGroups();
       rules = await getRules();
+      setCurrentGroup(groups.first.name);
       print("LOGGED IN USER: " + user.username);
     }
   }
@@ -163,12 +164,13 @@ class HueApi {
           (l) => l..state = state.toBuilder(),
         ));
       }
+      updateAll();
     }
   }
 
-  Future<void> setCurrentgroup(String name){
-    for(Group g in groups){
-      if(g.name == name){
+  void setCurrentGroup(String name) {
+    for (Group g in groups) {
+      if (g.name == name) {
         currentGroup = g;
         break;
       }
@@ -176,16 +178,16 @@ class HueApi {
   }
 
   Future<void> brightnessDown() async {
-    int brightness = lights.last.state.brightness - 25;
-    if(brightness < 0){
+    int brightness = lights.last.state.brightness - 50;
+    if (brightness < 0) {
       brightness = 0;
     }
     _setBrightness(brightness);
   }
 
   Future<void> brightnessUp() async {
-    int brightness = lights.last.state.brightness + 25;
-    if(brightness > 254){
+    int brightness = lights.last.state.brightness + 50;
+    if (brightness > 254) {
       brightness = 254;
     }
     _setBrightness(brightness);
@@ -202,7 +204,15 @@ class HueApi {
           (l) => l..state = state.toBuilder(),
         ));
       }
+      updateAll();
     }
+  }
+
+  Future<void> updateAll() async {
     lights = await getLights();
+    scenes = await getScenes();
+    groups = await getGroups();
+    rules = await getRules();
+    setCurrentGroup(groups.first.name);
   }
 }
