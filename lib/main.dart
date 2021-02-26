@@ -11,8 +11,8 @@ import 'package:enabled_app/custom_page/custom_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
-      .then((_) {
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
     runApp(new MyApp());
   });
 }
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: Strings.enabled,
-      initialRoute: Strings.hue,
+      initialRoute: Strings.home,
       routes: {
         Strings.home: (context) => MyHomePage(title: Strings.home),
         Strings.needs: (context) => NeedsPage(title: Strings.needs),
