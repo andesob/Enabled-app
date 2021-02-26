@@ -1,10 +1,11 @@
 import 'package:enabled_app/colors/colors.dart';
+import 'package:enabled_app/libraries/hue/main/hue_api.dart';
 import 'package:enabled_app/main_page/main_page_button.dart';
-import 'package:enabled_app/smart/hue/hue_api.dart';
 import 'package:enabled_app/strings/strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
+import 'package:http/http.dart';
 
 class SmartMainPage extends StatefulWidget {
   SmartMainPage({Key key, this.title}) : super(key: key);
@@ -42,7 +43,8 @@ class SmartMainPageState extends State<SmartMainPage> {
     var shortestSide = MediaQuery.of(context).size.shortestSide;
     bool useMobileLayout = shortestSide < 600;
     double leftRightPadding = MediaQuery.of(context).size.width / 5;
-    HueApi api = new HueApi();
+    //HueApi api = new HueApi();
+    HueApi api = HueApi(new Client(), "192.168.100.38");
 
     return Container(
       decoration: new BoxDecoration(
@@ -101,7 +103,7 @@ class SmartMainPageState extends State<SmartMainPage> {
                       onPressed: () {
                         //api.changeColors(1, 0.1, 0.1);
                         //api.powerOnAll();
-                        api.brightnessDown();
+                        //api.brightnessDown();
                       },
                       child: Text("Pink"),
                       color: Color(StaticColors.lighterSlateGray),
@@ -116,7 +118,9 @@ class SmartMainPageState extends State<SmartMainPage> {
                         //api.getGroups();
                         //api.changeScene("NoDii0A1l6pDsqt", "1");
                         //api.powerOffAll();
-                        api.brightnessUp();
+                        //api.brightnessUp();
+
+                        api.update();
 
                       },
                       child: Text("Green"),
@@ -127,8 +131,7 @@ class SmartMainPageState extends State<SmartMainPage> {
                     ),
                     FlatButton(
                       onPressed: () {
-                        api.findBridge();
-                        api.getLights();
+                        api.lights();
                       },
                       child: Text(Strings.enter),
                       color: Color(StaticColors.lighterSlateGray),

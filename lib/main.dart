@@ -1,9 +1,14 @@
+
 import 'package:enabled_app/Contacts/contacts.dart';
 import 'package:enabled_app/keyboard_page/keyboard_page.dart';
+import 'package:enabled_app/libraries/hue/main/bridge.dart';
+import 'package:enabled_app/libraries/hue/main/hue_api.dart';
 import 'package:enabled_app/needs/needs.dart';
 import 'package:enabled_app/smart/smart_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart';
+import 'libraries/hue/lights/light.dart';
 import 'main_page/main_page.dart';
 import 'colors/colors.dart';
 import 'strings/strings.dart';
@@ -21,9 +26,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
+
     return MaterialApp(
       title: Strings.enabled,
-      initialRoute: Strings.hue,
+      initialRoute: Strings.home,
       routes: {
         Strings.home: (context) => MyHomePage(title: Strings.home),
         Strings.needs: (context) => NeedsPage(title: Strings.needs),

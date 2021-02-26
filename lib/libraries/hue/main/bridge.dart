@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart';
 
 class Bridge {
-  final String IP_PREFIX = "https://";
+  final String IP_PREFIX = "http://";
 
   Client _client;
   String _address;
@@ -15,7 +15,6 @@ class Bridge {
 
   Future<Map<String, dynamic>> get(String url) async {
     final response = await _client.get(_address + url);
-    print(response.body);
     Map responseMap = json.decode(response.body);
     return responseMap;
   }
@@ -32,7 +31,7 @@ class Bridge {
     return responseMap;
   }
 
-  Future<Map<String, dynamic>> put(String url, [dynamic body]) async {
+  Future<List<dynamic>> put(String url, [dynamic body]) async {
     var response;
     if (body == null) {
       response = await _client.put(_address + url);
