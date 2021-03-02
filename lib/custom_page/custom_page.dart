@@ -3,6 +3,9 @@ import 'package:enabled_app/custom_page/custom_category.dart';
 import 'package:enabled_app/custom_page/custom_popup.dart';
 import 'package:enabled_app/custom_page/custom_vertical_list.dart';
 import 'package:enabled_app/custom_page/vertical_list_buttons.dart';
+import 'package:enabled_app/desktop_connection/server_socket.dart';
+import 'package:enabled_app/desktop_connection/socket_singleton.dart';
+import 'package:enabled_app/observer/observer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
@@ -19,7 +22,7 @@ class CustomPageHome extends StatefulWidget {
   _CustomPageHome createState() => _CustomPageHome();
 }
 
-class _CustomPageHome extends State<CustomPageHome> {
+class _CustomPageHome extends State<CustomPageHome> implements StateListener {
   List<CustomCategory> categoryList = [];
   List<CustomVerticalList> verticalList = [];
   List<VerticalListButtons> buttonList = [];
@@ -32,12 +35,16 @@ class _CustomPageHome extends State<CustomPageHome> {
   ItemScrollController childController;
   CustomVerticalList focusedList;
 
+  SocketSingleton socket = SocketSingleton();
+  String command = "No message";
+
   bool inChildLevel = false;
 
   // TODO remove test objects.
   @override
   void initState() {
     super.initState();
+    socket.startSocket();
 
     /// For testing purposes
     List<String> testObjects = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
@@ -218,7 +225,7 @@ class _CustomPageHome extends State<CustomPageHome> {
                   child: Align(
                       alignment: Alignment.centerRight,
                       child: FlatButton(
-                        child: Text("Legg til"),
+                        child: Text(command),
                         onPressed: () {
                           showDialog(
                               context: context,
@@ -293,5 +300,10 @@ class _CustomPageHome extends State<CustomPageHome> {
         ),
       ),
     );
+  }
+
+  @override
+  void onStateChanged(ObserverState state) {
+    command = socket.command;
   }
 }

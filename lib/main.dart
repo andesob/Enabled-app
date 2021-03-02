@@ -4,6 +4,7 @@ import 'package:enabled_app/needs/needs.dart';
 import 'package:enabled_app/smart/smart_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'desktop_connection/socket_singleton.dart';
 import 'main_page/main_page.dart';
 import 'colors/colors.dart';
 import 'strings/strings.dart';
@@ -28,7 +29,8 @@ class MyApp extends StatelessWidget {
         Strings.home: (context) => MyHomePage(title: Strings.home),
         Strings.needs: (context) => NeedsPage(title: Strings.needs),
         Strings.contacts: (context) => contacts(title: Strings.contacts),
-        Strings.custom: (context) => CustomPageHome(title: Strings.custom),
+        Strings.custom: (context) => SocketServer(),
+        //CustomPageHome(title: Strings.custom),
         Strings.keyboard: (context) => KeyboardPage(title: Strings.keyboard),
         Strings.smart: (context) => SmartMainPage(title: Strings.smart),
       }, //home: MyHomePage(title: 'Flutter Demo Home Page'),
