@@ -72,7 +72,7 @@ class _CustomVerticaList extends State<CustomVerticalList> {
     this.setButtonFocus();
   }
 
-  /// Scrolls the lsit to the left of the screen if possible.
+  /// Scrolls the list to the left of the screen if possible.
   void scrollLeft() {
     if (listIndex > 0) {
       listIndex--;
