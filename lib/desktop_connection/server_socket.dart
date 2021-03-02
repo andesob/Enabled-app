@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:enabled_app/observer/observer.dart';
 import 'package:get_ip/get_ip.dart';
 
-class SocketSingleton implements StateListener {
+class SocketSingleton {
   static final SocketSingleton _singleton = SocketSingleton._internal();
   String _localIP = "localhost";
   HttpServer _serverSocket;
@@ -12,21 +12,23 @@ class SocketSingleton implements StateListener {
   int _port = 9000;
   String lastCommand = "";
 
+  StreamController<String> controller = StreamController<String>();
+  Stream stream;
+
   factory SocketSingleton() {
     return _singleton;
   }
 
   SocketSingleton._internal() {
-    startSocket();
+    _startSocket();
   }
 
-  startSocket() async {
+  _startSocket() async {
     print("start socket called");
-    if (_serverSocket != null) {
-      _localIP = await getIP();
-      _serverSocket = await HttpServer.bind(_localIP, _port, shared: true);
-      _serverSocket.transform(WebSocketTransformer()).listen(handleClient);
-    }
+    _localIP = await getIP();
+    print(_localIP);
+    _serverSocket = await HttpServer.bind(_localIP, _port, shared: true);
+    _serverSocket.transform(WebSocketTransformer()).listen(handleClient);
   }
 
   String get command {
@@ -40,12 +42,12 @@ class SocketSingleton implements StateListener {
 
   void handleClient(WebSocket client) {
     _clientSocket = client;
+    stream = controller.stream;
 
     _clientSocket.listen(
       (data) {
         print(data);
-        StateProvider stateProvider = StateProvider();
-        stateProvider.notify(ObserverState.COMMAND_RECEIVED);
+        controller.add(data);
       },
       onError: (e) {
         disconnectClient();
@@ -65,8 +67,7 @@ class SocketSingleton implements StateListener {
     _clientSocket = null;
   }
 
-  @override
-  void onStateChanged(ObserverState state) {
-    // TODO: implement onStateChanged
+  Stream getStream() {
+    return controller.stream;
   }
 }

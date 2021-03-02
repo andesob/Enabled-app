@@ -29,8 +29,9 @@ class MyApp extends StatelessWidget {
         Strings.home: (context) => MyHomePage(title: Strings.home),
         Strings.needs: (context) => NeedsPage(title: Strings.needs),
         Strings.contacts: (context) => contacts(title: Strings.contacts),
-        Strings.custom: (context) => SocketServer(),
-        //CustomPageHome(title: Strings.custom),
+        Strings.custom: (context) =>
+            //SocketServer(),
+            CustomPageHome(title: Strings.custom),
         Strings.keyboard: (context) => KeyboardPage(title: Strings.keyboard),
         Strings.smart: (context) => SmartMainPage(title: Strings.smart),
       }, //home: MyHomePage(title: 'Flutter Demo Home Page'),

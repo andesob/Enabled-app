@@ -22,7 +22,7 @@ class CustomPageHome extends StatefulWidget {
   _CustomPageHome createState() => _CustomPageHome();
 }
 
-class _CustomPageHome extends State<CustomPageHome> implements StateListener {
+class _CustomPageHome extends State<CustomPageHome> {
   List<CustomCategory> categoryList = [];
   List<CustomVerticalList> verticalList = [];
   List<VerticalListButtons> buttonList = [];
@@ -35,7 +35,6 @@ class _CustomPageHome extends State<CustomPageHome> implements StateListener {
   ItemScrollController childController;
   CustomVerticalList focusedList;
 
-  SocketSingleton socket = SocketSingleton();
   String command = "No message";
 
   bool inChildLevel = false;
@@ -44,7 +43,15 @@ class _CustomPageHome extends State<CustomPageHome> implements StateListener {
   @override
   void initState() {
     super.initState();
-    socket.startSocket();
+
+    SocketSingleton socket = SocketSingleton();
+
+    Stream stream = socket.getStream();
+    stream.listen((value) {
+      setState(() {
+        command = value;
+      });
+    });
 
     /// For testing purposes
     List<String> testObjects = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
@@ -300,10 +307,5 @@ class _CustomPageHome extends State<CustomPageHome> implements StateListener {
         ),
       ),
     );
-  }
-
-  @override
-  void onStateChanged(ObserverState state) {
-    command = socket.command;
   }
 }

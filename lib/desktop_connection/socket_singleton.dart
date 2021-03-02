@@ -82,12 +82,6 @@ class SocketServerState extends State<SocketServer> {
     serverSocket.transform(WebSocketTransformer()).listen(handleClient);
   }
 
-  void onWebSocketData(WebSocket client) {
-    client.listen((data) {
-      client.add('Echo: $data');
-    });
-  }
-
   void handleClient(WebSocket client) {
     clientSocket = client;
 
@@ -137,10 +131,5 @@ class SocketServerState extends State<SocketServer> {
           onPressed: () {},
         ),
       ));
-  }
-
-  @override
-  void onStateChanged(ObserverState state) {
-    if (state == ObserverState.COMMAND_RECEIVED) {}
   }
 }
