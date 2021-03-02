@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:enabled_app/colors/colors.dart';
 import 'package:enabled_app/custom_page/custom_category.dart';
 import 'package:enabled_app/custom_page/custom_popup.dart';
@@ -37,6 +39,9 @@ class _CustomPageHome extends State<CustomPageHome> {
 
   String command = "No message";
 
+  Stream stream;
+  StreamSubscription sub;
+
   bool inChildLevel = false;
 
   // TODO remove test objects.
@@ -46,8 +51,8 @@ class _CustomPageHome extends State<CustomPageHome> {
 
     SocketSingleton socket = SocketSingleton();
 
-    Stream stream = socket.getStream();
-    stream.listen((value) {
+    stream = socket.getStream();
+    sub = stream.listen((value) {
       setState(() {
         command = value;
       });
@@ -72,6 +77,12 @@ class _CustomPageHome extends State<CustomPageHome> {
     }
     focusedList = verticalList[0];
     focusedList.isFocused = true;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    sub.cancel();
   }
 
   @override

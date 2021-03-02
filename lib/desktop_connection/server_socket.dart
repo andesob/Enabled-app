@@ -12,7 +12,7 @@ class SocketSingleton {
   int _port = 9000;
   String lastCommand = "";
 
-  StreamController<String> controller = StreamController<String>();
+  StreamController<String> controller = StreamController<String>.broadcast();
   Stream stream;
 
   factory SocketSingleton() {
