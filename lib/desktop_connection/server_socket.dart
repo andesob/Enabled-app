@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:enabled_app/observer/observer.dart';
 import 'package:get_ip/get_ip.dart';
 
 class SocketSingleton {
