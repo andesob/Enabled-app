@@ -1,8 +1,10 @@
 import 'dart:ui';
 
 import 'package:enabled_app/colors/colors.dart';
+import 'package:enabled_app/emergency_page/emergency_alert.dart';
 
 import 'package:enabled_app/emergency_page/emergency_contact.dart';
+import 'package:enabled_app/emergency_page/emergency_popup.dart';
 import 'package:enabled_app/main_page/main_page_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
@@ -62,25 +64,16 @@ class EmergencyButtonState extends MainPageButtonState {
       bool res = await FlutterPhoneDirectCaller.callNumber(number);
     }
     else{
-      return AlertDialog(
-        title: Text('AlertDialog Title'),
-        content: SingleChildScrollView(
-          child: ListBody(
-            children: <Widget>[
-              Text('This is a demo alert dialog.'),
-              Text('Would you like to approve of this message?'),
-            ],
-          ),
-        ),
-        actions: <Widget>[
-          TextButton(
-            child: Text('Approve'),
-            onPressed: () {
-
-            },
-          ),
-        ],
-      );
+      showEmergencyContactAlert();
     }
+  }
+
+  showEmergencyContactAlert(){
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return EmergencyAlert();
+      },
+    );
   }
 }

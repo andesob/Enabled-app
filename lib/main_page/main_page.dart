@@ -1,6 +1,7 @@
 import 'package:enabled_app/colors/colors.dart';
 import 'package:enabled_app/emergency_page/emergency_button.dart';
 import 'package:enabled_app/emergency_page/emergency_contact.dart';
+import 'package:enabled_app/emergency_page/emergency_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
@@ -156,14 +157,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       _changeDarkmode();
                     }
                     if (selected == 1 ){
-                      if(StaticEmergencyContact.emergencyContact == "41636540"){
-                        StaticEmergencyContact.emergencyContact = "95945742";
-                        print(StaticEmergencyContact.emergencyContact);
-                      }
-                      else {
-                        StaticEmergencyContact.emergencyContact = "41636540";
-                        print(StaticEmergencyContact.emergencyContact);
-                      }
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return EmergencyPopup();
+                          });
                     }
                   },
                 ),
