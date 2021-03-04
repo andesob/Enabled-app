@@ -22,6 +22,17 @@ class Scene {
       this._lastUpdated,
       this._version);
 
+  Scene.fromJson(Map<String, dynamic> json, this._id)
+      : _name = json["name"],
+        _type = json["type"],
+        _group = json["group"],
+        _lights = json["lights"],
+        _owner = json["owner"],
+        _recycle = json["recycle"],
+        _locked = json["locked"],
+        _lastUpdated = json["lastupdated"],
+        _version = json["version"];
+
   int get version => _version;
 
   String get lastUpdated => _lastUpdated;
@@ -42,19 +53,32 @@ class Scene {
 
   String get id => _id;
 
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> map = new Map();
+    map["name"] = _name;
+    map["type"] = _type;
+    map["group"] = _group;
+    map["lights"] = _lights;
+    map["owner"] = _owner;
+    map["recycle"] = _recycle;
+    map["locked"] = _locked;
+    map["lastupdated"] = _lastUpdated;
+    map["version"] = _version;
+  }
+
   @override
   String toString() {
     StringBuffer sb = new StringBuffer();
     sb
-    ..writeln("id: " + _id)
-    ..writeln("name: " + _name)
-    ..writeln("type: " + _type)
-    ..writeln("group: " + _group)
-    ..writeln("lights: " + _lights.toString())
-    ..writeln("owner: " + _owner)
-    ..writeln("recycle: " + _recycle.toString())
-    ..writeln("locked: " + _locked.toString())
-    ..writeln("lastupdated: " + _lastUpdated)
-    ..writeln("version: " + _version.toString());
+      ..writeln("id: " + _id)
+      ..writeln("name: " + _name)
+      ..writeln("type: " + _type)
+      ..writeln("group: " + _group)
+      ..writeln("lights: " + _lights.toString())
+      ..writeln("owner: " + _owner)
+      ..writeln("recycle: " + _recycle.toString())
+      ..writeln("locked: " + _locked.toString())
+      ..writeln("lastupdated: " + _lastUpdated)
+      ..writeln("version: " + _version.toString());
   }
 }
