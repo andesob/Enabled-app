@@ -78,17 +78,17 @@ class _MyHomePageState extends State<MyHomePage> {
   void moveRight() {
     removeAllFocus();
     currPos[0] == horizontalBtns - 1 ? currPos[0] = 0 : currPos[0]++;
-    list[currPos[1]][currPos[0]]._state.setFocus();
+    list[currPos[1]][currPos[0]].state.setFocus();
   }
 
   void moveDown() {
     removeAllFocus();
     currPos[1] == verticalBtns - 1 ? currPos[1] = 0 : currPos[1]++;
-    list[currPos[1]][currPos[0]]._state.setFocus();
+    list[currPos[1]][currPos[0]].state.setFocus();
   }
 
   void goTo() {
-    list[currPos[1]][currPos[0]]._state.goToPage(context);
+    list[currPos[1]][currPos[0]].state.goToPage(context);
   }
 
   void removeAllFocus() {
