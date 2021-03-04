@@ -1,5 +1,5 @@
-import 'package:enabled_app/contacts/contact_item.dart';
-import 'package:enabled_app/contacts/contact_popup.dart';
+import 'package:enabled_app/contacts_page/contact_item.dart';
+import 'package:enabled_app/contacts_page/contact_popup.dart';
 import 'package:enabled_app/colors/colors.dart';
 import 'package:enabled_app/main.dart';
 import 'package:flutter/cupertino.dart';
@@ -99,7 +99,7 @@ class _contactState extends State<contacts> {
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(isPortrait ? 50 : 30),
           child: GradientAppBar(
-            title: Text("contacts Page"),
+            title: Text(widget.title),
             gradient: LinearGradient(colors: [lightPeach, darkPeach]),
           ),
         ),

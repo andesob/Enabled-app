@@ -204,6 +204,7 @@ class _CustomPageHome extends State<CustomPageHome> {
         appBar: PreferredSize(
             preferredSize: Size.fromHeight(isPortrait ? 50 : 30),
             child: GradientAppBar(
+                title: Text(widget.title),
                 gradient: LinearGradient(colors: [lightPeach, darkPeach]),
                 actions: <Widget>[
                   Material(

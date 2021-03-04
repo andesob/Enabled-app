@@ -1,4 +1,4 @@
-import 'package:enabled_app/Contacts/contacts.dart';
+import 'package:enabled_app/contacts_page//contacts.dart';
 import 'package:enabled_app/keyboard_page/keyboard_page.dart';
 import 'package:enabled_app/needs/needs.dart';
 import 'package:enabled_app/smart/smart_page.dart';
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: Strings.enabled,
-      initialRoute: Strings.hue,
+      initialRoute: Strings.home,
       routes: {
         Strings.home: (context) => MyHomePage(title: Strings.home),
         Strings.needs: (context) => NeedsPage(title: Strings.needs),

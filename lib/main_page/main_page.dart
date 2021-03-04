@@ -1,4 +1,6 @@
 import 'package:enabled_app/colors/colors.dart';
+import 'package:enabled_app/emergency_page/emergency_button.dart';
+import 'package:enabled_app/emergency_page/emergency_contact.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
@@ -46,7 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
     mainPageBtnList.add(MainPageButton(text: Strings.keyboard));
     mainPageBtnList.add(MainPageButton(text: Strings.contacts));
     mainPageBtnList.add(MainPageButton(text: Strings.smart));
-    mainPageBtnList.add(MainPageButton(text: Strings.emergency));
+    mainPageBtnList.add(EmergencyButton(text: Strings.emergency));
   }
 
   void _changeDarkmode() {
@@ -136,20 +138,44 @@ class _MyHomePageState extends State<MyHomePage> {
                   ? MediaQuery.of(context).size.height * 0.07
                   : MediaQuery.of(context).size.height * 0.1),
           child: GradientAppBar(
+            title: Text(widget.title, style: TextStyle(color: Color(darkmode ? StaticColors.black : StaticColors.white),),),
             gradient:
                 LinearGradient(colors: [appBarColorLight, appBarColorDark]),
             actions: <Widget>[
               Material(
                 type: MaterialType.transparency,
-                child: IconButton(
-                    icon: Icon(Icons.accessible_forward),
-                    color: Color(
-                        darkmode ? StaticColors.black : StaticColors.white),
-                    splashColor: Color(Colors.grey.value),
-                    padding: EdgeInsets.zero,
-                    onPressed: () {
+                child: PopupMenuButton(
+                  icon: Icon(Icons.accessible_forward, color: Color(darkmode ? StaticColors.black : StaticColors.white),),
+                  itemBuilder:(BuildContext bc) => [
+                    PopupMenuItem(child: Text("Darkmode"), value: 0),
+                    PopupMenuItem(
+                        child: Text("Change Emergency Contact"), value: 1),
+                  ],
+                  onSelected: (selected){
+                    if (selected == 0){
                       _changeDarkmode();
-                    }),
+                    }
+                    if (selected == 1 ){
+                      if(StaticEmergencyContact.emergencyContact == "41636540"){
+                        StaticEmergencyContact.emergencyContact = "95945742";
+                        print(StaticEmergencyContact.emergencyContact);
+                      }
+                      else {
+                        StaticEmergencyContact.emergencyContact = "41636540";
+                        print(StaticEmergencyContact.emergencyContact);
+                      }
+                    }
+                  },
+                ),
+//                child: IconButton(
+//                    icon: Icon(Icons.accessible_forward),
+//                    color: Color(
+//                        darkmode ? StaticColors.black : StaticColors.white),
+//                    splashColor: Color(Colors.grey.value),
+//                    padding: EdgeInsets.zero,
+//                    onPressed: () {
+//                      _changeDarkmode();
+//                    }),
               )
             ],
           ),

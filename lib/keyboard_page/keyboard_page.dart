@@ -120,6 +120,7 @@ class _KeyboardPageState extends State<KeyboardPage> {
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(50),
           child: GradientAppBar(
+            title: Text(widget.title),
             gradient:
                 LinearGradient(colors: [appBarColorLight, appBarColorDark]),
             actions: <Widget>[

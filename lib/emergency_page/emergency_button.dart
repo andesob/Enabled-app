@@ -1,50 +1,29 @@
 import 'dart:ui';
 
 import 'package:enabled_app/colors/colors.dart';
-import 'package:enabled_app/emergency_page/emergency_button.dart';
-import 'package:enabled_app/needs/needs.dart';
-import 'package:enabled_app/strings/strings.dart';
+
+import 'package:enabled_app/emergency_page/emergency_contact.dart';
+import 'package:enabled_app/main_page/main_page_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:gradient_text/gradient_text.dart';
 
-class MainPageButton extends StatefulWidget{
+class EmergencyButton extends MainPageButton{
   String text;
   bool darkmode = false;
   bool focused = false;
   MainPageButtonState state;
 
-  MainPageButton({Key key, this.text}) : super(key: key);
+  EmergencyButton({Key key, this.text}) : super(key: key);
 
   @override
   MainPageButtonState createState() {
-    state = MainPageButtonState();
+    state = EmergencyButtonState();
     return state;
   }
 }
 
-class MainPageButtonState extends State<MainPageButton> {
-  goToPage(context) {
-    Navigator.pushNamed(context, widget.text);
-  }
-
-  setFocus() {
-    setState(() {
-      widget.focused = true;
-    });
-  }
-
-  removeFocus() {
-    setState(() {
-      widget.focused = false;
-    });
-  }
-
-  void initState() {
-    super.initState();
-    if (widget.text == Strings.needs) {
-      setFocus();
-    }
-  }
+class EmergencyButtonState extends MainPageButtonState {
 
   @override
   Widget build(BuildContext context) {
@@ -73,9 +52,35 @@ class MainPageButtonState extends State<MainPageButton> {
           ),
         ),
         onPressed: () {
-          goToPage(context);
+          _launchURL(StaticEmergencyContact.emergencyContact);
         },
       ),
     );
+  }
+  _launchURL(number) async {
+    if(StaticEmergencyContact.emergencyContact != null) {
+      bool res = await FlutterPhoneDirectCaller.callNumber(number);
+    }
+    else{
+      return AlertDialog(
+        title: Text('AlertDialog Title'),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: <Widget>[
+              Text('This is a demo alert dialog.'),
+              Text('Would you like to approve of this message?'),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Approve'),
+            onPressed: () {
+
+            },
+          ),
+        ],
+      );
+    }
   }
 }
