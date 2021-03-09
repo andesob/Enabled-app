@@ -2,15 +2,16 @@
 
 ![Github License](https://img.shields.io/badge/license-MIT-green)
 ![React Version](https://img.shields.io/badge/Flutter-v1.25.0-blue.svg)
+![Code Size](https://img.shields.io/github/languages/code-size/andesob/Enabled-app)
 
 ![example](https://i.imgur.com/OvMZBs9.jpg)
 
-#### Description of your project
+### Description
+This Project was created as a Bachelor Thesis at Norwegian University of Science and Technology in Ålesund. The aim of the project is to give patients with ALS a way to perform simple tasks and communicate with the people around them. 
 Enabled app is an application made to make it possible to execute simple tasks by using the [Emotiv Epoc X Headset](https://www.emotiv.com/epoc-x/) 
 
 ## Table of content
 
-- [Motivation](#motivation)
 - [**Getting Started**](#getting-started)
 - [Built With](#built-with)
 - [Contributing](#contributing)
@@ -18,12 +19,14 @@ Enabled app is an application made to make it possible to execute simple tasks b
 - [Get Help](#get-help)
 - [Acknowledgments](#acknowledgements)
 
-## Motivation
-This Project was created as a Bachelor Thesis at Norwegian University of Science and Technology in Ålesund. The aim of the project is to give patients with ALS a way to perform simple tasks and communicate with the people around them. 
 
 ## Getting Started
-Describe how to get started here.
-https://github.com/rojahno/enabled-desktop
+This app is meant to be used with the Enabled Desktop App which can be found here:
+- https://github.com/rojahno/enabled-desktop
+
+1. Download our app from [Install](#install).
+2. Download the desktop app.
+3. To be continued...
 
 ### Install
 
