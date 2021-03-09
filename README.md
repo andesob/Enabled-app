@@ -7,8 +7,7 @@
 ![example](https://i.imgur.com/OvMZBs9.jpg)
 
 ### Description
-This Project was created as a Bachelor Thesis at Norwegian University of Science and Technology in Ålesund. The aim of the project is to give patients with ALS a way to perform simple tasks and communicate with the people around them. 
-Enabled app is an application made to make it possible to execute simple tasks by using the [Emotiv Epoc X Headset](https://www.emotiv.com/epoc-x/) 
+This Project was created as a Bachelor Thesis at Norwegian University of Science and Technology in Ålesund. The aim of the project is to give patients with ALS a way to perform simple tasks and communicate with the people around them using the [Emotiv Epoc X Headset](https://www.emotiv.com/epoc-x/) 
 
 ## Table of content
 
@@ -54,7 +53,7 @@ Enabled App will be available on Google Play and App Store at a later date.
 - 
 
 ## Contributing
-<table>
+<table style="color:blue;">
   <tr>
   <td align="center"><a href="https://github.com/andesob"><img src="https://avatars.githubusercontent.com/u/48057293?s=400&v=4" width="100px;" alt=""/><br /><sub><b>Anders Søbakken</b></sub></td>
   <td align="center"><a href="https://github.com/rojahno"><img src="https://avatars.githubusercontent.com/u/48057307?s=460&v=4" width="100px;" alt=""/><br /><sub><b>Andreas Rojahn Sunde</b></sub></td>
