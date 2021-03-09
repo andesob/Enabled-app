@@ -23,7 +23,7 @@ class MainPageButton extends StatefulWidget{
 }
 
 class MainPageButtonState extends State<MainPageButton> {
-  goToPage(context) {
+  buttonIsPressed(context) {
     Navigator.pushNamed(context, widget.text);
   }
 
@@ -73,7 +73,7 @@ class MainPageButtonState extends State<MainPageButton> {
           ),
         ),
         onPressed: () {
-          goToPage(context);
+          buttonIsPressed(context);
         },
       ),
     );

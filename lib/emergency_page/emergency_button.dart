@@ -28,6 +28,11 @@ class EmergencyButton extends MainPageButton{
 class EmergencyButtonState extends MainPageButtonState {
 
   @override
+  buttonIsPressed(context) {
+    _launchURL(StaticEmergencyContact.emergencyContact);
+  }
+
+  @override
   Widget build(BuildContext context) {
     Color lightPeach = Color(StaticColors.lightPeach);
     Color darkPeach = Color(StaticColors.darkPeach);
@@ -58,9 +63,9 @@ class EmergencyButtonState extends MainPageButtonState {
         },
       ),
     );
-  }
+  } 
   _launchURL(number) async {
-    if(StaticEmergencyContact.emergencyContact != null) {
+    if(number != null) {
       bool res = await FlutterPhoneDirectCaller.callNumber(number);
     }
     else{

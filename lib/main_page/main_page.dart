@@ -87,8 +87,8 @@ class _MyHomePageState extends State<MyHomePage> {
     list[currPos[1]][currPos[0]].state.setFocus();
   }
 
-  void goTo() {
-    list[currPos[1]][currPos[0]].state.goToPage(context);
+  void buttonIsPressed() {
+    list[currPos[1]][currPos[0]].state.buttonIsPressed();
   }
 
   void removeAllFocus() {
@@ -213,7 +213,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   FlatButton(
                     onPressed: () {
-                      goTo();
+                      buttonIsPressed();
                     },
                     child: Text(Strings.enter),
                     color: Color(StaticColors.lighterSlateGray),
