@@ -1,10 +1,9 @@
 # Enabled App [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Check%20out%20this%20cool%20project&url=https://github.com/andesob/Enabled-app&hashtags=project,opensource)
 
 ![Github License](https://img.shields.io/badge/license-MIT-green)
-![Code Coverage](https://img.shields.io/badge/coverage-90%25-green)
-![React Version](https://img.shields.io/badge/react-v16.12.0-blue.svg)
+![React Version](https://img.shields.io/badge/Flutter-v1.25.0-blue.svg)
 
-![example](https://mdn.mozillademos.org/files/10529/inspector.png)
+![example](https://i.imgur.com/OvMZBs9.jpg)
 
 #### Description of your project
 Enabled app is an application made to make it possible to execute simple tasks by using the [Emotiv Epoc X Headset](https://www.emotiv.com/epoc-x/) 
@@ -24,6 +23,7 @@ This Project was created as a Bachelor Thesis at Norwegian University of Science
 
 ## Getting Started
 Describe how to get started here.
+https://github.com/rojahno/enabled-desktop
 
 ### Install
 
@@ -41,18 +41,6 @@ Enabled App will be available on Google Play and App Store at a later date.
         </a>
         </p>
 
-### Usage
-Describe how you use it here.
-```javascript
-import { configure, useProject } from 'your-project';
-
-configure();
-
-const App = () => {
-  const [project, setProject] = useProject();
-  // ... More pseudo code here...
-}
-```
 ## Built With
 
 - [Flutter](https://flutter.dev/)
