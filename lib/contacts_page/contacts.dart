@@ -1,6 +1,7 @@
 import 'package:enabled_app/contacts_page/contact_item.dart';
 import 'package:enabled_app/contacts_page/contact_popup.dart';
 import 'package:enabled_app/colors/colors.dart';
+import 'package:enabled_app/controller/button_controller.dart';
 import 'package:enabled_app/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -69,18 +70,6 @@ class _contactState extends State<contacts> {
       items[focusIndex].state.setHighlightState(false);
     });
   }
-  
-  bottomButtonPressed(int index) {
-    if (index == 0) {
-      scrollUp();
-    }
-    if (index == 1) {
-      scrollDown();
-    }
-    if (index == 2) {
-      print("Send");
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -127,24 +116,7 @@ class _contactState extends State<contacts> {
             color: Color(StaticColors.white),
           ),
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          onTap: bottomButtonPressed,
-          selectedItemColor: Color(StaticColors.lighterSlateGray),
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.arrow_upward),
-              label: 'Up',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.arrow_downward),
-              label: 'Down',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.add),
-              label: 'Send',
-            ),
-          ],
-        ),
+        bottomNavigationBar: ButtonController(),
       ),
     );
     throw UnimplementedError();
