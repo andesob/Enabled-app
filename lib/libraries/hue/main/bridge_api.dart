@@ -45,7 +45,7 @@ class BridgeApi {
     return await _lightApi.getAll();
   }
 
-  Future<void> updateLightState(int id, LightState state) async {
+  Future<void> updateLightState(String id, LightState state) async {
     return await _lightApi.updateState(id, state);
   }
 

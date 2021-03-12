@@ -17,7 +17,7 @@ class GroupApi {
   }
 
   Future<List<Group>> getAll() async {
-    String url = '/api' + _username + '/groups';
+    String url = '/api/' + _username + '/groups';
     final response = await _bridge.get(url);
     final groups = <Group> [];
     for(String id in response.keys){

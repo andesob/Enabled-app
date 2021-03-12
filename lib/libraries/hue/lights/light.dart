@@ -5,7 +5,7 @@ import 'light_state.dart';
 class Light {
   final String _name;
   final String _type;
-  final int _id;
+  final String _id;
   final LightState _state;
   final String _modelId;
   final String _uniqueId;
@@ -26,10 +26,10 @@ class Light {
       this._luminaireUniqueId,
       this._swVersion);
 
-  Light.fromJson(Map<String, dynamic> json)
+  Light.fromJson(Map<String, dynamic> json, id)
       : _name = json["name"],
         _type = json["type"],
-        _id = json["id"],
+        _id = id,
         _state = LightState.fromJson(json["state"]),
         _modelId = json["modelid"],
         _uniqueId = json["uniqueid"],
@@ -52,7 +52,7 @@ class Light {
 
   LightState get state => _state;
 
-  int get id => _id;
+  String get id => _id;
 
   String get type => _type;
 

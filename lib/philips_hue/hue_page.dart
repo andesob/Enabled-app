@@ -1,5 +1,6 @@
 import 'package:enabled_app/colors/colors.dart';
 import 'package:enabled_app/contacts/contact_popup.dart';
+import 'package:enabled_app/libraries/hue/main/hue_api.dart';
 import 'package:enabled_app/main_page/main_page_button.dart';
 import 'package:enabled_app/philips_hue/hue_button.dart';
 import 'package:enabled_app/philips_hue/hue_dropdown.dart';
@@ -7,17 +8,26 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 
-class HuePage extends StatefulWidget{
+class HuePage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _HuePageState();
 }
 
-class _HuePageState extends State<HuePage>{
+class _HuePageState extends State<HuePage> {
+  bool isLightOn;
+
+  @override
+  void initState() {
+    super.initState();
+    isLightOn = initLightState();
+  }
+
   @override
   Widget build(BuildContext context) {
     const Color lightPeach = Color(0xffffecd2);
     const Color darkPeach = Color(0xfffcb7a0);
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+    HueApi api = new HueApi();
 
     return Container(
       decoration: new BoxDecoration(
@@ -34,17 +44,28 @@ class _HuePageState extends State<HuePage>{
             gradient: LinearGradient(colors: [lightPeach, darkPeach]),
           ),
         ),
-        body:
-        Column(
+        body: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            HuePageButton(text: "On/Off",),
+            isLightOn
+                ? HuePageButton(
+                    text: "On",
+                    onClick: powerOff,
+                  )
+                : HuePageButton(
+                    text: "Off",
+                    onClick: powerOn,
+                  ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
-              children:[
-                HuePageButton(text: "Dim",),
-                HuePageButton(text: "Brighten",),
+              children: [
+                HuePageButton(
+                  text: "Dim",
+                ),
+                HuePageButton(
+                  text: "Brighten",
+                ),
               ],
             ),
             HueDropdown(),
@@ -69,6 +90,30 @@ class _HuePageState extends State<HuePage>{
         ),
       ),
     );
-    throw UnimplementedError();
+  }
+
+  bool initLightState() {
+    HueApi api = new HueApi();
+    return api.groups.first.state.allOn;
+  }
+
+  void powerOn() {
+    HueApi api = new HueApi();
+
+    api.powerOnAll();
+
+    setState(() {
+      isLightOn = true;
+    });
+  }
+
+  void powerOff() {
+    HueApi api = new HueApi();
+
+    api.powerOffAll();
+
+    setState(() {
+      isLightOn = false;
+    });
   }
 }

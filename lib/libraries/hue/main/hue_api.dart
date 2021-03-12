@@ -1,5 +1,6 @@
 import 'package:enabled_app/libraries/hue/groups/group.dart';
 import 'package:enabled_app/libraries/hue/lights/light.dart';
+import 'package:enabled_app/libraries/hue/lights/light_state.dart';
 import 'package:enabled_app/libraries/hue/main/BridgeFinderResult.dart';
 import 'package:enabled_app/libraries/hue/main/bridge_api.dart';
 import 'package:enabled_app/libraries/hue/main/bridge_finder.dart';
@@ -35,7 +36,7 @@ class HueApi {
     bridgeFinder = BridgeFinder(client);
 
     List<BridgeFinderResult> bridgeFinderResults =
-        await bridgeFinder.automatic();
+    await bridgeFinder.automatic();
     bridgeFinderResult = bridgeFinderResults.first;
     bridgeApi = BridgeApi(client, bridgeFinderResult.ip);
 
@@ -46,6 +47,8 @@ class HueApi {
       if (username.isNotEmpty) {
         user = new User(username);
         bridgeApi.username = username;
+        print("IP: " + bridgeFinderResult.ip);
+        print("USERNAME: " + user.username);
       }
     }
 
@@ -101,5 +104,45 @@ class HueApi {
     }
 
     return list;
+  }
+
+  void powerOnAll(){
+    _setPower(true);
+  }
+
+  void powerOffAll(){
+    _setPower(false);
+  }
+
+  Future<void> _setPower(bool on) async {
+    if (bridgeApi != null) {
+      if (lights == null) {
+        lights = await bridgeApi.getLights();
+      }
+
+      for (Light l in lights) {
+        LightState state = l.state;
+        state.on = on;
+
+        await bridgeApi.updateLightState(l.id, state);
+      }
+      updateAll();
+    }
+  }
+
+  void setCurrentGroup(String name) {
+    for (Group g in groups) {
+      if (g.name == name) {
+        currentGroup = g;
+        break;
+      }
+    }
+  }
+
+  Future<void> updateAll() async {
+    lights = await getLights();
+    scenes = await getScenes();
+    groups = await getGroups();
+    setCurrentGroup(groups.first.name);
   }
 }

@@ -64,11 +64,13 @@ class _HueDropdown extends State<HueDropdown> {
             dropdownValue = newValue;
           });
         },
-        items: new List<DropdownMenuItem<int>>.generate(
+        items:
+
+        new List<DropdownMenuItem<int>>.generate(
           50,
               (int index) => new DropdownMenuItem<int>(
             value: index,
-            child: new Text(index.toString()),
+            child: new Text("TRYM"),
           ),
         ),
       )

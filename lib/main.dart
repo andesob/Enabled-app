@@ -4,6 +4,7 @@ import 'package:enabled_app/keyboard_page/keyboard_page.dart';
 import 'package:enabled_app/libraries/hue/main/bridge.dart';
 import 'package:enabled_app/libraries/hue/main/bridge_api.dart';
 import 'package:enabled_app/needs/needs.dart';
+import 'package:enabled_app/philips_hue/hue_page.dart';
 import 'package:enabled_app/smart/smart_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
         Strings.custom: (context) => CustomPageHome(title: Strings.custom),
         Strings.keyboard: (context) => KeyboardPage(title: Strings.keyboard),
         Strings.smart: (context) => SmartMainPage(title: Strings.smart),
+        Strings.hue: (context) => HuePage(),
       }, //home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
