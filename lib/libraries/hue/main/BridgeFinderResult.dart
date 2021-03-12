@@ -5,8 +5,8 @@ class BridgeFinderResult {
   BridgeFinderResult(this._id, this._ip);
 
   BridgeFinderResult.fromJson(Map<String, dynamic> json)
-      : _id = json["name"],
-        _ip = json["type"];
+      : _id = json["id"],
+        _ip = json["internalipaddress"];
 
   String get ip => _ip;
 

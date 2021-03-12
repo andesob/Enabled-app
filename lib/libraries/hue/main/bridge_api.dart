@@ -17,23 +17,24 @@ class BridgeApi {
 
   List<Light> list;
 
-  String _username = "oDvEKoVrvzzHpKgOuXSZGvueCn2fSE-snTpYayfg";
+  String _username;
 
   //TODO: Add all the other api's to constructor
   BridgeApi(Client client, String address)
       : this._init(
-            LightApi(Bridge(client, address),
-                "oDvEKoVrvzzHpKgOuXSZGvueCn2fSE-snTpYayfg"),
-            SceneApi(Bridge(client, address),
-                "oDvEKoVrvzzHpKgOuXSZGvueCn2fSE-snTpYayfg"),
-            GroupApi(Bridge(client, address),
-                "oDvEKoVrvzzHpKgOuXSZGvueCn2fSE-snTpYayfg"),
+            LightApi(Bridge(client, address)),
+            SceneApi(Bridge(client, address)),
+            GroupApi(Bridge(client, address)),
             SetupApi(Bridge(client, address)));
 
-  BridgeApi._init(this._lightApi, this._sceneApi, this._groupApi, this._setupApi);
+  BridgeApi._init(
+      this._lightApi, this._sceneApi, this._groupApi, this._setupApi);
 
   set username(String username) {
     this._username = username;
+    _groupApi.username = username;
+    _sceneApi.username = username;
+    _lightApi.username = username;
   }
 
   Future<Map<String, dynamic>> createUser(String name) async {
@@ -55,7 +56,4 @@ class BridgeApi {
   Future<List<Group>> getGroups() async {
     return await _groupApi.getAll();
   }
-
-//TODO: Add setter for username
-
 }

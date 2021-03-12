@@ -1,5 +1,6 @@
 import 'package:enabled_app/colors/colors.dart';
 import 'package:enabled_app/libraries/hue/main/bridge_api.dart';
+import 'package:enabled_app/libraries/hue/main/hue_api.dart';
 import 'package:enabled_app/main_page/main_page_button.dart';
 import 'package:enabled_app/strings/strings.dart';
 import 'package:flutter/cupertino.dart';
@@ -43,8 +44,9 @@ class SmartMainPageState extends State<SmartMainPage> {
     var shortestSide = MediaQuery.of(context).size.shortestSide;
     bool useMobileLayout = shortestSide < 600;
     double leftRightPadding = MediaQuery.of(context).size.width / 5;
-    //HueApi api = new HueApi();
-    BridgeApi api = BridgeApi(new Client(), "192.168.100.38");
+    HueApi api = new HueApi();
+    api.findBridge();
+    //BridgeApi api = BridgeApi(new Client(), "192.168.100.38");
 
     return Container(
       decoration: new BoxDecoration(
@@ -120,7 +122,7 @@ class SmartMainPageState extends State<SmartMainPage> {
                         //api.powerOffAll();
                         //api.brightnessUp();
 
-                        api.update();
+                        api.createUser("TEST");
 
                       },
                       child: Text("Green"),
@@ -131,7 +133,7 @@ class SmartMainPageState extends State<SmartMainPage> {
                     ),
                     FlatButton(
                       onPressed: () {
-                        api.lights();
+
                       },
                       child: Text(Strings.enter),
                       color: Color(StaticColors.lighterSlateGray),

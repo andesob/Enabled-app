@@ -3,13 +3,17 @@ import 'package:enabled_app/libraries/hue/scenes/scene.dart';
 
 class SceneApi{
   Bridge _bridge;
-  String _username = 'oDvEKoVrvzzHpKgOuXSZGvueCn2fSE-snTpYayfg';
+  String _username;
 
   SceneApi(this._bridge, [this._username]);
 
   String get username => _username;
 
   Bridge get bridge => _bridge;
+
+  set username(String value) {
+    _username = value;
+  }
 
   Future<List<Scene>> getAll() async{
     String url = '/api/' + _username + "/scenes";
