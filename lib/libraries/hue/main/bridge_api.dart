@@ -56,4 +56,8 @@ class BridgeApi {
   Future<List<Group>> getGroups() async {
     return await _groupApi.getAll();
   }
+
+  Future<void> changeScene(String sceneId, groupId) async {
+    return await _groupApi.changeScene(sceneId, groupId);
+  }
 }

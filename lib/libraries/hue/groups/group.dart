@@ -27,4 +27,6 @@ class Group {
   List<int> get lights => _lights;
 
   String get name => _name;
+
+  String get id => _id;
 }

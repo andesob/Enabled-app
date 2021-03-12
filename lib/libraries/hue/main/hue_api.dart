@@ -56,6 +56,7 @@ class HueApi {
       lights = await getLights();
       scenes = await getScenes();
       groups = await getGroups();
+      setCurrentGroup(groups.first.name);
     }
   }
 
@@ -127,6 +128,12 @@ class HueApi {
         await bridgeApi.updateLightState(l.id, state);
       }
       updateAll();
+    }
+  }
+
+  void changeScene(String sceneId){
+    if(bridgeApi != null){
+      bridgeApi.changeScene(sceneId, currentGroup.id);
     }
   }
 

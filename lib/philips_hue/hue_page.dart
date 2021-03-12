@@ -68,7 +68,7 @@ class _HuePageState extends State<HuePage> {
                 ),
               ],
             ),
-            HueDropdown(),
+            HueDropdown(onClick: changeScene,),
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
@@ -115,5 +115,11 @@ class _HuePageState extends State<HuePage> {
     setState(() {
       isLightOn = false;
     });
+  }
+
+  void changeScene(String sceneId){
+    HueApi api = new HueApi();
+
+    api.changeScene(sceneId);
   }
 }

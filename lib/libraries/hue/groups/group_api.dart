@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:enabled_app/libraries/hue/groups/group.dart';
 import 'package:enabled_app/libraries/hue/main/bridge.dart';
 
@@ -26,5 +28,11 @@ class GroupApi {
       groups.add(group);
     }
     return groups;
+  }
+  
+  Future<void> changeScene(String sceneId, String groupId) async {
+    String url = '/api/' + _username + '/groups/' + groupId + '/action';
+    final response = await _bridge.put(url, {'scene': sceneId});
+    print(response[0]);
   }
 }
