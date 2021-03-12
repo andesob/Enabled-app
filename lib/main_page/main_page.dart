@@ -8,15 +8,6 @@ import '../strings/strings.dart';
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -84,17 +75,17 @@ class _MyHomePageState extends State<MyHomePage> {
   void moveRight() {
     removeAllFocus();
     currPos[0] == horizontalBtns - 1 ? currPos[0] = 0 : currPos[0]++;
-    list[currPos[1]][currPos[0]].state.setFocus();
+    list[currPos[1]][currPos[0]]._state.setFocus();
   }
 
   void moveDown() {
     removeAllFocus();
     currPos[1] == verticalBtns - 1 ? currPos[1] = 0 : currPos[1]++;
-    list[currPos[1]][currPos[0]].state.setFocus();
+    list[currPos[1]][currPos[0]]._state.setFocus();
   }
 
   void goTo() {
-    list[currPos[1]][currPos[0]].state.goToPage(context);
+    list[currPos[1]][currPos[0]]._state.goToPage(context);
   }
 
   void removeAllFocus() {

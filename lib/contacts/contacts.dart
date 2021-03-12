@@ -17,9 +17,6 @@ class contacts extends StatefulWidget {
   _contactState createState() => _contactState();
 }
 
-/*
-
- */
 class _contactState extends State<contacts> {
   List<ContactItem> items = [];
   int focusIndex = 0;
@@ -37,9 +34,7 @@ class _contactState extends State<contacts> {
     popupActive = active;
   }
 
-  /*
-Scrolls up to the previous contact on the list.
- */
+  ///Scrolls up to the previous contact on the list.
   scrollDown() {
     if (focusIndex < items.length - 1) {
       removeHighlight();
@@ -50,9 +45,7 @@ Scrolls up to the previous contact on the list.
     }
   }
 
-/*
-Scrolls down to the next contact on the list.
- */
+  ///Scrolls down to the next contact on the list.
   scrollUp() {
     if (focusIndex > 0) {
       removeHighlight();
@@ -63,24 +56,20 @@ Scrolls down to the next contact on the list.
     }
   }
 
-  /*
-  Adds bold font to the item in focus.
-   */
+  ///Adds bold font to the item in focus.
   addHighlight() {
     setState(() {
-      items[focusIndex].state.setBold();
+      items[focusIndex].state.setHighlightState(true);
     });
   }
 
-  /*
-  Removes bold font to the item not in focus any more.
-   */
+  ///Removes bold font to the item not in focus any more.
   removeHighlight() {
     setState(() {
-      items[focusIndex].state.removeBold();
+      items[focusIndex].state.setHighlightState(false);
     });
   }
-
+  
   bottomButtonPressed(int index) {
     if (index == 0) {
       scrollUp();
