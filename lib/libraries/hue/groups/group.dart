@@ -16,7 +16,17 @@ class Group {
   Group.fromJson(Map<String, dynamic> json, this._id)
       : _type = json["type"],
         _name = json["name"],
-        _lights = json["lights"],
-        _state = GroupState.fromJson(json),
-        _action = GroupAction.fromJson(json);
+        _lights = json["lights"].cast<int>(),
+        _state = GroupState.fromJson(json["state"]),
+        _action = GroupAction.fromJson(json["action"]);
+
+  GroupAction get action => _action;
+
+  GroupState get state => _state;
+
+  List<int> get lights => _lights;
+
+  String get name => _name;
+
+  String get id => _id;
 }
