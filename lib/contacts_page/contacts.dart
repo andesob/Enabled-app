@@ -36,7 +36,7 @@ class _contactState extends State<contacts> {
   }
 
   ///Scrolls up to the previous contact on the list.
-  scrollDown() {
+   void _scrollDown() {
     if (focusIndex < items.length - 1) {
       removeHighlight();
       focusIndex++;
@@ -44,10 +44,11 @@ class _contactState extends State<contacts> {
       itemScrollController.scrollTo(
           index: focusIndex, duration: Duration(seconds: 1));
     }
+    return;
   }
 
   ///Scrolls down to the next contact on the list.
-  scrollUp() {
+  void _scrollUp() {
     if (focusIndex > 0) {
       removeHighlight();
       focusIndex--;
@@ -55,6 +56,7 @@ class _contactState extends State<contacts> {
       itemScrollController.scrollTo(
           index: focusIndex, duration: Duration(seconds: 1));
     }
+    return;
   }
 
   ///Adds bold font to the item in focus.
@@ -69,6 +71,11 @@ class _contactState extends State<contacts> {
     setState(() {
       items[focusIndex].state.setHighlightState(false);
     });
+  }
+
+  void _goBack(){
+    Navigator.pop(context);
+    return;
   }
 
   @override
@@ -116,7 +123,7 @@ class _contactState extends State<contacts> {
             color: Color(StaticColors.white),
           ),
         ),
-        bottomNavigationBar: ButtonController(),
+        bottomNavigationBar: ButtonController(onPush: _scrollUp, onPull: _scrollDown, onRight: _goBack,),
       ),
     );
     throw UnimplementedError();

@@ -87,8 +87,8 @@ class _MyHomePageState extends State<MyHomePage> {
     list[currPos[1]][currPos[0]].state.setFocus();
   }
 
-  void buttonIsPressed() {
-    list[currPos[1]][currPos[0]].state.buttonIsPressed();
+  void buttonPressed() {
+    list[currPos[1]][currPos[0]].state.buttonPressed();
   }
 
   void removeAllFocus() {
@@ -122,7 +122,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _buildLayout(useMobileLayout) {
-
     return Container(
       decoration: new BoxDecoration(
         gradient: new LinearGradient(
@@ -139,24 +138,34 @@ class _MyHomePageState extends State<MyHomePage> {
                   ? MediaQuery.of(context).size.height * 0.07
                   : MediaQuery.of(context).size.height * 0.1),
           child: GradientAppBar(
-            title: Text(widget.title, style: TextStyle(color: Color(darkmode ? StaticColors.black : StaticColors.white),),),
+            title: Text(
+              widget.title,
+              style: TextStyle(
+                color:
+                    Color(darkmode ? StaticColors.black : StaticColors.white),
+              ),
+            ),
             gradient:
                 LinearGradient(colors: [appBarColorLight, appBarColorDark]),
             actions: <Widget>[
               Material(
                 type: MaterialType.transparency,
                 child: PopupMenuButton(
-                  icon: Icon(Icons.accessible_forward, color: Color(darkmode ? StaticColors.black : StaticColors.white),),
-                  itemBuilder:(BuildContext bc) => [
+                  icon: Icon(
+                    Icons.accessible_forward,
+                    color: Color(
+                        darkmode ? StaticColors.black : StaticColors.white),
+                  ),
+                  itemBuilder: (BuildContext bc) => [
                     PopupMenuItem(child: Text("Darkmode"), value: 0),
                     PopupMenuItem(
                         child: Text("Change Emergency Contact"), value: 1),
                   ],
-                  onSelected: (selected){
-                    if (selected == 0){
+                  onSelected: (selected) {
+                    if (selected == 0) {
                       _changeDarkmode();
                     }
-                    if (selected == 1 ){
+                    if (selected == 1) {
                       showDialog(
                           context: context,
                           builder: (BuildContext context) {
@@ -165,15 +174,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     }
                   },
                 ),
-//                child: IconButton(
-//                    icon: Icon(Icons.accessible_forward),
-//                    color: Color(
-//                        darkmode ? StaticColors.black : StaticColors.white),
-//                    splashColor: Color(Colors.grey.value),
-//                    padding: EdgeInsets.zero,
-//                    onPressed: () {
-//                      _changeDarkmode();
-//                    }),
               )
             ],
           ),
@@ -213,7 +213,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   FlatButton(
                     onPressed: () {
-                      buttonIsPressed();
+                      buttonPressed();
                     },
                     child: Text(Strings.enter),
                     color: Color(StaticColors.lighterSlateGray),

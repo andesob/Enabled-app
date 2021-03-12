@@ -3,26 +3,32 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ButtonController extends StatefulWidget {
+  final VoidCallback onPush;
+  final VoidCallback onPull;
+  final VoidCallback onLeft;
+  final VoidCallback onRight;
 
-  ButtonController({Key key}) : super(key: key);
+  ButtonController(
+      {Key key, this.onPush, this.onPull, this.onLeft, this.onRight})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => ButtonControllerState();
 }
 
 class ButtonControllerState extends State<ButtonController> {
-  buttonIsPressed(int index){
+  buttonIsPressed(int index) {
     if (index == 0) {
-      print("Up");
+      widget.onPush.call();
     }
     if (index == 1) {
-      print("Down");
+      widget.onPull.call();
     }
     if (index == 2) {
-      print("Enter");
+      widget.onRight.call();
     }
-    if(index == 3){
-      Navigator.of(context).pop();
+    if (index == 3) {
+      widget.onLeft.call();
     }
   }
 
@@ -36,20 +42,20 @@ class ButtonControllerState extends State<ButtonController> {
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(Icons.arrow_upward),
-          label: 'Up',
+          label: 'Push',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.arrow_downward),
-          label: 'Down',
+          label: 'Pull',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.add),
-          label: 'Enter',
+          label: 'Left',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.backup),
-          label: 'Go Back',
-        )
+          label: 'Right',
+        ),
       ],
     );
   }
