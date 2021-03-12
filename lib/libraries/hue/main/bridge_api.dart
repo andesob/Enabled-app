@@ -1,3 +1,5 @@
+import 'package:enabled_app/libraries/hue/groups/group.dart';
+import 'package:enabled_app/libraries/hue/groups/group_api.dart';
 import 'package:enabled_app/libraries/hue/lights/light.dart';
 import 'package:enabled_app/libraries/hue/lights/light_api.dart';
 import 'package:enabled_app/libraries/hue/lights/light_state.dart';
@@ -8,9 +10,11 @@ import 'package:enabled_app/libraries/hue/scenes/scene_api.dart';
 import 'package:http/http.dart';
 
 class BridgeApi {
+  final SetupApi _setupApi;
   final LightApi _lightApi;
   final SceneApi _sceneApi;
-  final SetupApi _setupApi;
+  final GroupApi _groupApi;
+
   List<Light> list;
 
   String _username = "oDvEKoVrvzzHpKgOuXSZGvueCn2fSE-snTpYayfg";
@@ -22,9 +26,11 @@ class BridgeApi {
                 "oDvEKoVrvzzHpKgOuXSZGvueCn2fSE-snTpYayfg"),
             SceneApi(Bridge(client, address),
                 "oDvEKoVrvzzHpKgOuXSZGvueCn2fSE-snTpYayfg"),
+            GroupApi(Bridge(client, address),
+                "oDvEKoVrvzzHpKgOuXSZGvueCn2fSE-snTpYayfg"),
             SetupApi(Bridge(client, address)));
 
-  BridgeApi._init(this._lightApi, this._sceneApi, this._setupApi);
+  BridgeApi._init(this._lightApi, this._sceneApi, this._groupApi, this._setupApi);
 
   set username(String username) {
     this._username = username;
@@ -44,6 +50,10 @@ class BridgeApi {
 
   Future<List<Scene>> getScenes() async {
     return await _sceneApi.getAll();
+  }
+
+  Future<List<Group>> getGroups() async {
+    return await _groupApi.getAll();
   }
 
 //TODO: Add setter for username

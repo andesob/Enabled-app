@@ -64,6 +64,7 @@ class Scene {
     map["locked"] = _locked;
     map["lastupdated"] = _lastUpdated;
     map["version"] = _version;
+    return map;
   }
 
   @override
@@ -80,5 +81,6 @@ class Scene {
       ..writeln("locked: " + _locked.toString())
       ..writeln("lastupdated: " + _lastUpdated)
       ..writeln("version: " + _version.toString());
+    return sb.toString();
   }
 }
