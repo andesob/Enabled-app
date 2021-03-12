@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-class LightState {
+class GroupAction {
   bool _on;
   int _brightness;
   int _hue;
@@ -10,12 +10,11 @@ class LightState {
   String _alert;
   String _effect;
   String _colormode;
-  bool _reachable;
 
-  LightState(this._on, this._brightness, this._hue, this._saturation, this._xy,
-      this._ct, this._alert, this._effect, this._colormode, this._reachable);
+  GroupAction(this._on, this._brightness, this._hue, this._saturation, this._xy,
+      this._ct, this._alert, this._effect, this._colormode);
 
-  LightState.fromJson(Map<String, dynamic> json)
+  GroupAction.fromJson(Map<String, dynamic> json)
       : _on = json["on"],
         _brightness = json["bri"],
         _hue = json["hue"],
@@ -24,14 +23,11 @@ class LightState {
         _xy = json["xy"],
         _ct = json["ct"],
         _alert = json["alert"],
-        _colormode = json["colormode"],
-        _reachable = json["reachable"];
+        _colormode = json["colormode"];
 
   set on(bool value) {
     _on = value;
   }
-
-  bool get reachable => _reachable;
 
   String get colormode => _colormode;
 
@@ -76,8 +72,7 @@ class LightState {
       ..writeln("CT: " + _ct.toString())
       ..writeln("Alert: " + _alert)
       ..writeln("Effect: " + _effect)
-      ..writeln("Colormode: " + _colormode)
-      ..writeln("Reachable: " + _reachable.toString());
+      ..writeln("Colormode: " + _colormode);
     return sb.toString();
   }
 
@@ -111,9 +106,5 @@ class LightState {
 
   set colormode(String value) {
     _colormode = value;
-  }
-
-  set reachable(bool value) {
-    _reachable = value;
   }
 }
