@@ -62,9 +62,11 @@ class _HuePageState extends State<HuePage> {
               children: [
                 HuePageButton(
                   text: "Dim",
+                  onClick: brightnessDown,
                 ),
                 HuePageButton(
                   text: "Brighten",
+                  onClick: brightnessUp,
                 ),
               ],
             ),
@@ -95,6 +97,16 @@ class _HuePageState extends State<HuePage> {
   bool initLightState() {
     HueApi api = new HueApi();
     return api.groups.first.state.allOn;
+  }
+
+  void brightnessUp(){
+    HueApi api = new HueApi();
+    api.brightnessUp();
+  }
+
+  void brightnessDown(){
+    HueApi api = new HueApi();
+    api.brightnessDown();
   }
 
   void powerOn() {

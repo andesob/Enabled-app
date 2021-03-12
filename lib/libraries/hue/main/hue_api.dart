@@ -137,6 +137,36 @@ class HueApi {
     }
   }
 
+  void brightnessDown(){
+    int brightness = lights.first.state.brightness - 50;
+    if(brightness < 0){
+      brightness = 0;
+    }
+
+    _setBrightness(brightness);
+  }
+
+  void brightnessUp(){
+    int brightness = lights.first.state.brightness + 50;
+    if(brightness > 254){
+      brightness = 254;
+    }
+
+    _setBrightness(brightness);
+  }
+
+  Future<void> _setBrightness(int brightness) async {
+    if (bridgeApi != null){
+      for(Light l in lights){
+        LightState state = l.state;
+        state.brightness = brightness;
+
+        await bridgeApi.updateLightState(l.id, state);
+      }
+    }
+    updateAll();
+  }
+
   void setCurrentGroup(String name) {
     for (Group g in groups) {
       if (g.name == name) {
