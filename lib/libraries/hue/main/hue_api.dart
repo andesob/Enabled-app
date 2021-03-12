@@ -1,48 +1,62 @@
+import 'package:enabled_app/libraries/hue/groups/group.dart';
 import 'package:enabled_app/libraries/hue/lights/light.dart';
-import 'package:enabled_app/libraries/hue/lights/light_api.dart';
-import 'package:enabled_app/libraries/hue/lights/light_state.dart';
-import 'package:enabled_app/libraries/hue/main/bridge.dart';
+import 'package:enabled_app/libraries/hue/main/BridgeFinderResult.dart';
+import 'package:enabled_app/libraries/hue/main/bridge_api.dart';
+import 'package:enabled_app/libraries/hue/main/bridge_finder.dart';
+import 'package:enabled_app/libraries/hue/main/user.dart';
+import 'package:enabled_app/libraries/hue/scenes/scene.dart';
 import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HueApi{
-  final LightApi _lightApi;
-  List<Light> list;
+  static final HueApi _api = HueApi._internal();
+  final client = Client();
 
-  String _username = "oDvEKoVrvzzHpKgOuXSZGvueCn2fSE-snTpYayfg";
+  BridgeFinder bridgeFinder;
+  BridgeFinderResult bridgeFinderResult;
+  BridgeApi bridgeApi;
+  User user;
+  List<Light> lights;
+  List<Scene> scenes;
+  List<Group> groups;
 
-  //TODO: Add all the other api's to constructor
-  HueApi(Client client, String address)
-  : this._init(LightApi(Bridge(client, address), "oDvEKoVrvzzHpKgOuXSZGvueCn2fSE-snTpYayfg"));
+  Group currentGroup;
+  Scene currentScene;
 
-  HueApi._init(this._lightApi);
+  SharedPreferences pref;
 
-  set username(String username) {
-    this._username = username;
+  factory HueApi() {
+    return _api;
   }
 
-Future<List<Light>> getLights() async {
-    return await _lightApi.getAll();
-}
+  HueApi._internal();
 
-Future<void> lights() async {
-  list = await getLights();
-  //print(list[0].state.on);
-  print(list[0].state);
-}
+  Future<void> findBridge() async {
+    bridgeFinder = BridgeFinder(client);
 
-void update(){
-    LightState state = list[0].state;
-    state.on = true;
-    updateLightState(1, state);
-}
+    List<BridgeFinderResult> bridgeFinderResults = await bridgeFinder.automatic();
+    bridgeFinderResult = bridgeFinderResults.first;
 
-void updateLightState(int id, LightState state) async {
-    _lightApi.updateState(id, state);
-}
+    bridgeApi = BridgeApi(client, bridgeFinderResult.ip);
 
-  //TODO: Add setter for username
+    pref = await SharedPreferences.getInstance();
 
+    String username = await pref.get("username");
+    if(username != null){
+      if(username.isNotEmpty){
+        user = new User(username);
+        bridgeApi.username = username;
+      }
+    }
 
+    if (user != null){
 
+    }
+  }
 
+  void createUser(username){
+    if(bridgeApi != null){
+
+    }
+  }
 }

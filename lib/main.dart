@@ -2,7 +2,7 @@
 import 'package:enabled_app/Contacts/contacts.dart';
 import 'package:enabled_app/keyboard_page/keyboard_page.dart';
 import 'package:enabled_app/libraries/hue/main/bridge.dart';
-import 'package:enabled_app/libraries/hue/main/hue_api.dart';
+import 'package:enabled_app/libraries/hue/main/bridge_api.dart';
 import 'package:enabled_app/needs/needs.dart';
 import 'package:enabled_app/smart/smart_page.dart';
 import 'package:flutter/material.dart';

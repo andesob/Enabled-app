@@ -19,7 +19,7 @@ class Bridge {
     return responseMap;
   }
 
-  Future<Map<String, dynamic>> post(String url, [dynamic body]) async {
+  Future<List<dynamic>> post(String url, [dynamic body]) async {
     var response;
     if (body == null) {
       response = await _client.post(_address + url);
