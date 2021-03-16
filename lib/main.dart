@@ -1,8 +1,9 @@
-import 'package:enabled_app/Contacts/contacts.dart';
+import 'package:enabled_app/contacts_page//contacts.dart';
 import 'package:enabled_app/keyboard_page/keyboard_page.dart';
 import 'package:enabled_app/libraries/hue/main/bridge.dart';
 import 'package:enabled_app/libraries/hue/main/bridge_api.dart';
 import 'package:enabled_app/main_page.dart';
+import 'package:enabled_app/main_layout/themes.dart';
 import 'package:enabled_app/needs/needs.dart';
 import 'package:enabled_app/philips_hue/hue_page.dart';
 import 'package:enabled_app/smart/smart_page.dart';
@@ -11,6 +12,7 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'libraries/hue/lights/light.dart';
 import 'main_page/home_page.dart';
+import 'package:provider/provider.dart';
 import 'colors/colors.dart';
 import 'strings/strings.dart';
 import 'package:enabled_app/custom_page/custom_page.dart';
@@ -30,6 +32,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: Strings.enabled,
       initialRoute: Strings.home,
+      theme: ThemeData(
+        brightness: Brightness.light,
+        backgroundColor: Colors.white,
+      ),
+      darkTheme: ThemeData(
+        backgroundColor: Color(StaticColors.lightPeach),
+        brightness: Brightness.dark,
+      ),
       routes: {
         Strings.home: (context) => MainPage(
               pageContent: MyHomePage(

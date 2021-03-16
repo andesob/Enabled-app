@@ -63,6 +63,7 @@ class SmartMainPageState extends State<SmartMainPage> {
                   ? MediaQuery.of(context).size.height * 0.07
                   : MediaQuery.of(context).size.height * 0.1),
           child: GradientAppBar(
+            title: Text(widget.title),
             gradient:
                 LinearGradient(colors: [appBarColorLight, appBarColorDark]),
             actions: <Widget>[

@@ -1,12 +1,12 @@
-import 'package:enabled_app/contacts/contact_item.dart';
-import 'package:enabled_app/contacts/contact_popup.dart';
+import 'package:enabled_app/contacts_page/contact_item.dart';
+import 'package:enabled_app/contacts_page/contact_popup.dart';
 import 'package:enabled_app/colors/colors.dart';
-import 'package:enabled_app/main.dart';
+import 'package:enabled_app/main_layout/button_controller.dart';
+import 'package:enabled_app/main_layout/main_appbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class contacts extends StatefulWidget {
   contacts({Key key, this.title}) : super(key: key);
@@ -23,6 +23,7 @@ class _contactState extends State<contacts> {
   int lastFocusIndex = 0;
   final int maxScrollLength = 3;
 
+
   bool firstRun = true;
   final ItemScrollController itemScrollController = ItemScrollController();
   final ItemPositionsListener itemPositionsListener =
@@ -35,25 +36,45 @@ class _contactState extends State<contacts> {
   }
 
   ///Scrolls up to the previous contact on the list.
-  scrollDown() {
-    if (focusIndex < items.length - 1) {
-      removeHighlight();
-      focusIndex++;
-      addHighlight();
-      itemScrollController.scrollTo(
-          index: focusIndex, duration: Duration(seconds: 1));
-    }
+   void _scrollDown() {
+     if (focusIndex < items.length - 1) {
+       removeHighlight();
+       focusIndex++;
+       addHighlight();
+       if (canScrollDown()) {
+         itemScrollController.scrollTo(
+             index: focusIndex, duration: Duration(seconds: 1), alignment: 0.8572);
+       }
+     }
   }
 
   ///Scrolls down to the next contact on the list.
-  scrollUp() {
+  void _scrollUp() {
     if (focusIndex > 0) {
       removeHighlight();
       focusIndex--;
       addHighlight();
-      itemScrollController.scrollTo(
-          index: focusIndex, duration: Duration(seconds: 1));
+      if (canScrollUp()) {
+        itemScrollController.scrollTo(
+            index: focusIndex, duration: Duration(seconds: 1));
+      }
     }
+  }
+
+  bool canScrollUp(){
+    bool canScroll = false;
+    if(focusIndex < items.length - 7){
+      canScroll = true;
+    }
+    return canScroll;
+  }
+
+  bool canScrollDown(){
+    bool canScroll = false;
+    if(focusIndex > 6){
+      canScroll = true;
+    }
+    return canScroll;
   }
 
   ///Adds bold font to the item in focus.
@@ -69,17 +90,9 @@ class _contactState extends State<contacts> {
       items[focusIndex].state.setHighlightState(false);
     });
   }
-  
-  bottomButtonPressed(int index) {
-    if (index == 0) {
-      scrollUp();
-    }
-    if (index == 1) {
-      scrollDown();
-    }
-    if (index == 2) {
-      print("Send");
-    }
+
+  void _goBack(){
+    Navigator.pop(context);
   }
 
   @override
@@ -96,13 +109,7 @@ class _contactState extends State<contacts> {
               stops: [0.0, 1.0],
               colors: [lightPeach, darkPeach])),
       child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(isPortrait ? 50 : 30),
-          child: GradientAppBar(
-            title: Text("contacts Page"),
-            gradient: LinearGradient(colors: [lightPeach, darkPeach]),
-          ),
-        ),
+        appBar: MyAppBar(title: widget.title,),
         body: ScrollablePositionedList.builder(
           padding: EdgeInsets.all(8),
           itemCount: items.length,
@@ -127,24 +134,7 @@ class _contactState extends State<contacts> {
             color: Color(StaticColors.white),
           ),
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          onTap: bottomButtonPressed,
-          selectedItemColor: Color(StaticColors.lighterSlateGray),
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.arrow_upward),
-              label: 'Up',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.arrow_downward),
-              label: 'Down',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.add),
-              label: 'Send',
-            ),
-          ],
-        ),
+        bottomNavigationBar: ButtonController(onPush: _scrollUp, onPull: _scrollDown, onRight: _goBack,),
       ),
     );
     throw UnimplementedError();

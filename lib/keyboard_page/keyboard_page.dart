@@ -2,6 +2,8 @@ import 'package:enabled_app/colors/colors.dart';
 import 'package:enabled_app/keyboard_page/custom_keyboard.dart';
 import 'package:enabled_app/keyboard_page/custom_dictionary.dart';
 import 'package:enabled_app/main_page/home_page.dart';
+import 'package:enabled_app/main_layout/main_appbar.dart';
+import 'package:enabled_app/main_layout/button_controller.dart';
 import 'package:enabled_app/strings/strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -117,27 +119,7 @@ class _KeyboardPageState extends State<KeyboardPage> {
     return Container(
       child: Scaffold(
         backgroundColor: darkmode ? Color(StaticColors.onyx) : Colors.white,
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50),
-          child: GradientAppBar(
-            gradient:
-                LinearGradient(colors: [appBarColorLight, appBarColorDark]),
-            actions: <Widget>[
-              Material(
-                type: MaterialType.transparency,
-                child: IconButton(
-                    icon: Icon(Icons.accessible_forward),
-                    color: Color(
-                        darkmode ? StaticColors.black : StaticColors.white),
-                    splashColor: Color(Colors.grey.value),
-                    padding: EdgeInsets.zero,
-                    onPressed: () {
-                      _changeDarkmode();
-                    }),
-              )
-            ],
-          ),
-        ),
+        appBar: MyAppBar(title: widget.title,),
         body: Column(
             children: [
           Container(
@@ -178,47 +160,8 @@ class _KeyboardPageState extends State<KeyboardPage> {
               )
             ]),
           ),
-          Expanded(
-            flex: 1,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                FlatButton(
-                  onPressed: () {},
-                  child: Text(Strings.down),
-                  color: Color(StaticColors.lighterSlateGray),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                FlatButton(
-                  onPressed: () {},
-                  child: Text(Strings.right),
-                  color: Color(StaticColors.lighterSlateGray),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                FlatButton(
-                  onPressed: () {},
-                  child: Text(Strings.enter),
-                  color: Color(StaticColors.lighterSlateGray),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                FlatButton(
-                  onPressed: () {},
-                  child: Text(Strings.back),
-                  color: Color(StaticColors.lighterSlateGray),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ],
-            ),
-          )
         ]),
+        bottomNavigationBar: ButtonController(),
       ),
     );
   }
