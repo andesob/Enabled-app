@@ -26,7 +26,6 @@ class SocketSingleton {
     print("start socket called");
     _localIP = await getIP();
     print("Get ip: " + _localIP);
-    print("Get external ip: " + _localIP);
     _serverSocket = await HttpServer.bind(_localIP, _port, shared: true);
     _serverSocket.transform(WebSocketTransformer()).listen(handleClient);
     print("server ip: " + _serverSocket.address.toString());
@@ -38,11 +37,6 @@ class SocketSingleton {
   }
 
   Future<String> getIP() async {
-    String ip = await NetworkService.localIP;
-    return ip;
-  }
-
-  Future<String> getExternalIP() async {
     String ip = await NetworkService.localIP;
     return ip;
   }
