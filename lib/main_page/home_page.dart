@@ -4,6 +4,7 @@ import 'package:enabled_app/emergency_page/emergency_contact.dart';
 import 'package:enabled_app/emergency_page/emergency_popup.dart';
 import 'package:enabled_app/main_layout/button_controller.dart';
 import 'package:enabled_app/main_layout/main_appbar.dart';
+import 'package:enabled_app/page_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
@@ -16,10 +17,10 @@ class MyHomePage extends StatefulWidget {
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  MyHomePageState createState() => MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class MyHomePageState extends PageState<MyHomePage> {
   Color lightPeach = Color(StaticColors.lightPeach);
   Color darkPeach = Color(StaticColors.apricot);
   Color appBarColorLight = Color(StaticColors.apricot);
@@ -77,20 +78,28 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void moveRight() {
-    removeAllFocus();
-    currPos[0] == horizontalBtns - 1 ? currPos[0] = 0 : currPos[0]++;
-    list[currPos[1]][currPos[0]].state.setFocus();
-  }
-
-  void moveDown() {
+  @override
+  void leftPressed() {
     removeAllFocus();
     currPos[1] == verticalBtns - 1 ? currPos[1] = 0 : currPos[1]++;
     list[currPos[1]][currPos[0]].state.setFocus();
   }
 
-  void buttonPressed() {
-    list[currPos[1]][currPos[0]].state.buttonPressed();
+  @override
+  void pullPressed() {
+    // TODO: implement pullPressed
+  }
+
+  @override
+  void rightPressed() {
+    removeAllFocus();
+    currPos[0] == horizontalBtns - 1 ? currPos[0] = 0 : currPos[0]++;
+    list[currPos[1]][currPos[0]].state.setFocus();
+  }
+
+  @override
+  void pushPressed() {
+    list[currPos[1]][currPos[0]].state.pushPressed();
   }
 
   void removeAllFocus() {
@@ -125,30 +134,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _buildLayout(useMobileLayout) {
     return Container(
-      decoration: new BoxDecoration(
-        gradient: new LinearGradient(
-          colors: [lightPeach, darkPeach],
-          begin: FractionalOffset.topCenter,
-          end: FractionalOffset.bottomCenter,
-        ),
-      ),
-      child: Scaffold(
-        backgroundColor: darkmode ? backgroundColor : Colors.white,
-        appBar: MyAppBar(title: widget.title, hasDropDown: true,),
-        body: Container(
-          height: MediaQuery.of(context).size.height,
-          child: new ListView(
-            children: <Widget>[
-              GridView.count(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                crossAxisCount: useMobileLayout ? 2 : 3,
-                children: mainPageBtnList.cast<Widget>(),
-              ),
-            ],
+      height: MediaQuery.of(context).size.height,
+      child: new ListView(
+        children: <Widget>[
+          GridView.count(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            crossAxisCount: useMobileLayout ? 2 : 3,
+            children: mainPageBtnList.cast<Widget>(),
           ),
-        ),
-        bottomNavigationBar: ButtonController(onPush: moveRight, onPull: moveDown, onLeft: buttonPressed,),
+        ],
       ),
     );
   }

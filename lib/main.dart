@@ -5,6 +5,7 @@ import 'package:enabled_app/libraries/hue/main/bridge_api.dart';
 import 'package:enabled_app/main_page.dart';
 import 'package:enabled_app/main_layout/themes.dart';
 import 'package:enabled_app/needs/needs.dart';
+import 'package:enabled_app/page_state.dart';
 import 'package:enabled_app/philips_hue/hue_page.dart';
 import 'package:enabled_app/smart/smart_page.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,8 @@ void main() {
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+  GlobalKey<PageState> pageKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -42,16 +45,21 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         Strings.home: (context) => MainPage(
-              pageContent: MyHomePage(
-                title: Strings.home,
-              ),
-            ),
-        Strings.needs: (context) => MainPage(pageContent: NeedsPage(title: Strings.needs)),
-        Strings.contacts: (context) => MainPage(pageContent: contacts(title: Strings.contacts)),
-        Strings.custom: (context) => MainPage(pageContent: CustomPageHome(title: Strings.custom)),
-        Strings.keyboard: (context) => MainPage(pageContent: KeyboardPage(title: Strings.keyboard)),
-        Strings.smart: (context) => MainPage(pageContent: SmartMainPage(title: Strings.smart)),
-        Strings.hue: (context) => MainPage(pageContent: HuePage()),
+            pageContent: MyHomePage(key: pageKey, title: Strings.home),
+            title: Strings.home,
+            homePageKey: pageKey),
+        Strings.needs: (context) =>
+            MainPage(pageContent: NeedsPage(), title: Strings.needs),
+        Strings.contacts: (context) =>
+            MainPage(pageContent: contacts(), title: Strings.contacts),
+        Strings.custom: (context) =>
+            MainPage(pageContent: CustomPageHome(), title: Strings.custom),
+        Strings.keyboard: (context) =>
+            MainPage(pageContent: KeyboardPage(), title: Strings.keyboard),
+        Strings.smart: (context) =>
+            MainPage(pageContent: SmartMainPage(), title: Strings.smart),
+        Strings.hue: (context) =>
+            MainPage(pageContent: HuePage(), title: Strings.hue),
       }, //home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
