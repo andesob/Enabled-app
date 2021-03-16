@@ -3,6 +3,8 @@ import 'package:enabled_app/custom_page/custom_category.dart';
 import 'package:enabled_app/custom_page/custom_popup.dart';
 import 'package:enabled_app/custom_page/custom_vertical_list.dart';
 import 'package:enabled_app/custom_page/vertical_list_buttons.dart';
+import 'package:enabled_app/main_layout/button_controller.dart';
+import 'package:enabled_app/main_layout/main_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
@@ -201,16 +203,8 @@ class _CustomPageHome extends State<CustomPageHome> {
               stops: [0.0, 1.0],
               colors: [lightPeach, darkPeach])),
       child: Scaffold(
-        appBar: PreferredSize(
-            preferredSize: Size.fromHeight(isPortrait ? 50 : 30),
-            child: GradientAppBar(
-                title: Text(widget.title),
-                gradient: LinearGradient(colors: [lightPeach, darkPeach]),
-                actions: <Widget>[
-                  Material(
-                    type: MaterialType.transparency,
-                  )
-                ])),
+        appBar: MyAppBar(title: widget.title,),
+        bottomNavigationBar: ButtonController(onPush: upCommand, onPull: downCommand, onLeft: selectCommand, onRight: backCommand,),
         body: Container(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -250,45 +244,6 @@ class _CustomPageHome extends State<CustomPageHome> {
                     scrollDirection: Axis.vertical,
                     itemBuilder: (context, index) => verticalList[index]),
               ),
-              Center(
-                child: Row(
-                  children: [
-                    Container(
-                      child: FlatButton(
-                        child: new Text("Opp"),
-                        onPressed: () {
-                          upCommand();
-                        },
-                      ),
-                    ),
-                    Container(
-                      child: FlatButton(
-                        child: new Text("Ned"),
-                        onPressed: () {
-                          downCommand();
-                        },
-                      ),
-                    ),
-                    Container(
-                      child: FlatButton(
-                        child: new Text("Ok"),
-                        onPressed: () {
-                          selectCommand();
-                        },
-                      ),
-                    ),
-                    //TODO Add back logic
-                    Container(
-                      child: FlatButton(
-                        child: new Text("Tilbake"),
-                        onPressed: () {
-                          backCommand();
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              )
             ],
           ),
         ),

@@ -25,10 +25,10 @@ class ButtonControllerState extends State<ButtonController> {
       widget.onPull.call();
     }
     if (index == 2) {
-      widget.onRight.call();
+      widget.onLeft.call();
     }
     if (index == 3) {
-      widget.onLeft.call();
+      widget.onRight.call();
     }
   }
 

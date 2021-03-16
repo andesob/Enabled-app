@@ -2,6 +2,8 @@ import 'package:enabled_app/colors/colors.dart';
 import 'package:enabled_app/emergency_page/emergency_button.dart';
 import 'package:enabled_app/emergency_page/emergency_contact.dart';
 import 'package:enabled_app/emergency_page/emergency_popup.dart';
+import 'package:enabled_app/main_layout/button_controller.dart';
+import 'package:enabled_app/main_layout/main_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
@@ -132,52 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       child: Scaffold(
         backgroundColor: darkmode ? backgroundColor : Colors.white,
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(
-              MediaQuery.of(context).orientation == Orientation.portrait
-                  ? MediaQuery.of(context).size.height * 0.07
-                  : MediaQuery.of(context).size.height * 0.1),
-          child: GradientAppBar(
-            title: Text(
-              widget.title,
-              style: TextStyle(
-                color:
-                    Color(darkmode ? StaticColors.black : StaticColors.white),
-              ),
-            ),
-            gradient:
-                LinearGradient(colors: [appBarColorLight, appBarColorDark]),
-            actions: <Widget>[
-              Material(
-                type: MaterialType.transparency,
-                child: PopupMenuButton(
-                  icon: Icon(
-                    Icons.accessible_forward,
-                    color: Color(
-                        darkmode ? StaticColors.black : StaticColors.white),
-                  ),
-                  itemBuilder: (BuildContext bc) => [
-                    PopupMenuItem(child: Text("Darkmode"), value: 0),
-                    PopupMenuItem(
-                        child: Text("Change Emergency Contact"), value: 1),
-                  ],
-                  onSelected: (selected) {
-                    if (selected == 0) {
-                      _changeDarkmode();
-                    }
-                    if (selected == 1) {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return EmergencyPopup();
-                          });
-                    }
-                  },
-                ),
-              )
-            ],
-          ),
-        ),
+        appBar: MyAppBar(title: widget.title, hasDropDown: true,),
         body: Container(
           height: MediaQuery.of(context).size.height,
           child: new ListView(
@@ -188,44 +145,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 crossAxisCount: useMobileLayout ? 2 : 3,
                 children: mainPageBtnList.cast<Widget>(),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  FlatButton(
-                    onPressed: () {
-                      moveDown();
-                    },
-                    child: Text(Strings.down),
-                    color: Color(StaticColors.lighterSlateGray),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  FlatButton(
-                    onPressed: () {
-                      moveRight();
-                    },
-                    child: Text(Strings.right),
-                    color: Color(StaticColors.lighterSlateGray),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  FlatButton(
-                    onPressed: () {
-                      buttonPressed();
-                    },
-                    child: Text(Strings.enter),
-                    color: Color(StaticColors.lighterSlateGray),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                ],
-              ),
             ],
           ),
         ),
+        bottomNavigationBar: ButtonController(onPush: moveRight, onPull: moveDown, onLeft: buttonPressed,),
       ),
     );
   }

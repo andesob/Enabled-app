@@ -1,3 +1,5 @@
+import 'package:enabled_app/main_layout/button_controller.dart';
+import 'package:enabled_app/main_layout/main_appbar.dart';
 import 'package:enabled_app/needs/needs_category.dart';
 import 'package:enabled_app/needs/needs_vertical_list.dart';
 import 'package:enabled_app/needs/needs_page_button.dart';
@@ -58,33 +60,11 @@ class _NeedsPageState extends State<NeedsPage> {
                 stops: [0.0, 1.0],
                 colors: [lightPeach, darkPeach])),
         child: Scaffold(
-          appBar: PreferredSize(
-              preferredSize: Size.fromHeight(isPortrait ? 50 : 30),
-              child: GradientAppBar(
-                  title: Text(widget.title),
-                  gradient: LinearGradient(colors: [lightPeach, darkPeach]),
-                  actions: <Widget>[
-                    Material(
-                      type: MaterialType.transparency,
-                    )
-                  ])),
+          appBar: MyAppBar(title: widget.title,),
           body: Container(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                // Container(
-                // child: Align(
-                // alignment: Alignment.centerRight,
-                // child: FlatButton(
-                // child: Text("Add more"),
-                // onPressed: () {
-                // showDialog(
-                // context: context,
-                // builder: (BuildContext context) {
-                // return CustomPopup();
-                // });
-                // },
-                // ))),
                 Expanded(
                   child: ScrollablePositionedList.builder(
                       initialScrollIndex: 0,
@@ -94,48 +74,11 @@ class _NeedsPageState extends State<NeedsPage> {
                       scrollDirection: Axis.vertical,
                       itemBuilder: (context, index) => verticalList[index]),
                 ),
-                Center(
-                  child: Row(
-                    children: [
-                      Container(
-                        child: FlatButton(
-                          child: new Text("Opp"),
-                          onPressed: () {
-                            //upCommand();
-                          },
-                        ),
-                      ),
-                      Container(
-                        child: FlatButton(
-                          child: new Text("Ned"),
-                          onPressed: () {
-                            //downCommand();
-                          },
-                        ),
-                      ),
-                      Container(
-                        child: FlatButton(
-                          child: new Text("Ok"),
-                          onPressed: () {
-                            //selectCommand();
-                          },
-                        ),
-                      ),
-                      //TODO Add back logic
-                      Container(
-                        child: FlatButton(
-                          child: new Text("Tilbake"),
-                          onPressed: () {
-                            //backCommand();
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                )
               ],
             ),
           ),
+          //TODO: Update here to insert functionality
+          bottomNavigationBar: ButtonController(),
         ));
   }
 }

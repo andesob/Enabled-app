@@ -1,13 +1,12 @@
 import 'package:enabled_app/contacts_page/contact_item.dart';
 import 'package:enabled_app/contacts_page/contact_popup.dart';
 import 'package:enabled_app/colors/colors.dart';
-import 'package:enabled_app/controller/button_controller.dart';
-import 'package:enabled_app/main.dart';
+import 'package:enabled_app/main_layout/button_controller.dart';
+import 'package:enabled_app/main_layout/main_appbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class contacts extends StatefulWidget {
   contacts({Key key, this.title}) : super(key: key);
@@ -24,6 +23,7 @@ class _contactState extends State<contacts> {
   int lastFocusIndex = 0;
   final int maxScrollLength = 3;
 
+
   bool firstRun = true;
   final ItemScrollController itemScrollController = ItemScrollController();
   final ItemPositionsListener itemPositionsListener =
@@ -37,14 +37,15 @@ class _contactState extends State<contacts> {
 
   ///Scrolls up to the previous contact on the list.
    void _scrollDown() {
-    if (focusIndex < items.length - 1) {
-      removeHighlight();
-      focusIndex++;
-      addHighlight();
-      itemScrollController.scrollTo(
-          index: focusIndex, duration: Duration(seconds: 1));
-    }
-    return;
+     if (focusIndex < items.length - 1) {
+       removeHighlight();
+       focusIndex++;
+       addHighlight();
+       if (canScrollDown()) {
+         itemScrollController.scrollTo(
+             index: focusIndex, duration: Duration(seconds: 1), alignment: 0.8572);
+       }
+     }
   }
 
   ///Scrolls down to the next contact on the list.
@@ -53,10 +54,27 @@ class _contactState extends State<contacts> {
       removeHighlight();
       focusIndex--;
       addHighlight();
-      itemScrollController.scrollTo(
-          index: focusIndex, duration: Duration(seconds: 1));
+      if (canScrollUp()) {
+        itemScrollController.scrollTo(
+            index: focusIndex, duration: Duration(seconds: 1));
+      }
     }
-    return;
+  }
+
+  bool canScrollUp(){
+    bool canScroll = false;
+    if(focusIndex < items.length - 7){
+      canScroll = true;
+    }
+    return canScroll;
+  }
+
+  bool canScrollDown(){
+    bool canScroll = false;
+    if(focusIndex > 6){
+      canScroll = true;
+    }
+    return canScroll;
   }
 
   ///Adds bold font to the item in focus.
@@ -75,7 +93,6 @@ class _contactState extends State<contacts> {
 
   void _goBack(){
     Navigator.pop(context);
-    return;
   }
 
   @override
@@ -92,13 +109,7 @@ class _contactState extends State<contacts> {
               stops: [0.0, 1.0],
               colors: [lightPeach, darkPeach])),
       child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(isPortrait ? 50 : 30),
-          child: GradientAppBar(
-            title: Text(widget.title),
-            gradient: LinearGradient(colors: [lightPeach, darkPeach]),
-          ),
-        ),
+        appBar: MyAppBar(title: widget.title,),
         body: ScrollablePositionedList.builder(
           padding: EdgeInsets.all(8),
           itemCount: items.length,

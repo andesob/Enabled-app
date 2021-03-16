@@ -1,9 +1,11 @@
 import 'package:enabled_app/contacts_page//contacts.dart';
 import 'package:enabled_app/keyboard_page/keyboard_page.dart';
+import 'package:enabled_app/main_layout/themes.dart';
 import 'package:enabled_app/needs/needs.dart';
 import 'package:enabled_app/smart/smart_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'main_page/main_page.dart';
 import 'colors/colors.dart';
 import 'strings/strings.dart';
@@ -24,6 +26,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: Strings.enabled,
       initialRoute: Strings.home,
+      theme: ThemeData(
+        brightness: Brightness.light,
+        backgroundColor: Colors.white,
+      ),
+      darkTheme: ThemeData(
+        backgroundColor: Color(StaticColors.lightPeach),
+        brightness: Brightness.dark,
+      ),
       routes: {
         Strings.home: (context) => MyHomePage(title: Strings.home),
         Strings.needs: (context) => NeedsPage(title: Strings.needs),
