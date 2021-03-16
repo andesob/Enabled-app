@@ -6,6 +6,7 @@ import 'package:enabled_app/main_layout/main_appbar.dart';
 import 'package:enabled_app/page_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
@@ -19,6 +20,7 @@ class contacts extends StatefulWidget {
 }
 
 class _contactState extends PageState<contacts> {
+
   List<ContactItem> items = [];
   int focusIndex = 0;
   int lastFocusIndex = 0;
@@ -30,6 +32,18 @@ class _contactState extends PageState<contacts> {
       ItemPositionsListener.create();
 
   bool popupActive = false;
+
+  @override
+  void initState(){
+    super.initState();
+    for (var i = 0; i < 2; i++) {
+      ContactItem cItem = ContactItem(firstname: "Trym", surname: "Jørgensen", number: "95945742",);
+      items.add(cItem);
+      int cIndex = items.indexOf(cItem);
+      cItem.cIndex = cIndex;
+    }
+  }
+
 
   setPopup(bool active) {
     popupActive = active;
@@ -114,22 +128,40 @@ class _contactState extends PageState<contacts> {
 
   @override
   void leftPressed() {
-    // TODO: implement leftPressed
+    if (focusIndex > 0) {
+      removeHighlight();
+      focusIndex--;
+      addHighlight();
+      if (canScrollUp()) {
+        itemScrollController.scrollTo(
+            index: focusIndex, duration: Duration(seconds: 1));
+      }
+    }
   }
 
   @override
   void pullPressed() {
-    // TODO: implement pullPressed
+      Navigator.pop(context);
   }
 
   @override
-  void pushPressed() {
-    // TODO: implement pushPressed
+  Future<void> pushPressed() async {
+    await FlutterPhoneDirectCaller.callNumber(items[focusIndex].number);
   }
 
   @override
   void rightPressed() {
-    // TODO: implement rightPressed
+    if (focusIndex < items.length - 1) {
+      removeHighlight();
+      focusIndex++;
+      addHighlight();
+      if (canScrollDown()) {
+        itemScrollController.scrollTo(
+            index: focusIndex,
+            duration: Duration(seconds: 1),
+            alignment: 0.8572);
+      }
+    }
   }
 
 

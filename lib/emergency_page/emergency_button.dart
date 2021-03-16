@@ -28,7 +28,7 @@ class EmergencyButton extends MainPageButton{
 class EmergencyButtonState extends MainPageButtonState {
 
   @override
-  buttonPressed(context) {
+  pushPressed() {
     _launchURL(StaticEmergencyContact.emergencyContact);
   }
 

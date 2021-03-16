@@ -99,7 +99,7 @@ class MyHomePageState extends PageState<MyHomePage> {
 
   @override
   void pushPressed() {
-    list[currPos[1]][currPos[0]].state.pushPressed(context);
+    list[currPos[1]][currPos[0]].state.pushPressed();
   }
 
   void removeAllFocus() {
