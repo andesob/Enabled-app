@@ -149,8 +149,8 @@ class _CustomVerticaList extends State<CustomVerticalList> {
                   : null),
           margin: EdgeInsets.fromLTRB(12, 12, 12, 12),
           height: (MediaQuery.of(context).size.height -
-                  AppBar().preferredSize.height) /
-              6.0,
+                  AppBar().preferredSize.height - kBottomNavigationBarHeight) /
+              8,
           child: ScrollablePositionedList.builder(
             initialScrollIndex: 0,
             itemScrollController: scrollController,

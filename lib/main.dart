@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'main_page/main_page.dart';
-import 'colors/colors.dart';
 import 'strings/strings.dart';
 import 'package:enabled_app/custom_page/custom_page.dart';
 
@@ -15,7 +14,9 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
       .then((_) {
-    runApp(new MyApp());
+    runApp(ChangeNotifierProvider(
+        create: (_) => ThemeNotifier(), child: MyApp())
+    );
   });
 }
 
@@ -23,17 +24,12 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final themeState = Provider.of<ThemeNotifier>(context);
+
     return MaterialApp(
       title: Strings.enabled,
       initialRoute: Strings.home,
-      theme: ThemeData(
-        brightness: Brightness.light,
-        backgroundColor: Colors.white,
-      ),
-      darkTheme: ThemeData(
-        backgroundColor: Color(StaticColors.lightPeach),
-        brightness: Brightness.dark,
-      ),
+      theme: themeState.getTheme(),
       routes: {
         Strings.home: (context) => MyHomePage(title: Strings.home),
         Strings.needs: (context) => NeedsPage(title: Strings.needs),
