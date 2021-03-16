@@ -7,7 +7,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MainPage extends StatefulWidget {
-  MainPage({Key key, this.pageContent, this.title, this.pageKey}) : super(key: key);
+  MainPage({Key key, this.pageContent, this.title, this.pageKey})
+      : super(key: key);
   final StatefulWidget pageContent;
   final String title;
   final GlobalKey<PageState> pageKey;
@@ -44,9 +45,7 @@ class _MainPageState extends State<MainPage> {
         ),
         body: widget.pageContent,
         bottomNavigationBar: ButtonController(
-          onPush: widget.pageKey.currentState?.rightPressed,
-          onPull: widget.pageKey.currentState?.leftPressed,
-          onLeft: widget.pageKey.currentState?.pushPressed,
+          pageKey: widget.pageKey,
         ),
       ),
     );

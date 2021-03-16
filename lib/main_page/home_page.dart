@@ -44,6 +44,7 @@ class MyHomePageState extends PageState<MyHomePage> {
   void initState() {
     super.initState();
     addDefaultButtons();
+    _changeDarkmode();
   }
 
   void addDefaultButtons() {
@@ -57,7 +58,6 @@ class MyHomePageState extends PageState<MyHomePage> {
 
   void _changeDarkmode() {
     setState(() {
-      darkmode = !darkmode;
     });
   }
 
@@ -99,7 +99,7 @@ class MyHomePageState extends PageState<MyHomePage> {
 
   @override
   void pushPressed() {
-    list[currPos[1]][currPos[0]].state.pushPressed();
+    list[currPos[1]][currPos[0]].state.pushPressed(context);
   }
 
   void removeAllFocus() {
@@ -133,6 +133,7 @@ class MyHomePageState extends PageState<MyHomePage> {
   }
 
   Widget _buildLayout(useMobileLayout) {
+
     return Container(
       height: MediaQuery.of(context).size.height,
       child: new ListView(

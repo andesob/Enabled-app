@@ -86,7 +86,7 @@ class MyApp extends StatelessWidget {
               title: Strings.hue,
               pageKey: PageGlobalKeys.huePageKey,
             ),
-      }, //home: MyHomePage(title: 'Flutter Demo Home Page'),
+      },
     );
   }
 }
