@@ -4,16 +4,16 @@
 
 #import "GeneratedPluginRegistrant.h"
 
+#if __has_include(<flutter_ip/FlutterIpPlugin.h>)
+#import <flutter_ip/FlutterIpPlugin.h>
+#else
+@import flutter_ip;
+#endif
+
 #if __has_include(<flutter_phone_direct_caller/FlutterPhoneDirectCallerPlugin.h>)
 #import <flutter_phone_direct_caller/FlutterPhoneDirectCallerPlugin.h>
 #else
 @import flutter_phone_direct_caller;
-#endif
-
-#if __has_include(<get_ip/GetIpPlugin.h>)
-#import <get_ip/GetIpPlugin.h>
-#else
-@import get_ip;
 #endif
 
 #if __has_include(<integration_test/IntegrationTestPlugin.h>)
@@ -34,14 +34,21 @@
 @import url_launcher;
 #endif
 
+#if __has_include(<wifi/WifiPlugin.h>)
+#import <wifi/WifiPlugin.h>
+#else
+@import wifi;
+#endif
+
 @implementation GeneratedPluginRegistrant
 
 + (void)registerWithRegistry:(NSObject<FlutterPluginRegistry>*)registry {
+  [FlutterIpPlugin registerWithRegistrar:[registry registrarForPlugin:@"FlutterIpPlugin"]];
   [FlutterPhoneDirectCallerPlugin registerWithRegistrar:[registry registrarForPlugin:@"FlutterPhoneDirectCallerPlugin"]];
-  [GetIpPlugin registerWithRegistrar:[registry registrarForPlugin:@"GetIpPlugin"]];
   [IntegrationTestPlugin registerWithRegistrar:[registry registrarForPlugin:@"IntegrationTestPlugin"]];
   [FLTSharedPreferencesPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTSharedPreferencesPlugin"]];
   [FLTURLLauncherPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTURLLauncherPlugin"]];
+  [WifiPlugin registerWithRegistrar:[registry registrarForPlugin:@"WifiPlugin"]];
 }
 
 @end

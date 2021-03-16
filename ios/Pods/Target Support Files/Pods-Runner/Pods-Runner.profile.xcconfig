@@ -1,10 +1,10 @@
 ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES
 CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO
-FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/flutter_phone_direct_caller" "${PODS_CONFIGURATION_BUILD_DIR}/get_ip" "${PODS_CONFIGURATION_BUILD_DIR}/integration_test" "${PODS_CONFIGURATION_BUILD_DIR}/shared_preferences" "${PODS_CONFIGURATION_BUILD_DIR}/url_launcher"
+FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/Ipify" "${PODS_CONFIGURATION_BUILD_DIR}/flutter_ip" "${PODS_CONFIGURATION_BUILD_DIR}/flutter_phone_direct_caller" "${PODS_CONFIGURATION_BUILD_DIR}/integration_test" "${PODS_CONFIGURATION_BUILD_DIR}/shared_preferences" "${PODS_CONFIGURATION_BUILD_DIR}/url_launcher" "${PODS_CONFIGURATION_BUILD_DIR}/wifi"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/flutter_phone_direct_caller/flutter_phone_direct_caller.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/get_ip/get_ip.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/integration_test/integration_test.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/shared_preferences/shared_preferences.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/url_launcher/url_launcher.framework/Headers"
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/Ipify/Ipify.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/flutter_ip/flutter_ip.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/flutter_phone_direct_caller/flutter_phone_direct_caller.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/integration_test/integration_test.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/shared_preferences/shared_preferences.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/url_launcher/url_launcher.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/wifi/wifi.framework/Headers"
 LD_RUNPATH_SEARCH_PATHS = $(inherited) '@executable_path/Frameworks' '@loader_path/Frameworks'
-OTHER_LDFLAGS = $(inherited) -framework "flutter_phone_direct_caller" -framework "get_ip" -framework "integration_test" -framework "shared_preferences" -framework "url_launcher"
+OTHER_LDFLAGS = $(inherited) -framework "Ipify" -framework "flutter_ip" -framework "flutter_phone_direct_caller" -framework "integration_test" -framework "shared_preferences" -framework "url_launcher" -framework "wifi"
 OTHER_SWIFT_FLAGS = $(inherited) -D COCOAPODS
 PODS_BUILD_DIR = ${BUILD_DIR}
 PODS_CONFIGURATION_BUILD_DIR = ${PODS_BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)

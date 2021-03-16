@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:io';
-
-import 'package:get_ip/get_ip.dart';
+import 'package:enabled_app/desktop_connection/network_service.dart';
 
 class SocketSingleton {
   static final SocketSingleton _singleton = SocketSingleton._internal();
-  String _localIP = "localhost";
+  String _localIP;
+  String _externalIP;
   HttpServer _serverSocket;
   WebSocket _clientSocket;
   int _port = 9000;
@@ -25,9 +25,12 @@ class SocketSingleton {
   _startSocket() async {
     print("start socket called");
     _localIP = await getIP();
-    print(_localIP);
+    print("Get ip: " + _localIP);
+    print("Get external ip: " + _localIP);
     _serverSocket = await HttpServer.bind(_localIP, _port, shared: true);
     _serverSocket.transform(WebSocketTransformer()).listen(handleClient);
+    print("server ip: " + _serverSocket.address.toString());
+    print("server port: " + _serverSocket.port.toString());
   }
 
   String get command {
@@ -35,7 +38,12 @@ class SocketSingleton {
   }
 
   Future<String> getIP() async {
-    String ip = await GetIp.ipAddress;
+    String ip = await NetworkService.localIP;
+    return ip;
+  }
+
+  Future<String> getExternalIP() async {
+    String ip = await NetworkService.localIP;
     return ip;
   }
 

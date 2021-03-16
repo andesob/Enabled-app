@@ -15,10 +15,11 @@ import io.flutter.embedding.engine.plugins.shim.ShimPluginRegistry;
 public final class GeneratedPluginRegistrant {
   public static void registerWith(@NonNull FlutterEngine flutterEngine) {
     ShimPluginRegistry shimPluginRegistry = new ShimPluginRegistry(flutterEngine);
+      zeno.com.flutter_ip.FlutterIpPlugin.registerWith(shimPluginRegistry.registrarFor("zeno.com.flutter_ip.FlutterIpPlugin"));
       com.yanisalfian.flutterphonedirectcaller.FlutterPhoneDirectCallerPlugin.registerWith(shimPluginRegistry.registrarFor("com.yanisalfian.flutterphonedirectcaller.FlutterPhoneDirectCallerPlugin"));
-      de.pdad.getip.GetIpPlugin.registerWith(shimPluginRegistry.registrarFor("de.pdad.getip.GetIpPlugin"));
     flutterEngine.getPlugins().add(new dev.flutter.plugins.integration_test.IntegrationTestPlugin());
     flutterEngine.getPlugins().add(new io.flutter.plugins.sharedpreferences.SharedPreferencesPlugin());
     flutterEngine.getPlugins().add(new io.flutter.plugins.urllauncher.UrlLauncherPlugin());
+      com.ly.wifi.WifiPlugin.registerWith(shimPluginRegistry.registrarFor("com.ly.wifi.WifiPlugin"));
   }
 }
