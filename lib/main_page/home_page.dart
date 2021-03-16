@@ -119,7 +119,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _buildLayout(useMobileLayout) {
-
     return Container(
       decoration: new BoxDecoration(
         gradient: new LinearGradient(

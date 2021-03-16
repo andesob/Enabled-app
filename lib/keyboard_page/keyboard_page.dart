@@ -1,7 +1,7 @@
 import 'package:enabled_app/colors/colors.dart';
 import 'package:enabled_app/keyboard_page/custom_keyboard.dart';
 import 'package:enabled_app/keyboard_page/custom_dictionary.dart';
-import 'package:enabled_app/main_page/main_page.dart';
+import 'package:enabled_app/main_page/home_page.dart';
 import 'package:enabled_app/strings/strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
