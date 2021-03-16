@@ -4,6 +4,7 @@ import 'package:enabled_app/keyboard_page/custom_dictionary.dart';
 import 'package:enabled_app/main_page/home_page.dart';
 import 'package:enabled_app/main_layout/main_appbar.dart';
 import 'package:enabled_app/main_layout/button_controller.dart';
+import 'package:enabled_app/page_state.dart';
 import 'package:enabled_app/strings/strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class KeyboardPage extends StatefulWidget {
   _KeyboardPageState createState() => _KeyboardPageState();
 }
 
-class _KeyboardPageState extends State<KeyboardPage> {
+class _KeyboardPageState extends PageState<KeyboardPage> {
   TextEditingController _controller = TextEditingController();
   Color appBarColorLight = Color(StaticColors.apricot);
   Color appBarColorDark = Color(StaticColors.melon);
@@ -164,5 +165,25 @@ class _KeyboardPageState extends State<KeyboardPage> {
         bottomNavigationBar: ButtonController(),
       ),
     );
+  }
+
+  @override
+  void leftPressed() {
+    // TODO: implement leftPressed
+  }
+
+  @override
+  void pullPressed() {
+    // TODO: implement pullPressed
+  }
+
+  @override
+  void pushPressed() {
+    // TODO: implement pushPressed
+  }
+
+  @override
+  void rightPressed() {
+    // TODO: implement rightPressed
   }
 }

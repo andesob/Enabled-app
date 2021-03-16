@@ -2,6 +2,7 @@ import 'package:enabled_app/colors/colors.dart';
 import 'package:enabled_app/libraries/hue/main/bridge_api.dart';
 import 'package:enabled_app/libraries/hue/main/hue_api.dart';
 import 'package:enabled_app/main_page/main_page_button.dart';
+import 'package:enabled_app/page_state.dart';
 import 'package:enabled_app/strings/strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class SmartMainPage extends StatefulWidget {
   SmartMainPageState createState() => SmartMainPageState();
 }
 
-class SmartMainPageState extends State<SmartMainPage> {
+class SmartMainPageState extends PageState<SmartMainPage> {
   Color lightPeach = Color(StaticColors.lightPeach);
   Color darkPeach = Color(StaticColors.apricot);
   Color appBarColorLight = Color(StaticColors.apricot);
@@ -29,7 +30,6 @@ class SmartMainPageState extends State<SmartMainPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     addDefaultButtons();
   }
 
@@ -136,5 +136,25 @@ class SmartMainPageState extends State<SmartMainPage> {
   void addDefaultButtons() {
     smartPageBtnList.add(MainPageButton(text: Strings.chromecast));
     smartPageBtnList.add(MainPageButton(text: Strings.hue));
+  }
+
+  @override
+  void leftPressed() {
+    // TODO: implement leftPressed
+  }
+
+  @override
+  void pullPressed() {
+    // TODO: implement pullPressed
+  }
+
+  @override
+  void pushPressed() {
+    // TODO: implement pushPressed
+  }
+
+  @override
+  void rightPressed() {
+    // TODO: implement rightPressed
   }
 }

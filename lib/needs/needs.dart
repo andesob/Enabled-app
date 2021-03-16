@@ -3,6 +3,7 @@ import 'package:enabled_app/main_layout/main_appbar.dart';
 import 'package:enabled_app/needs/needs_category.dart';
 import 'package:enabled_app/needs/needs_vertical_list.dart';
 import 'package:enabled_app/needs/needs_page_button.dart';
+import 'package:enabled_app/page_state.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -17,7 +18,7 @@ class NeedsPage extends StatefulWidget {
   _NeedsPageState createState() => _NeedsPageState();
 }
 
-class _NeedsPageState extends State<NeedsPage> {
+class _NeedsPageState extends PageState<NeedsPage> {
   List<NeedsCategory> categoryList = [];
   List<NeedsVerticalList> verticalList = [];
 
@@ -80,5 +81,25 @@ class _NeedsPageState extends State<NeedsPage> {
           //TODO: Update here to insert functionality
           bottomNavigationBar: ButtonController(),
         ));
+  }
+
+  @override
+  void leftPressed() {
+    // TODO: implement leftPressed
+  }
+
+  @override
+  void pullPressed() {
+    // TODO: implement pullPressed
+  }
+
+  @override
+  void pushPressed() {
+    // TODO: implement pushPressed
+  }
+
+  @override
+  void rightPressed() {
+    // TODO: implement rightPressed
   }
 }

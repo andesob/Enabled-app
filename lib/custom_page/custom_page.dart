@@ -5,6 +5,7 @@ import 'package:enabled_app/custom_page/custom_vertical_list.dart';
 import 'package:enabled_app/custom_page/vertical_list_buttons.dart';
 import 'package:enabled_app/main_layout/button_controller.dart';
 import 'package:enabled_app/main_layout/main_appbar.dart';
+import 'package:enabled_app/page_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
@@ -21,7 +22,7 @@ class CustomPageHome extends StatefulWidget {
   _CustomPageHome createState() => _CustomPageHome();
 }
 
-class _CustomPageHome extends State<CustomPageHome> {
+class _CustomPageHome extends PageState<CustomPageHome> {
   List<CustomCategory> categoryList = [];
   List<CustomVerticalList> verticalList = [];
   List<VerticalListButtons> buttonList = [];
@@ -249,5 +250,25 @@ class _CustomPageHome extends State<CustomPageHome> {
         ),
       ),
     );
+  }
+
+  @override
+  void leftPressed() {
+    // TODO: implement leftPressed
+  }
+
+  @override
+  void pullPressed() {
+    // TODO: implement pullPressed
+  }
+
+  @override
+  void pushPressed() {
+    // TODO: implement pushPressed
+  }
+
+  @override
+  void rightPressed() {
+    // TODO: implement rightPressed
   }
 }

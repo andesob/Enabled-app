@@ -5,6 +5,7 @@ import 'package:enabled_app/libraries/hue/main/bridge_api.dart';
 import 'package:enabled_app/main_page.dart';
 import 'package:enabled_app/main_layout/themes.dart';
 import 'package:enabled_app/needs/needs.dart';
+import 'package:enabled_app/page_global_keys.dart';
 import 'package:enabled_app/page_state.dart';
 import 'package:enabled_app/philips_hue/hue_page.dart';
 import 'package:enabled_app/smart/smart_page.dart';
@@ -28,7 +29,6 @@ void main() {
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
-  GlobalKey<PageState> pageKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -45,21 +45,47 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         Strings.home: (context) => MainPage(
-            pageContent: MyHomePage(key: pageKey, title: Strings.home),
+            pageContent: MyHomePage(
+                key: PageGlobalKeys.homePageKey, title: Strings.home),
             title: Strings.home,
-            homePageKey: pageKey),
-        Strings.needs: (context) =>
-            MainPage(pageContent: NeedsPage(), title: Strings.needs),
-        Strings.contacts: (context) =>
-            MainPage(pageContent: contacts(), title: Strings.contacts),
-        Strings.custom: (context) =>
-            MainPage(pageContent: CustomPageHome(), title: Strings.custom),
-        Strings.keyboard: (context) =>
-            MainPage(pageContent: KeyboardPage(), title: Strings.keyboard),
-        Strings.smart: (context) =>
-            MainPage(pageContent: SmartMainPage(), title: Strings.smart),
-        Strings.hue: (context) =>
-            MainPage(pageContent: HuePage(), title: Strings.hue),
+            pageKey: PageGlobalKeys.homePageKey),
+        Strings.needs: (context) => MainPage(
+            pageContent: NeedsPage(key: PageGlobalKeys.needsPageKey),
+            title: Strings.needs,
+            pageKey: PageGlobalKeys.needsPageKey),
+        Strings.contacts: (context) => MainPage(
+              pageContent: contacts(
+                key: PageGlobalKeys.contactsPageKey,
+              ),
+              title: Strings.contacts,
+              pageKey: PageGlobalKeys.contactsPageKey,
+            ),
+        Strings.custom: (context) => MainPage(
+              pageContent: CustomPageHome(
+                key: PageGlobalKeys.customPageKey,
+              ),
+              title: Strings.custom,
+              pageKey: PageGlobalKeys.customPageKey,
+            ),
+        Strings.keyboard: (context) => MainPage(
+              pageContent: KeyboardPage(
+                key: PageGlobalKeys.keyboardPageKey,
+              ),
+              title: Strings.keyboard,
+              pageKey: PageGlobalKeys.keyboardPageKey,
+            ),
+        Strings.smart: (context) => MainPage(
+              pageContent: SmartMainPage(
+                key: PageGlobalKeys.smartPageKey,
+              ),
+              title: Strings.smart,
+              pageKey: PageGlobalKeys.smartPageKey,
+            ),
+        Strings.hue: (context) => MainPage(
+              pageContent: HuePage(key: PageGlobalKeys.huePageKey),
+              title: Strings.hue,
+              pageKey: PageGlobalKeys.huePageKey,
+            ),
       }, //home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }

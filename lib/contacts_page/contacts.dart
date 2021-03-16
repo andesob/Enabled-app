@@ -3,6 +3,7 @@ import 'package:enabled_app/contacts_page/contact_popup.dart';
 import 'package:enabled_app/colors/colors.dart';
 import 'package:enabled_app/main_layout/button_controller.dart';
 import 'package:enabled_app/main_layout/main_appbar.dart';
+import 'package:enabled_app/page_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
@@ -17,7 +18,7 @@ class contacts extends StatefulWidget {
   _contactState createState() => _contactState();
 }
 
-class _contactState extends State<contacts> {
+class _contactState extends PageState<contacts> {
   List<ContactItem> items = [];
   int focusIndex = 0;
   int lastFocusIndex = 0;
@@ -138,5 +139,25 @@ class _contactState extends State<contacts> {
       ),
     );
     throw UnimplementedError();
+  }
+
+  @override
+  void leftPressed() {
+    // TODO: implement leftPressed
+  }
+
+  @override
+  void pullPressed() {
+    // TODO: implement pullPressed
+  }
+
+  @override
+  void pushPressed() {
+    // TODO: implement pushPressed
+  }
+
+  @override
+  void rightPressed() {
+    // TODO: implement rightPressed
   }
 }
