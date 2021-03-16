@@ -24,8 +24,8 @@ This app is meant to be used with the Enabled Desktop App which can be found her
 - https://github.com/rojahno/enabled-desktop
 
 1. Download our app from [Install](#install).
-2. Download the desktop app.
-3. To be continued...
+2. Download the desktop app from [here](https://github.com/rojahno/enabled-desktop).
+3. Follow the desktop app setup guide
 
 ### Install
 
