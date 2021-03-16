@@ -48,87 +48,20 @@ class SmartMainPageState extends PageState<SmartMainPage> {
     api.findBridge();
 
     return Container(
-      decoration: new BoxDecoration(
-        gradient: new LinearGradient(
-          colors: [lightPeach, darkPeach],
-          begin: FractionalOffset.topCenter,
-          end: FractionalOffset.bottomCenter,
-        ),
-      ),
-      child: Scaffold(
-        backgroundColor: darkmode ? backgroundColor : Colors.white,
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(
-              MediaQuery.of(context).orientation == Orientation.portrait
-                  ? MediaQuery.of(context).size.height * 0.07
-                  : MediaQuery.of(context).size.height * 0.1),
-          child: GradientAppBar(
-            title: Text(widget.title),
-            gradient:
-                LinearGradient(colors: [appBarColorLight, appBarColorDark]),
-            actions: <Widget>[
-              Material(
-                type: MaterialType.transparency,
-                child: IconButton(
-                    icon: Icon(Icons.accessible_forward),
-                    color: Color(
-                        darkmode ? StaticColors.black : StaticColors.white),
-                    splashColor: Color(Colors.grey.value),
-                    padding: EdgeInsets.zero,
-                    onPressed: () {
-                      _changeDarkmode();
-                    }),
-              )
-            ],
+      height: MediaQuery.of(context).size.height,
+      child: Column(
+        children: <Widget>[
+          Container(
+            padding:
+                EdgeInsets.fromLTRB(leftRightPadding, 0, leftRightPadding, 0),
+            child: GridView.count(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              crossAxisCount: useMobileLayout ? 1 : smartPageBtnList.length,
+              children: smartPageBtnList.cast<Widget>(),
+            ),
           ),
-        ),
-        body: Container(
-          height: MediaQuery.of(context).size.height,
-          child: Column(
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.fromLTRB(
-                    leftRightPadding, 0, leftRightPadding, 0),
-                child: GridView.count(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  crossAxisCount: useMobileLayout ? 1 : smartPageBtnList.length,
-                  children: smartPageBtnList.cast<Widget>(),
-                ),
-              ),
-              Spacer(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  FlatButton(
-                    onPressed: () {},
-                    child: Text("Pink"),
-                    color: Color(StaticColors.lighterSlateGray),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  FlatButton(
-                    onPressed: () {},
-                    child: Text("Green"),
-                    color: Color(StaticColors.lighterSlateGray),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  FlatButton(
-                    onPressed: () {},
-                    child: Text(Strings.enter),
-                    color: Color(StaticColors.lighterSlateGray),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
+        ],
       ),
     );
   }

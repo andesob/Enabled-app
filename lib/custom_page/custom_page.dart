@@ -197,57 +197,45 @@ class _CustomPageHome extends PageState<CustomPageHome> {
     }
 
     return Container(
-      decoration: new BoxDecoration(
-          gradient: new LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.topRight,
-              stops: [0.0, 1.0],
-              colors: [lightPeach, darkPeach])),
-      child: Scaffold(
-        appBar: MyAppBar(title: widget.title,),
-        bottomNavigationBar: ButtonController(onPush: upCommand, onPull: downCommand, onLeft: selectCommand, onRight: backCommand,),
-        body: Container(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Container(
-                  child: Align(
-                      alignment: Alignment.centerRight,
-                      child: FlatButton(
-                        child: Text("Legg til"),
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return CustomPopup(
-                                  items: categoryList,
-                                );
-                              }).then((value) {
-                            setState(() {
-                              print("reached: " + value);
-                              CustomCategory customCategory =
-                                  new CustomCategory(
-                                      categoryObjects: ['1', '2', '3'],
-                                      categoryName: value);
-                              categoryList.add(customCategory);
-                            });
-                          }).catchError((error) {
-                            print(error);
-                          });
-                        },
-                      ))),
-              Expanded(
-                child: ScrollablePositionedList.builder(
-                    initialScrollIndex: 0,
-                    itemScrollController: itemScrollController,
-                    itemPositionsListener: itemPositionsListener,
-                    itemCount: verticalList.length,
-                    scrollDirection: Axis.vertical,
-                    itemBuilder: (context, index) => verticalList[index]),
-              ),
-            ],
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Container(
+              child: Align(
+                  alignment: Alignment.centerRight,
+                  child: FlatButton(
+                    child: Text("Legg til"),
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return CustomPopup(
+                              items: categoryList,
+                            );
+                          }).then((value) {
+                        setState(() {
+                          print("reached: " + value);
+                          CustomCategory customCategory =
+                          new CustomCategory(
+                              categoryObjects: ['1', '2', '3'],
+                              categoryName: value);
+                          categoryList.add(customCategory);
+                        });
+                      }).catchError((error) {
+                        print(error);
+                      });
+                    },
+                  ))),
+          Expanded(
+            child: ScrollablePositionedList.builder(
+                initialScrollIndex: 0,
+                itemScrollController: itemScrollController,
+                itemPositionsListener: itemPositionsListener,
+                itemCount: verticalList.length,
+                scrollDirection: Axis.vertical,
+                itemBuilder: (context, index) => verticalList[index]),
           ),
-        ),
+        ],
       ),
     );
   }

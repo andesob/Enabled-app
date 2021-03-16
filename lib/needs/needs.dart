@@ -54,33 +54,21 @@ class _NeedsPageState extends PageState<NeedsPage> {
     ItemPositionsListener.create();
 
     return Container(
-        decoration: new BoxDecoration(
-            gradient: new LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.topRight,
-                stops: [0.0, 1.0],
-                colors: [lightPeach, darkPeach])),
-        child: Scaffold(
-          appBar: MyAppBar(title: widget.title,),
-          body: Container(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Expanded(
-                  child: ScrollablePositionedList.builder(
-                      initialScrollIndex: 0,
-                      itemScrollController: itemScrollController,
-                      itemPositionsListener: itemPositionsListener,
-                      itemCount: verticalList.length,
-                      scrollDirection: Axis.vertical,
-                      itemBuilder: (context, index) => verticalList[index]),
-                ),
-              ],
-            ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Expanded(
+            child: ScrollablePositionedList.builder(
+                initialScrollIndex: 0,
+                itemScrollController: itemScrollController,
+                itemPositionsListener: itemPositionsListener,
+                itemCount: verticalList.length,
+                scrollDirection: Axis.vertical,
+                itemBuilder: (context, index) => verticalList[index]),
           ),
-          //TODO: Update here to insert functionality
-          bottomNavigationBar: ButtonController(),
-        ));
+        ],
+      ),
+    );
   }
 
   @override

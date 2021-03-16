@@ -117,12 +117,8 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Scaffold(
-        backgroundColor: darkmode ? Color(StaticColors.onyx) : Colors.white,
-        appBar: MyAppBar(title: widget.title,),
-        body: Column(
-            children: [
+    return Column(
+        children: [
           Container(
             child: TextField(
               controller: _controller,
@@ -131,9 +127,9 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
               autofocus: true,
               style: TextStyle(
                 fontSize:
-                    MediaQuery.of(context).orientation == Orientation.portrait
-                        ? 24
-                        : 12,
+                MediaQuery.of(context).orientation == Orientation.portrait
+                    ? 24
+                    : 12,
               ),
               decoration: InputDecoration(
                 filled: true,
@@ -161,10 +157,7 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
               )
             ]),
           ),
-        ]),
-        bottomNavigationBar: ButtonController(),
-      ),
-    );
+        ]);
   }
 
   @override

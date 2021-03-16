@@ -32,68 +32,34 @@ class _HuePageState extends PageState<HuePage> {
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
     HueApi api = new HueApi();
 
-    return Container(
-      decoration: new BoxDecoration(
-          gradient: new LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.topRight,
-              stops: [0.0, 1.0],
-              colors: [lightPeach, darkPeach])),
-      child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(isPortrait ? 50 : 30),
-          child: GradientAppBar(
-            title: Text("Hue Page"),
-            gradient: LinearGradient(colors: [lightPeach, darkPeach]),
-          ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        isLightOn
+            ? HuePageButton(
+          text: "On",
+          onClick: powerOff,
+        )
+            : HuePageButton(
+          text: "Off",
+          onClick: powerOn,
         ),
-        body: Column(
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            isLightOn
-                ? HuePageButton(
-                    text: "On",
-                    onClick: powerOff,
-                  )
-                : HuePageButton(
-                    text: "Off",
-                    onClick: powerOn,
-                  ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                HuePageButton(
-                  text: "Dim",
-                  onClick: brightnessDown,
-                ),
-                HuePageButton(
-                  text: "Brighten",
-                  onClick: brightnessUp,
-                ),
-              ],
+          children: [
+            HuePageButton(
+              text: "Dim",
+              onClick: brightnessDown,
             ),
-            HueDropdown(onClick: changeScene,),
-          ],
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          selectedItemColor: Color(StaticColors.lighterSlateGray),
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.arrow_upward),
-              label: 'Up',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.arrow_downward),
-              label: 'Down',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.add),
-              label: 'Send',
+            HuePageButton(
+              text: "Brighten",
+              onClick: brightnessUp,
             ),
           ],
         ),
-      ),
+        HueDropdown(onClick: changeScene,),
+      ],
     );
   }
 
