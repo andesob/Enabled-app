@@ -4,10 +4,15 @@
 ![React Version](https://img.shields.io/badge/Flutter-v1.25.0-blue.svg)
 ![Code Size](https://img.shields.io/github/languages/code-size/andesob/Enabled-app)
 
-![example](https://i.imgur.com/OvMZBs9.jpg)
+<img alt="Enabled App"
+        height="400"
+        src="https://i.imgur.com/h7UT5dT.jpeg" />
 
 ### Description
 This Project was created as a Bachelor Thesis at Norwegian University of Science and Technology in Ålesund. The aim of the project is to give patients with ALS a way to perform simple tasks and communicate with the people around them using the [Emotiv Epoc X Headset](https://www.emotiv.com/epoc-x/) 
+
+#### Bachelor Thesis
+Here is a link to our thesis if you want to read more into our project - [Bachelor Report]()
 
 ## Table of content
 
