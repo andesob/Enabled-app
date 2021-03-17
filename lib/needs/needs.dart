@@ -1,6 +1,9 @@
+import 'package:enabled_app/main_layout/button_controller.dart';
+import 'package:enabled_app/main_layout/main_appbar.dart';
 import 'package:enabled_app/needs/needs_category.dart';
 import 'package:enabled_app/needs/needs_vertical_list.dart';
 import 'package:enabled_app/needs/needs_page_button.dart';
+import 'package:enabled_app/page_state.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -15,7 +18,7 @@ class NeedsPage extends StatefulWidget {
   _NeedsPageState createState() => _NeedsPageState();
 }
 
-class _NeedsPageState extends State<NeedsPage> {
+class _NeedsPageState extends PageState<NeedsPage> {
   List<NeedsCategory> categoryList = [];
   List<NeedsVerticalList> verticalList = [];
 
@@ -51,90 +54,40 @@ class _NeedsPageState extends State<NeedsPage> {
     ItemPositionsListener.create();
 
     return Container(
-        decoration: new BoxDecoration(
-            gradient: new LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.topRight,
-                stops: [0.0, 1.0],
-                colors: [lightPeach, darkPeach])),
-        child: Scaffold(
-          appBar: PreferredSize(
-              preferredSize: Size.fromHeight(isPortrait ? 50 : 30),
-              child: GradientAppBar(
-                  gradient: LinearGradient(colors: [lightPeach, darkPeach]),
-                  actions: <Widget>[
-                    Material(
-                      type: MaterialType.transparency,
-                    )
-                  ])),
-          body: Container(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                // Container(
-                // child: Align(
-                // alignment: Alignment.centerRight,
-                // child: FlatButton(
-                // child: Text("Add more"),
-                // onPressed: () {
-                // showDialog(
-                // context: context,
-                // builder: (BuildContext context) {
-                // return CustomPopup();
-                // });
-                // },
-                // ))),
-                Expanded(
-                  child: ScrollablePositionedList.builder(
-                      initialScrollIndex: 0,
-                      itemScrollController: itemScrollController,
-                      itemPositionsListener: itemPositionsListener,
-                      itemCount: verticalList.length,
-                      scrollDirection: Axis.vertical,
-                      itemBuilder: (context, index) => verticalList[index]),
-                ),
-                Center(
-                  child: Row(
-                    children: [
-                      Container(
-                        child: FlatButton(
-                          child: new Text("Opp"),
-                          onPressed: () {
-                            //upCommand();
-                          },
-                        ),
-                      ),
-                      Container(
-                        child: FlatButton(
-                          child: new Text("Ned"),
-                          onPressed: () {
-                            //downCommand();
-                          },
-                        ),
-                      ),
-                      Container(
-                        child: FlatButton(
-                          child: new Text("Ok"),
-                          onPressed: () {
-                            //selectCommand();
-                          },
-                        ),
-                      ),
-                      //TODO Add back logic
-                      Container(
-                        child: FlatButton(
-                          child: new Text("Tilbake"),
-                          onPressed: () {
-                            //backCommand();
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Expanded(
+            child: ScrollablePositionedList.builder(
+                initialScrollIndex: 0,
+                itemScrollController: itemScrollController,
+                itemPositionsListener: itemPositionsListener,
+                itemCount: verticalList.length,
+                scrollDirection: Axis.vertical,
+                itemBuilder: (context, index) => verticalList[index]),
           ),
-        ));
+        ],
+      ),
+    );
+  }
+
+  @override
+  void leftPressed() {
+    // TODO: implement leftPressed
+  }
+
+  @override
+  void pullPressed() {
+    // TODO: implement pullPressed
+  }
+
+  @override
+  void pushPressed() {
+    // TODO: implement pushPressed
+  }
+
+  @override
+  void rightPressed() {
+    // TODO: implement rightPressed
   }
 }

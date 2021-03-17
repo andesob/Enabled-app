@@ -1,9 +1,11 @@
+import 'dart:convert';
+
 import 'light_state.dart';
 
 class Light {
   final String _name;
   final String _type;
-  final int _id;
+  final String _id;
   final LightState _state;
   final String _modelId;
   final String _uniqueId;
@@ -24,11 +26,11 @@ class Light {
       this._luminaireUniqueId,
       this._swVersion);
 
-  Light.fromJson(Map<String, dynamic> json)
+  Light.fromJson(Map<String, dynamic> json, id)
       : _name = json["name"],
         _type = json["type"],
-        _id = json["id"],
-        _state = json["state"],
+        _id = id,
+        _state = LightState.fromJson(json["state"]),
         _modelId = json["modelid"],
         _uniqueId = json["uniqueid"],
         _manufacturerName = json["manufacturername"],
@@ -50,17 +52,32 @@ class Light {
 
   LightState get state => _state;
 
-  int get id => _id;
+  String get id => _id;
 
   String get type => _type;
 
   String get name => _name;
 
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> map = new Map();
+    map["name"] = _name;
+    map["type"] = _type;
+    map["id"] = _id;
+    map["state"] = _state.toMap();
+    map["modelid"] = _modelId;
+    map["uniqueid"] = _uniqueId;
+    map["manufacturername"] = _manufacturerName;
+    map["productname"] = _productName;
+    map["luminaireuniqueid"] = _luminaireUniqueId;
+    map["swversion"] = _swVersion;
+    return map;
+  }
+
   @override
   String toString() {
     StringBuffer sb = new StringBuffer();
     sb
-      ..writeln("Name: " + name)
+      ..writeln("Name: " + _name)
       ..writeln("Type: " + _type)
       ..writeln("ID: " + _id.toString())
       ..writeln("\nState: \n" + _state.toString())

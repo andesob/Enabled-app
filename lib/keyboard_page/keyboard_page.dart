@@ -1,7 +1,10 @@
 import 'package:enabled_app/colors/colors.dart';
 import 'package:enabled_app/keyboard_page/custom_keyboard.dart';
 import 'package:enabled_app/keyboard_page/custom_dictionary.dart';
-import 'package:enabled_app/main_page/main_page.dart';
+import 'package:enabled_app/main_page/home_page.dart';
+import 'package:enabled_app/main_layout/main_appbar.dart';
+import 'package:enabled_app/main_layout/button_controller.dart';
+import 'package:enabled_app/page_state.dart';
 import 'package:enabled_app/strings/strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +19,7 @@ class KeyboardPage extends StatefulWidget {
   _KeyboardPageState createState() => _KeyboardPageState();
 }
 
-class _KeyboardPageState extends State<KeyboardPage> {
+class _KeyboardPageState extends PageState<KeyboardPage> {
   TextEditingController _controller = TextEditingController();
   Color appBarColorLight = Color(StaticColors.apricot);
   Color appBarColorDark = Color(StaticColors.melon);
@@ -114,32 +117,8 @@ class _KeyboardPageState extends State<KeyboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Scaffold(
-        backgroundColor: darkmode ? Color(StaticColors.onyx) : Colors.white,
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50),
-          child: GradientAppBar(
-            gradient:
-                LinearGradient(colors: [appBarColorLight, appBarColorDark]),
-            actions: <Widget>[
-              Material(
-                type: MaterialType.transparency,
-                child: IconButton(
-                    icon: Icon(Icons.accessible_forward),
-                    color: Color(
-                        darkmode ? StaticColors.black : StaticColors.white),
-                    splashColor: Color(Colors.grey.value),
-                    padding: EdgeInsets.zero,
-                    onPressed: () {
-                      _changeDarkmode();
-                    }),
-              )
-            ],
-          ),
-        ),
-        body: Column(
-            children: [
+    return Column(
+        children: [
           Container(
             child: TextField(
               controller: _controller,
@@ -148,9 +127,9 @@ class _KeyboardPageState extends State<KeyboardPage> {
               autofocus: true,
               style: TextStyle(
                 fontSize:
-                    MediaQuery.of(context).orientation == Orientation.portrait
-                        ? 24
-                        : 12,
+                MediaQuery.of(context).orientation == Orientation.portrait
+                    ? 24
+                    : 12,
               ),
               decoration: InputDecoration(
                 filled: true,
@@ -178,48 +157,26 @@ class _KeyboardPageState extends State<KeyboardPage> {
               )
             ]),
           ),
-          Expanded(
-            flex: 1,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                FlatButton(
-                  onPressed: () {},
-                  child: Text(Strings.down),
-                  color: Color(StaticColors.lighterSlateGray),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                FlatButton(
-                  onPressed: () {},
-                  child: Text(Strings.right),
-                  color: Color(StaticColors.lighterSlateGray),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                FlatButton(
-                  onPressed: () {},
-                  child: Text(Strings.enter),
-                  color: Color(StaticColors.lighterSlateGray),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                FlatButton(
-                  onPressed: () {},
-                  child: Text(Strings.back),
-                  color: Color(StaticColors.lighterSlateGray),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ],
-            ),
-          )
-        ]),
-      ),
-    );
+        ]);
+  }
+
+  @override
+  void leftPressed() {
+    // TODO: implement leftPressed
+  }
+
+  @override
+  void pullPressed() {
+    // TODO: implement pullPressed
+  }
+
+  @override
+  void pushPressed() {
+    // TODO: implement pushPressed
+  }
+
+  @override
+  void rightPressed() {
+    // TODO: implement rightPressed
   }
 }
