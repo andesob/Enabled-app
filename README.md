@@ -1,7 +1,7 @@
 # Enabled App [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Check%20out%20this%20cool%20project&url=https://github.com/andesob/Enabled-app&hashtags=project,opensource)
 
 ![Github License](https://img.shields.io/badge/license-MIT-green)
-![React Version](https://img.shields.io/badge/Flutter-v1.25.0-blue.svg)
+![Flutter Version](https://img.shields.io/badge/Flutter-v1.25.0-blue.svg)
 ![Code Size](https://img.shields.io/github/languages/code-size/andesob/Enabled-app)
 
 <img alt="Enabled App"
