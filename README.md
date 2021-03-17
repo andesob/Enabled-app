@@ -83,5 +83,3 @@ This project is licensed under the [MIT License](https://github.com/this/project
 ## Acknowledgements
 
 - [README.md template](https://gist.github.com/SimonHoiberg/15db461e2c1c2e933d94ffeb363e2185) used in this project
-
-See this template in use on the Open-Source project [Hue Debugger UI](https://github.com/Silind-Software/Hue-Debugger-UI)
