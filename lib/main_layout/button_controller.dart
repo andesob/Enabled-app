@@ -1,15 +1,13 @@
 import 'package:enabled_app/colors/colors.dart';
+import 'package:enabled_app/page_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ButtonController extends StatefulWidget {
-  final VoidCallback onPush;
-  final VoidCallback onPull;
-  final VoidCallback onLeft;
-  final VoidCallback onRight;
+  final GlobalKey<PageState> pageKey;
 
   ButtonController(
-      {Key key, this.onPush, this.onPull, this.onLeft, this.onRight})
+      {Key key, this.pageKey})
       : super(key: key);
 
   @override
@@ -19,16 +17,16 @@ class ButtonController extends StatefulWidget {
 class ButtonControllerState extends State<ButtonController> {
   buttonIsPressed(int index) {
     if (index == 0) {
-      widget.onPush.call();
+      widget.pageKey.currentState?.pushPressed();
     }
     if (index == 1) {
-      widget.onPull.call();
+      widget.pageKey.currentState?.pullPressed();
     }
     if (index == 2) {
-      widget.onLeft.call();
+      widget.pageKey.currentState?.leftPressed();
     }
     if (index == 3) {
-      widget.onRight.call();
+      widget.pageKey.currentState?.rightPressed();
     }
   }
 
