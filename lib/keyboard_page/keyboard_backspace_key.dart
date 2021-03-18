@@ -8,10 +8,12 @@ class KeyboardBackspaceKey extends StatefulWidget {
     this.icon,
     this.onBackspace,
     this.flex = 1,
+    this.isFocused = false,
   }) : super(key: key);
   final Icon icon;
   final VoidCallback onBackspace;
   final int flex;
+  final bool isFocused;
 
   KeyboardBackspaceKeyState createState() => KeyboardBackspaceKeyState();
 }
@@ -27,13 +29,14 @@ class KeyboardBackspaceKeyState extends State<KeyboardBackspaceKey> {
       child: Padding(
         padding: const EdgeInsets.all(1.0),
         child: Material(
-          color: Color(StaticColors.lighterSlateGray),
+          color: Color(widget.isFocused ? StaticColors.black : StaticColors.lighterSlateGray),
           child: InkWell(
             onTap: () {
               //onBackspace != null ? onBackspace.call() : null
               widget.onBackspace?.call();
             },
             child: Container(
+              color: Color(widget.isFocused ? StaticColors.black : StaticColors.lighterSlateGray),
               child: Center(child: icon),
             ),
           ),

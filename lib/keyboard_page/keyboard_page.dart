@@ -187,12 +187,24 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
   void leftPressed() {
     setState(() {
       if (inHorizontalList) {
-        if (currentFocusedHorizontalListIndex != 0) {
-          currentFocusedHorizontalListIndex -= 1;
+        if (currentFocusedVerticalListIndex == 5) {
+          if (currentFocusedHorizontalListIndex != 0) {
+            currentFocusedHorizontalListIndex -= 1;
+          } else {
+            currentFocusedHorizontalListIndex = 2;
+          }
+        } else {
+          if (currentFocusedHorizontalListIndex != 0) {
+            currentFocusedHorizontalListIndex -= 1;
+          } else {
+            currentFocusedHorizontalListIndex = 5;
+          }
         }
       } else {
         if (currentFocusedVerticalListIndex != 0) {
           currentFocusedVerticalListIndex -= 1;
+        } else{
+          currentFocusedVerticalListIndex = 5;
         }
       }
     });
@@ -219,14 +231,20 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
   @override
   void rightPressed() {
     setState(() {
+      //If user has entered a horizontal list
       if (inHorizontalList) {
+        //If bottom row is in focus
         if (currentFocusedVerticalListIndex == 5) {
+          //Move right if not at the last element in the bottom row
           if (currentFocusedHorizontalListIndex != 2) {
             currentFocusedHorizontalListIndex += 1;
           } else {
             currentFocusedHorizontalListIndex = 0;
           }
-        } else {
+        }
+        //If not at the bottom row
+        else {
+          //Move right if not at last element in the row
           if (currentFocusedHorizontalListIndex != 5) {
             currentFocusedHorizontalListIndex += 1;
           } else {

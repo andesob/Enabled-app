@@ -3,10 +3,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class KeyboardCapslockKey extends StatefulWidget {
-  KeyboardCapslockKey({Key key, this.onCapslock, this.flex = 1});
+  KeyboardCapslockKey({
+    Key key,
+    this.onCapslock,
+    this.flex = 1,
+    this.isFocused = false,
+  });
 
   final VoidCallback onCapslock;
   final int flex;
+  final bool isFocused;
 
   KeyboardCapslockKeyState createState() => KeyboardCapslockKeyState();
 }
@@ -22,18 +28,20 @@ class KeyboardCapslockKeyState extends State<KeyboardCapslockKey> {
       child: Padding(
         padding: const EdgeInsets.all(1.0),
         child: Material(
-          color: Color(StaticColors.lighterSlateGray),
+          color: Color(widget.isFocused ? StaticColors.black : StaticColors.lighterSlateGray),
           child: InkWell(
             onTap: () {
               //onCapslock != null ? onCapslock.call() : null
               onCapslock?.call();
             },
             child: Container(
+              color: Color(widget.isFocused ? StaticColors.black : StaticColors.lighterSlateGray),
               child: Center(
-                  child: Icon(
-                Icons.apps,
-                color: Colors.white,
-              )),
+                child: Icon(
+                  Icons.apps,
+                  color: Colors.white,
+                ),
+              ),
             ),
           ),
         ),

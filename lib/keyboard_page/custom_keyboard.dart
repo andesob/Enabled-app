@@ -163,7 +163,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
       }
     }
 
-    if (widget.currentFocusedVerticalListIndex == allRows.length - 1) {
+    if (widget.currentFocusedVerticalListIndex == allRows.length) {
       rows.add(buildLastRow(true));
     } else {
       rows.add(buildLastRow(false));
@@ -189,6 +189,8 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
       onCapslock: _onCapslockHandler,
       onBackspace: _backSpaceHandler,
       isFocused: isFocused,
+      inHorizontalList: widget.inHorizontalList,
+      currentFocusedKeyIndex: widget.currentFocusedHorizontalListIndex,
       isLastRow: true,
     );
     verticalList.add(horizontalList);
