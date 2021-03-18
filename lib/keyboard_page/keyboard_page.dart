@@ -12,9 +12,14 @@ import 'package:flutter/services.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 
 class KeyboardPage extends StatefulWidget {
-  KeyboardPage({Key key, this.title}) : super(key: key);
+  KeyboardPage({
+    Key key,
+    this.title,
+    this.pageKey,
+  }) : super(key: key);
 
   final String title;
+  final GlobalKey<PageState> pageKey;
 
   _KeyboardPageState createState() => _KeyboardPageState();
 }
@@ -24,6 +29,10 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
   Color appBarColorLight = Color(StaticColors.apricot);
   Color appBarColorDark = Color(StaticColors.melon);
 
+  int currentFocusedVerticalListIndex;
+  int currentFocusedHorizontalListIndex;
+  bool inHorizontalList = false;
+
   bool darkmode = false;
 
   void _changeDarkmode() {
@@ -32,9 +41,18 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
     });
   }
 
+  void _inHorizontalListHandle() {
+    setState(() {
+      inHorizontalList = !inHorizontalList;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+
+    currentFocusedHorizontalListIndex = 0;
+    currentFocusedVerticalListIndex = 0;
   }
 
   void _insertText(String myText) {
@@ -117,66 +135,111 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-        children: [
-          Container(
-            child: TextField(
-              controller: _controller,
-              readOnly: true,
-              showCursor: true,
-              autofocus: true,
-              style: TextStyle(
-                fontSize:
-                MediaQuery.of(context).orientation == Orientation.portrait
-                    ? 24
-                    : 12,
-              ),
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Color(StaticColors.greenSheen),
+    return Column(children: [
+      Container(
+        child: TextField(
+          controller: _controller,
+          readOnly: true,
+          showCursor: true,
+          autofocus: true,
+          style: TextStyle(
+            fontSize: MediaQuery.of(context).orientation == Orientation.portrait
+                ? 24
+                : 12,
+          ),
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: Color(StaticColors.greenSheen),
+          ),
+        ),
+      ),
+      Expanded(
+        flex: 9,
+        child: Row(
+          children: [
+            Expanded(
+              flex: 3,
+              child: CustomKeyboard(
+                currentFocusedVerticalListIndex:
+                    currentFocusedVerticalListIndex,
+                currentFocusedHorizontalListIndex:
+                    currentFocusedHorizontalListIndex,
+                inHorizontalList: inHorizontalList,
+                onBackspace: _onBackspace,
+                onTextInput: (myText) {
+                  _insertText(myText);
+                },
               ),
             ),
-          ),
-          Expanded(
-            flex: 9,
-            child: Row(children: [
-              Expanded(
-                flex: 3,
-                child: CustomKeyboard(
-                  onBackspace: _onBackspace,
-                  onTextInput: (myText) {
-                    _insertText(myText);
-                  },
-                ),
+            Expanded(
+              child: CustomDictionary(
+                onDictItemChosen: _onDictItemChosen,
               ),
-              Expanded(
-                child: CustomDictionary(
-                  onDictItemChosen: _onDictItemChosen,
-                ),
-                flex: 1,
-              )
-            ]),
-          ),
-        ]);
+              flex: 1,
+            )
+          ],
+        ),
+      ),
+    ]);
   }
 
   @override
   void leftPressed() {
-    // TODO: implement leftPressed
+    setState(() {
+      if (inHorizontalList) {
+        if (currentFocusedHorizontalListIndex != 0) {
+          currentFocusedHorizontalListIndex -= 1;
+        }
+      } else {
+        if (currentFocusedVerticalListIndex != 0) {
+          currentFocusedVerticalListIndex -= 1;
+        }
+      }
+    });
   }
 
   @override
   void pullPressed() {
-    // TODO: implement pullPressed
+    setState(() {
+      if (inHorizontalList) {
+        inHorizontalList = !inHorizontalList;
+      }
+    });
   }
 
   @override
   void pushPressed() {
-    // TODO: implement pushPressed
+    setState(() {
+      if (!inHorizontalList) {
+        inHorizontalList = !inHorizontalList;
+      }
+    });
   }
 
   @override
   void rightPressed() {
-    // TODO: implement rightPressed
+    setState(() {
+      if (inHorizontalList) {
+        if (currentFocusedVerticalListIndex == 5) {
+          if (currentFocusedHorizontalListIndex != 2) {
+            currentFocusedHorizontalListIndex += 1;
+          } else {
+            currentFocusedHorizontalListIndex = 0;
+          }
+        } else {
+          if (currentFocusedHorizontalListIndex != 5) {
+            currentFocusedHorizontalListIndex += 1;
+          } else {
+            currentFocusedHorizontalListIndex = 0;
+          }
+        }
+      } else {
+        if (currentFocusedVerticalListIndex != 5) {
+          currentFocusedVerticalListIndex += 1;
+        } else {
+          currentFocusedVerticalListIndex = 0;
+        }
+      }
+    });
   }
 }

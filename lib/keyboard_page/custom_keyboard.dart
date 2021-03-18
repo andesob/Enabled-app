@@ -1,17 +1,29 @@
 import 'package:enabled_app/colors/colors.dart';
 import 'package:enabled_app/keyboard_page/keyboard_backspace_key.dart';
 import 'package:enabled_app/keyboard_page/keyboard_capslock_key.dart';
+import 'package:enabled_app/keyboard_page/keyboard_horizontal_list.dart';
 import 'package:enabled_app/keyboard_page/keyboard_key.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class CustomKeyboard extends StatefulWidget {
-  CustomKeyboard({Key key, this.onTextInput, this.onBackspace, this.onCapslock})
-      : super(key: key);
+  CustomKeyboard({
+    Key key,
+    this.onTextInput,
+    this.onBackspace,
+    this.onCapslock,
+    this.currentFocusedVerticalListIndex,
+    this.currentFocusedHorizontalListIndex,
+    this.inHorizontalList,
+  }) : super(key: key);
 
   final ValueSetter<String> onTextInput;
   final VoidCallback onBackspace;
   final VoidCallback onCapslock;
+  final int currentFocusedVerticalListIndex;
+  final int currentFocusedHorizontalListIndex;
+  final bool inHorizontalList;
 
   @override
   _CustomKeyboardState createState() => _CustomKeyboardState();
@@ -25,24 +37,11 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
   bool isUpperCase = true;
 
   List<String> firstRow = [" ", "E", "A", "N", "L", "F"];
-  List<String> secondRow = [
-    "T",
-    "O",
-    "S",
-    "D",
-    "P",
-    "B",
-  ];
-  List<String> thirdRow = [
-    "I",
-    "R",
-    "C",
-    "G",
-    "V",
-    "J",
-  ];
+  List<String> secondRow = ["T", "O", "S", "D", "P", "B"];
+  List<String> thirdRow = ["I", "R", "C", "G", "V", "J"];
   List<String> fourthRow = ["H", "U", "W", "K", "Q", "?"];
   List<String> fifthRow = ["M", "Y", "X", "Z", ",", "!"];
+  List<String> lastRow = ["Caps", "Send", "Backspace"];
 
   List<KeyboardKey> firstKeyRow;
   List<KeyboardKey> secondKeyRow;
@@ -50,16 +49,21 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
   List<KeyboardKey> fourthKeyRow;
   List<KeyboardKey> fifthKeyRow;
 
+  List<List<String>> allRows;
   List<List<KeyboardKey>> allKeyRows;
+
+  List<KeyboardHorizontalList> verticalList;
 
   @override
   void initState() {
     super.initState();
     buildKeys();
+    buildKeyboard();
   }
 
   void buildKeys() {
-    List<List<String>> allRows = [];
+    verticalList = [];
+    allRows = [];
     allRows.add(firstRow);
     allRows.add(secondRow);
     allRows.add(thirdRow);
@@ -88,10 +92,6 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
   }
 
   void toUpperCase() {
-    for (List<KeyboardKey> row in allKeyRows) {
-      for (KeyboardKey key in row) {}
-    }
-
     for (int i = 0; i < firstRow.length; i++) {
       firstRow[i] = firstRow[i].toUpperCase();
     }
@@ -132,6 +132,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
     isUpperCase = false;
   }
 
+/*
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -140,44 +141,57 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
         children: buildKeyboard(),
       ),
     );
-  }
+  }*/
 
-  List<Widget> buildKeyboard() {
-    List<Expanded> rows = [];
-    for (List<KeyboardKey> row in allKeyRows) {
-      rows.add(buildRow(row));
-    }
-    rows.add(buildLastRow());
-    return rows;
-  }
-
-  Expanded buildRow(List<KeyboardKey> rowList) {
-    return Expanded(
-      child: Row(
-        children: rowList,
+  @override
+  Widget build(BuildContext context) {
+    verticalList = [];
+    return Container(
+      child: Column(
+        children: buildKeyboard(),
       ),
     );
   }
 
-  Expanded buildLastRow() {
-    return Expanded(
-      child: Row(children: [
-        KeyboardCapslockKey(
-          onCapslock: _onCapslockHandler,
-        ),
-        KeyboardKey(
-          text: " ",
-          onTextInput: _textInputHandler,
-          flex: 4,
-        ),
-        KeyboardBackspaceKey(
-          icon: Icon(
-            Icons.backspace,
-            color: Colors.white,
-          ),
-          onBackspace: _backSpaceHandler,
-        ),
-      ]),
+  List<Widget> buildKeyboard() {
+    List<KeyboardHorizontalList> rows = [];
+    for (int i = 0; i < allRows.length; i++) {
+      if (i == widget.currentFocusedVerticalListIndex) {
+        rows.add(buildRow(allRows[i], true));
+      } else {
+        rows.add(buildRow(allRows[i], false));
+      }
+    }
+
+    if (widget.currentFocusedVerticalListIndex == allRows.length - 1) {
+      rows.add(buildLastRow(true));
+    } else {
+      rows.add(buildLastRow(false));
+    }
+    return rows;
+  }
+
+  KeyboardHorizontalList buildRow(List<String> rowList, bool isFocused) {
+    KeyboardHorizontalList horizontalList = KeyboardHorizontalList(
+      keyStringList: rowList,
+      onTextInput: _textInputHandler,
+      isFocused: isFocused,
+      inHorizontalList: widget.inHorizontalList,
+      currentFocusedKeyIndex: widget.currentFocusedHorizontalListIndex,
     );
+    verticalList.add(horizontalList);
+    return horizontalList;
+  }
+
+  KeyboardHorizontalList buildLastRow(bool isFocused) {
+    KeyboardHorizontalList horizontalList = KeyboardHorizontalList(
+      keyStringList: lastRow,
+      onCapslock: _onCapslockHandler,
+      onBackspace: _backSpaceHandler,
+      isFocused: isFocused,
+      isLastRow: true,
+    );
+    verticalList.add(horizontalList);
+    return horizontalList;
   }
 }

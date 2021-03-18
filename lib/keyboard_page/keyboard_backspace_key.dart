@@ -21,7 +21,6 @@ class KeyboardBackspaceKeyState extends State<KeyboardBackspaceKey> {
   Widget build(BuildContext context) {
     int flex = widget.flex;
     Icon icon = widget.icon;
-    VoidCallback onBackspace = widget.onBackspace;
 
     return Expanded(
       flex: flex,
@@ -32,7 +31,7 @@ class KeyboardBackspaceKeyState extends State<KeyboardBackspaceKey> {
           child: InkWell(
             onTap: () {
               //onBackspace != null ? onBackspace.call() : null
-              onBackspace?.call();
+              widget.onBackspace?.call();
             },
             child: Container(
               child: Center(child: icon),
