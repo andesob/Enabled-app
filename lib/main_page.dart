@@ -7,8 +7,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MainPage extends StatefulWidget {
-  MainPage({Key key, this.pageContent, this.title, this.pageKey})
-      : super(key: key);
+  MainPage({
+    Key key,
+    this.pageContent,
+    this.title,
+    this.pageKey,
+  }) : super(key: key);
   final StatefulWidget pageContent;
   final String title;
   final GlobalKey<PageState> pageKey;
