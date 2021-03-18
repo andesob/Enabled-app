@@ -32,9 +32,9 @@ class CustomKeyboard extends StatefulWidget {
 }
 
 class _CustomKeyboardState extends State<CustomKeyboard> {
-  void _textInputHandler(String text) => widget.onTextInput.call(text);
-
-  void _backSpaceHandler() => widget.onBackspace.call();
+  void _textInputHandler(String text) => widget.onTextInput?.call(text);
+  void _backSpaceHandler() => widget.onBackspace?.call();
+  void _capsLockHandler() => widget.onCapslock?.call();
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +48,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
   List<Widget> buildKeyboard() {
     List<KeyboardHorizontalList> rows = [];
     for (int i = 0; i < widget.allRows.length; i++) {
-      if (i == widget.currentFocusedVerticalListIndex) {
+      if (widget.currentFocusedVerticalListIndex == i) {
         rows.add(buildRow(widget.allRows[i], true));
       } else {
         rows.add(buildRow(widget.allRows[i], false));
@@ -76,7 +76,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
 
   KeyboardHorizontalList buildLastRow(bool isFocused) {
     KeyboardHorizontalList horizontalList = KeyboardHorizontalList(
-      onCapslock: widget.onCapslock,
+      onCapslock: _capsLockHandler,
       onBackspace: _backSpaceHandler,
       isFocused: isFocused,
       inHorizontalList: widget.inHorizontalList,

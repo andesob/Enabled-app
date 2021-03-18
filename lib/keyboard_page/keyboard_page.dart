@@ -35,7 +35,6 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
   List<String> thirdRow = ["I", "R", "C", "G", "V", "J"];
   List<String> fourthRow = ["H", "U", "W", "K", "Q", "?"];
   List<String> fifthRow = ["M", "Y", "X", "Z", ",", "!"];
-  List<String> lastRow = ["Caps", "Send", "Backspace"];
 
   List<List<String>> allRows;
 

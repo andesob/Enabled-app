@@ -8,7 +8,7 @@ class KeyboardCapslockKey extends StatefulWidget {
     this.onCapslock,
     this.flex = 1,
     this.isFocused = false,
-  });
+  }) : super(key: key);
 
   final VoidCallback onCapslock;
   final int flex;
@@ -20,19 +20,18 @@ class KeyboardCapslockKey extends StatefulWidget {
 class KeyboardCapslockKeyState extends State<KeyboardCapslockKey> {
   @override
   Widget build(BuildContext context) {
-    int flex = widget.flex;
-    VoidCallback onCapslock = widget.onCapslock;
-
     return Expanded(
-      flex: flex,
+      flex: widget.flex,
       child: Padding(
         padding: const EdgeInsets.all(1.0),
         child: Material(
-          color: Color(widget.isFocused ? StaticColors.black : StaticColors.lighterSlateGray),
+          color: Color(widget.isFocused
+              ? StaticColors.black
+              : StaticColors.lighterSlateGray),
           child: InkWell(
             onTap: () {
               //onCapslock != null ? onCapslock.call() : null
-              onCapslock?.call();
+              widget.onCapslock?.call();
             },
             child: Container(
               child: Center(
