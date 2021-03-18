@@ -44,6 +44,43 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
   List<String> fourthRow = ["H", "U", "W", "K", "Q", "?"];
   List<String> fifthRow = ["M", "Y", "X", "Z", ",", "!"];
 
+  List<KeyboardKey> firstKeyRow;
+  List<KeyboardKey> secondKeyRow;
+  List<KeyboardKey> thirdKeyRow;
+  List<KeyboardKey> fourthKeyRow;
+  List<KeyboardKey> fifthKeyRow;
+
+  List<List<KeyboardKey>> allKeyRows;
+
+  @override
+  void initState() {
+    super.initState();
+    buildKeys();
+  }
+
+  void buildKeys() {
+    List<List<String>> allRows = [];
+    allRows.add(firstRow);
+    allRows.add(secondRow);
+    allRows.add(thirdRow);
+    allRows.add(fourthRow);
+    allRows.add(fifthRow);
+
+    allKeyRows = [];
+
+    for (List<String> row in allRows) {
+      List<KeyboardKey> keyRow = row
+          .map(
+            (letter) => new KeyboardKey(
+              text: letter,
+              onTextInput: _textInputHandler,
+            ),
+          )
+          .toList();
+      allKeyRows.add(keyRow);
+    }
+  }
+
   void _onCapslockHandler() {
     setState(() {
       isUpperCase ? toLowerCase() : toUpperCase();
@@ -51,6 +88,10 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
   }
 
   void toUpperCase() {
+    for (List<KeyboardKey> row in allKeyRows) {
+      for (KeyboardKey key in row) {}
+    }
+
     for (int i = 0; i < firstRow.length; i++) {
       firstRow[i] = firstRow[i].toUpperCase();
     }
@@ -66,7 +107,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
     for (int i = 0; i < fifthRow.length; i++) {
       fifthRow[i] = fifthRow[i].toUpperCase();
     }
-
+    buildKeys();
     isUpperCase = true;
   }
 
@@ -87,6 +128,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
       fifthRow[i] = fifthRow[i].toLowerCase();
     }
 
+    buildKeys();
     isUpperCase = false;
   }
 
@@ -95,94 +137,29 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
     return Container(
       child: Column(
         // <-- Column
-        children: [
-          buildRowOne(), // <-- Row
-          buildRowTwo(), // <-- Row
-          buildRowThree(),
-          buildRowFour(),
-          buildRowFive(), // <-- Row
-          buildRowSix(),
-        ],
+        children: buildKeyboard(),
       ),
     );
   }
 
-  Expanded buildRowOne() {
+  List<Widget> buildKeyboard() {
+    List<Expanded> rows = [];
+    for (List<KeyboardKey> row in allKeyRows) {
+      rows.add(buildRow(row));
+    }
+    rows.add(buildLastRow());
+    return rows;
+  }
+
+  Expanded buildRow(List<KeyboardKey> rowList) {
     return Expanded(
       child: Row(
-        children: firstRow
-            .map(
-              (letter) => new KeyboardKey(
-                text: letter,
-                onTextInput: _textInputHandler,
-              ),
-            )
-            .toList(),
+        children: rowList,
       ),
     );
   }
 
-  Expanded buildRowTwo() {
-    return Expanded(
-      child: Row(
-        children: secondRow
-            .map(
-              (letter) => new KeyboardKey(
-                text: letter,
-                onTextInput: _textInputHandler,
-              ),
-            )
-            .toList(),
-      ),
-    );
-  }
-
-  Expanded buildRowThree() {
-    return Expanded(
-      child: Row(
-        children: thirdRow
-            .map(
-              (letter) => new KeyboardKey(
-                text: letter,
-                onTextInput: _textInputHandler,
-              ),
-            )
-            .toList(),
-      ),
-    );
-  }
-
-  Expanded buildRowFour() {
-    return Expanded(
-      child: Row(
-        children: fourthRow
-            .map(
-              (letter) => new KeyboardKey(
-                text: letter,
-                onTextInput: _textInputHandler,
-              ),
-            )
-            .toList(),
-      ),
-    );
-  }
-
-  Expanded buildRowFive() {
-    return Expanded(
-      child: Row(
-        children: fifthRow
-            .map(
-              (letter) => new KeyboardKey(
-                text: letter,
-                onTextInput: _textInputHandler,
-              ),
-            )
-            .toList(),
-      ),
-    );
-  }
-
-  Expanded buildRowSix() {
+  Expanded buildLastRow() {
     return Expanded(
       child: Row(children: [
         KeyboardCapslockKey(
