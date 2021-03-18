@@ -1,14 +1,10 @@
-import 'package:enabled_app/colors/colors.dart';
 import 'package:enabled_app/custom_page/custom_category.dart';
 import 'package:enabled_app/custom_page/custom_popup.dart';
 import 'package:enabled_app/custom_page/custom_vertical_list.dart';
 import 'package:enabled_app/custom_page/vertical_list_buttons.dart';
-import 'package:enabled_app/main_layout/button_controller.dart';
-import 'package:enabled_app/main_layout/main_appbar.dart';
 import 'package:enabled_app/page_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 //TODO create a solution for the "result" object returned from the alert dialog.
