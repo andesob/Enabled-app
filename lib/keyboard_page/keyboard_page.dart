@@ -176,6 +176,7 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
                     currentFocusedHorizontalListIndex,
                 inHorizontalList: inHorizontalList,
                 onBackspace: _onBackspace,
+                onCapslock: _onCapslockHandler,
                 onTextInput: (myText) {
                   _insertText(myText);
                 },
@@ -236,15 +237,21 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
         inHorizontalList = !inHorizontalList;
       } else {
         if (currentFocusedVerticalListIndex == 5) {
+          //Caps lock is pressed
           if (currentFocusedHorizontalListIndex == 0) {
-
-          } else if (currentFocusedHorizontalListIndex == 1) {
-          } else if (currentFocusedHorizontalListIndex == 2) {
-
+            _onCapslockHandler();
           }
+          //Send is pressed TODO: FIX
+          else if (currentFocusedHorizontalListIndex == 1) {
+          }
+          //Backspace is pressed
+          else if (currentFocusedHorizontalListIndex == 2) {
+            _onBackspace();
+          }
+        } else {
+          _insertText(allRows[currentFocusedVerticalListIndex]
+              [currentFocusedHorizontalListIndex]);
         }
-        _insertText(allRows[currentFocusedVerticalListIndex]
-            [currentFocusedHorizontalListIndex]);
       }
     });
   }
@@ -279,6 +286,12 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
           currentFocusedVerticalListIndex = 0;
         }
       }
+    });
+  }
+
+  void _onCapslockHandler() {
+    setState(() {
+      isUpperCase ? toLowerCase() : toUpperCase();
     });
   }
 
@@ -319,5 +332,4 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
     }
     isUpperCase = false;
   }
-
 }

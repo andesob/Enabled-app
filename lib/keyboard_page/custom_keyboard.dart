@@ -37,12 +37,6 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
   void _backSpaceHandler() => widget.onBackspace.call();
 
   bool isUpperCase = true;
-
-  List<String> firstRow = [" ", "E", "A", "N", "L", "F"];
-  List<String> secondRow = ["T", "O", "S", "D", "P", "B"];
-  List<String> thirdRow = ["I", "R", "C", "G", "V", "J"];
-  List<String> fourthRow = ["H", "U", "W", "K", "Q", "?"];
-  List<String> fifthRow = ["M", "Y", "X", "Z", ",", "!"];
   List<String> lastRow = ["Caps", "Send", "Backspace"];
 
   List<KeyboardKey> firstKeyRow;
@@ -65,13 +59,6 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
 
   void buildKeys() {
     verticalList = [];
-    allRows = [];
-    allRows.add(firstRow);
-    allRows.add(secondRow);
-    allRows.add(thirdRow);
-    allRows.add(fourthRow);
-    allRows.add(fifthRow);
-
     allKeyRows = [];
 
     for (List<String> row in widget.allRows) {
@@ -87,53 +74,6 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
     }
   }
 
-  void _onCapslockHandler() {
-    setState(() {
-      isUpperCase ? toLowerCase() : toUpperCase();
-    });
-  }
-
-  void toUpperCase() {
-    for (int i = 0; i < firstRow.length; i++) {
-      firstRow[i] = firstRow[i].toUpperCase();
-    }
-    for (int i = 0; i < secondRow.length; i++) {
-      secondRow[i] = secondRow[i].toUpperCase();
-    }
-    for (int i = 0; i < thirdRow.length; i++) {
-      thirdRow[i] = thirdRow[i].toUpperCase();
-    }
-    for (int i = 0; i < fourthRow.length; i++) {
-      fourthRow[i] = fourthRow[i].toUpperCase();
-    }
-    for (int i = 0; i < fifthRow.length; i++) {
-      fifthRow[i] = fifthRow[i].toUpperCase();
-    }
-    buildKeys();
-    isUpperCase = true;
-  }
-
-  void toLowerCase() {
-    for (int i = 0; i < firstRow.length; i++) {
-      firstRow[i] = firstRow[i].toLowerCase();
-    }
-    for (int i = 0; i < secondRow.length; i++) {
-      secondRow[i] = secondRow[i].toLowerCase();
-    }
-    for (int i = 0; i < thirdRow.length; i++) {
-      thirdRow[i] = thirdRow[i].toLowerCase();
-    }
-    for (int i = 0; i < fourthRow.length; i++) {
-      fourthRow[i] = fourthRow[i].toLowerCase();
-    }
-    for (int i = 0; i < fifthRow.length; i++) {
-      fifthRow[i] = fifthRow[i].toLowerCase();
-    }
-
-    buildKeys();
-    isUpperCase = false;
-  }
-
   @override
   Widget build(BuildContext context) {
     verticalList = [];
@@ -146,15 +86,15 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
 
   List<Widget> buildKeyboard() {
     List<KeyboardHorizontalList> rows = [];
-    for (int i = 0; i < allRows.length; i++) {
+    for (int i = 0; i < widget.allRows.length; i++) {
       if (i == widget.currentFocusedVerticalListIndex) {
-        rows.add(buildRow(allRows[i], true));
+        rows.add(buildRow(widget.allRows[i], true));
       } else {
-        rows.add(buildRow(allRows[i], false));
+        rows.add(buildRow(widget.allRows[i], false));
       }
     }
 
-    if (widget.currentFocusedVerticalListIndex == allRows.length) {
+    if (widget.currentFocusedVerticalListIndex == widget.allRows.length) {
       rows.add(buildLastRow(true));
     } else {
       rows.add(buildLastRow(false));
@@ -177,7 +117,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
   KeyboardHorizontalList buildLastRow(bool isFocused) {
     KeyboardHorizontalList horizontalList = KeyboardHorizontalList(
       keyStringList: lastRow,
-      onCapslock: _onCapslockHandler,
+      onCapslock: widget.onCapslock,
       onBackspace: _backSpaceHandler,
       isFocused: isFocused,
       inHorizontalList: widget.inHorizontalList,
