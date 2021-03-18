@@ -36,7 +36,6 @@ class KeyboardBackspaceKeyState extends State<KeyboardBackspaceKey> {
               widget.onBackspace?.call();
             },
             child: Container(
-              color: Color(widget.isFocused ? StaticColors.black : StaticColors.lighterSlateGray),
               child: Center(child: icon),
             ),
           ),

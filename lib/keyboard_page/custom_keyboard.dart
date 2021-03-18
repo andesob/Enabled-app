@@ -44,8 +44,6 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
   List<KeyboardKey> thirdKeyRow;
   List<KeyboardKey> fourthKeyRow;
   List<KeyboardKey> fifthKeyRow;
-
-  List<List<String>> allRows;
   List<List<KeyboardKey>> allKeyRows;
 
   List<KeyboardHorizontalList> verticalList;

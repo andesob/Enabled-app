@@ -59,7 +59,7 @@ class _KeyboardVerticaList extends State<KeyboardHorizontalList> {
     return Expanded(
       flex: 1,
       child: Container(
-        color: widget.isFocused ? Colors.black : Colors.blue,
+        color: widget.isFocused ? Colors.black : Colors.white,
         child: Row(
           children: widget.keyStringList.map(
             (text) {
@@ -83,7 +83,7 @@ class _KeyboardVerticaList extends State<KeyboardHorizontalList> {
     return Expanded(
       flex: 1,
       child: Container(
-        color: widget.isFocused ? Colors.black : Colors.blue,
+        color: widget.isFocused ? Colors.black : Colors.white,
         child: Row(
           children: [
             KeyboardCapslockKey(

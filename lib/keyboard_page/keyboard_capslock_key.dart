@@ -35,7 +35,6 @@ class KeyboardCapslockKeyState extends State<KeyboardCapslockKey> {
               onCapslock?.call();
             },
             child: Container(
-              color: Color(widget.isFocused ? StaticColors.black : StaticColors.lighterSlateGray),
               child: Center(
                 child: Icon(
                   Icons.apps,
