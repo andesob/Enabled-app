@@ -16,6 +16,7 @@ class CustomKeyboard extends StatefulWidget {
     this.currentFocusedVerticalListIndex,
     this.currentFocusedHorizontalListIndex,
     this.inHorizontalList,
+    this.allRows
   }) : super(key: key);
 
   final ValueSetter<String> onTextInput;
@@ -24,6 +25,7 @@ class CustomKeyboard extends StatefulWidget {
   final int currentFocusedVerticalListIndex;
   final int currentFocusedHorizontalListIndex;
   final bool inHorizontalList;
+  final List<List<String>> allRows;
 
   @override
   _CustomKeyboardState createState() => _CustomKeyboardState();
@@ -72,7 +74,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
 
     allKeyRows = [];
 
-    for (List<String> row in allRows) {
+    for (List<String> row in widget.allRows) {
       List<KeyboardKey> keyRow = row
           .map(
             (letter) => new KeyboardKey(
@@ -131,17 +133,6 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
     buildKeys();
     isUpperCase = false;
   }
-
-/*
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        // <-- Column
-        children: buildKeyboard(),
-      ),
-    );
-  }*/
 
   @override
   Widget build(BuildContext context) {

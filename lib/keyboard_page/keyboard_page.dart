@@ -34,6 +34,16 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
   bool inHorizontalList = false;
 
   bool darkmode = false;
+  bool isUpperCase = true;
+
+  List<String> firstRow = [" ", "E", "A", "N", "L", "F"];
+  List<String> secondRow = ["T", "O", "S", "D", "P", "B"];
+  List<String> thirdRow = ["I", "R", "C", "G", "V", "J"];
+  List<String> fourthRow = ["H", "U", "W", "K", "Q", "?"];
+  List<String> fifthRow = ["M", "Y", "X", "Z", ",", "!"];
+  List<String> lastRow = ["Caps", "Send", "Backspace"];
+
+  List<List<String>> allRows;
 
   void _changeDarkmode() {
     setState(() {
@@ -41,18 +51,17 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
     });
   }
 
-  void _inHorizontalListHandle() {
-    setState(() {
-      inHorizontalList = !inHorizontalList;
-    });
-  }
-
   @override
   void initState() {
     super.initState();
-
     currentFocusedHorizontalListIndex = 0;
     currentFocusedVerticalListIndex = 0;
+    allRows = [];
+    allRows.add(firstRow);
+    allRows.add(secondRow);
+    allRows.add(thirdRow);
+    allRows.add(fourthRow);
+    allRows.add(fifthRow);
   }
 
   void _insertText(String myText) {
@@ -160,6 +169,7 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
             Expanded(
               flex: 3,
               child: CustomKeyboard(
+                allRows: allRows,
                 currentFocusedVerticalListIndex:
                     currentFocusedVerticalListIndex,
                 currentFocusedHorizontalListIndex:
@@ -203,7 +213,7 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
       } else {
         if (currentFocusedVerticalListIndex != 0) {
           currentFocusedVerticalListIndex -= 1;
-        } else{
+        } else {
           currentFocusedVerticalListIndex = 5;
         }
       }
@@ -224,6 +234,17 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
     setState(() {
       if (!inHorizontalList) {
         inHorizontalList = !inHorizontalList;
+      } else {
+        if (currentFocusedVerticalListIndex == 5) {
+          if (currentFocusedHorizontalListIndex == 0) {
+
+          } else if (currentFocusedHorizontalListIndex == 1) {
+          } else if (currentFocusedHorizontalListIndex == 2) {
+
+          }
+        }
+        _insertText(allRows[currentFocusedVerticalListIndex]
+            [currentFocusedHorizontalListIndex]);
       }
     });
   }
@@ -260,4 +281,43 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
       }
     });
   }
+
+  void toUpperCase() {
+    for (int i = 0; i < firstRow.length; i++) {
+      firstRow[i] = firstRow[i].toUpperCase();
+    }
+    for (int i = 0; i < secondRow.length; i++) {
+      secondRow[i] = secondRow[i].toUpperCase();
+    }
+    for (int i = 0; i < thirdRow.length; i++) {
+      thirdRow[i] = thirdRow[i].toUpperCase();
+    }
+    for (int i = 0; i < fourthRow.length; i++) {
+      fourthRow[i] = fourthRow[i].toUpperCase();
+    }
+    for (int i = 0; i < fifthRow.length; i++) {
+      fifthRow[i] = fifthRow[i].toUpperCase();
+    }
+    isUpperCase = true;
+  }
+
+  void toLowerCase() {
+    for (int i = 0; i < firstRow.length; i++) {
+      firstRow[i] = firstRow[i].toLowerCase();
+    }
+    for (int i = 0; i < secondRow.length; i++) {
+      secondRow[i] = secondRow[i].toLowerCase();
+    }
+    for (int i = 0; i < thirdRow.length; i++) {
+      thirdRow[i] = thirdRow[i].toLowerCase();
+    }
+    for (int i = 0; i < fourthRow.length; i++) {
+      fourthRow[i] = fourthRow[i].toLowerCase();
+    }
+    for (int i = 0; i < fifthRow.length; i++) {
+      fifthRow[i] = fifthRow[i].toLowerCase();
+    }
+    isUpperCase = false;
+  }
+
 }
