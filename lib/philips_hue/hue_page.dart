@@ -27,11 +27,6 @@ class _HuePageState extends PageState<HuePage> {
 
   @override
   Widget build(BuildContext context) {
-    const Color lightPeach = Color(0xffffecd2);
-    const Color darkPeach = Color(0xfffcb7a0);
-    var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
-    HueApi api = new HueApi();
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[

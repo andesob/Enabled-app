@@ -7,11 +7,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MainPage extends StatefulWidget {
-  MainPage({Key key, this.pageContent, this.title, this.pageKey})
+  MainPage({Key key, this.pageContent, this.title, this.pageKey, this.hasDropDown})
       : super(key: key);
   final StatefulWidget pageContent;
   final String title;
   final GlobalKey<PageState> pageKey;
+  final bool hasDropDown;
 
   _MainPageState createState() => _MainPageState();
 }
@@ -41,7 +42,7 @@ class _MainPageState extends State<MainPage> {
         backgroundColor: darkmode ? backgroundColor : Colors.white,
         appBar: MyAppBar(
           title: widget.title,
-          hasDropDown: true,
+          hasDropDown: widget.hasDropDown,
         ),
         body: widget.pageContent,
         bottomNavigationBar: ButtonController(

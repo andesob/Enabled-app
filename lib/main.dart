@@ -32,27 +32,34 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeState = Provider.of<ThemeNotifier>(context);
+    //final themeState = Provider.of<ThemeNotifier>(context);
 
     return MaterialApp(
       title: Strings.enabled,
       initialRoute: Strings.home,
-      theme: themeState.getTheme(),
+      //theme: themeState.getTheme(),
+      theme: ThemeData(
+        brightness: Brightness.light,
+        backgroundColor: Colors.white,
+      ),
       routes: {
         Strings.home: (context) => MainPage(
             pageContent: MyHomePage(
                 key: PageGlobalKeys.homePageKey, title: Strings.home),
             title: Strings.home,
+            hasDropDown: true,
             pageKey: PageGlobalKeys.homePageKey),
         Strings.needs: (context) => MainPage(
             pageContent: NeedsPage(key: PageGlobalKeys.needsPageKey),
             title: Strings.needs,
+            hasDropDown: false,
             pageKey: PageGlobalKeys.needsPageKey),
         Strings.contacts: (context) => MainPage(
               pageContent: contacts(
                 key: PageGlobalKeys.contactsPageKey,
               ),
               title: Strings.contacts,
+              hasDropDown: false,
               pageKey: PageGlobalKeys.contactsPageKey,
             ),
         Strings.custom: (context) => MainPage(
@@ -60,6 +67,7 @@ class MyApp extends StatelessWidget {
                 key: PageGlobalKeys.customPageKey,
               ),
               title: Strings.custom,
+              hasDropDown: false,
               pageKey: PageGlobalKeys.customPageKey,
             ),
         Strings.keyboard: (context) => MainPage(
@@ -67,6 +75,7 @@ class MyApp extends StatelessWidget {
                 key: PageGlobalKeys.keyboardPageKey,
               ),
               title: Strings.keyboard,
+              hasDropDown: false,
               pageKey: PageGlobalKeys.keyboardPageKey,
             ),
         Strings.smart: (context) => MainPage(
@@ -74,11 +83,13 @@ class MyApp extends StatelessWidget {
                 key: PageGlobalKeys.smartPageKey,
               ),
               title: Strings.smart,
+              hasDropDown: false,
               pageKey: PageGlobalKeys.smartPageKey,
             ),
         Strings.hue: (context) => MainPage(
               pageContent: HuePage(key: PageGlobalKeys.huePageKey),
               title: Strings.hue,
+              hasDropDown: false,
               pageKey: PageGlobalKeys.huePageKey,
             ),
       },
