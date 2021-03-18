@@ -30,16 +30,11 @@ class KeyboardHorizontalList extends StatefulWidget {
   final VoidCallback onBackspace;
   final VoidCallback onCapslock;
 
-  _KeyboardVerticaList state;
-
   @override
-  _KeyboardVerticaList createState() {
-    state = _KeyboardVerticaList();
-    return state;
-  }
+  _KeyboardHorizontalList createState() => _KeyboardHorizontalList();
 }
 
-class _KeyboardVerticaList extends State<KeyboardHorizontalList> {
+class _KeyboardHorizontalList extends State<KeyboardHorizontalList> {
   void _textInputHandler(String text) => widget.onTextInput.call(text);
 
   void _backSpaceHandler() => widget.onBackspace.call();
@@ -91,7 +86,7 @@ class _KeyboardVerticaList extends State<KeyboardHorizontalList> {
               isFocused: capsLockKeyFocused(),
             ),
             KeyboardKey(
-              text: widget.keyStringList[1],
+              text: "Send",
               isFocused: sendKeyFocused(),
             ),
             KeyboardBackspaceKey(

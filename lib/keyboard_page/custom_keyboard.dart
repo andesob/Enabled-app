@@ -16,7 +16,7 @@ class CustomKeyboard extends StatefulWidget {
     this.currentFocusedVerticalListIndex,
     this.currentFocusedHorizontalListIndex,
     this.inHorizontalList,
-    this.allRows
+    this.allRows,
   }) : super(key: key);
 
   final ValueSetter<String> onTextInput;
@@ -36,45 +36,8 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
 
   void _backSpaceHandler() => widget.onBackspace.call();
 
-  bool isUpperCase = true;
-  List<String> lastRow = ["Caps", "Send", "Backspace"];
-
-  List<KeyboardKey> firstKeyRow;
-  List<KeyboardKey> secondKeyRow;
-  List<KeyboardKey> thirdKeyRow;
-  List<KeyboardKey> fourthKeyRow;
-  List<KeyboardKey> fifthKeyRow;
-  List<List<KeyboardKey>> allKeyRows;
-
-  List<KeyboardHorizontalList> verticalList;
-
-  @override
-  void initState() {
-    super.initState();
-    buildKeys();
-    buildKeyboard();
-  }
-
-  void buildKeys() {
-    verticalList = [];
-    allKeyRows = [];
-
-    for (List<String> row in widget.allRows) {
-      List<KeyboardKey> keyRow = row
-          .map(
-            (letter) => new KeyboardKey(
-              text: letter,
-              onTextInput: _textInputHandler,
-            ),
-          )
-          .toList();
-      allKeyRows.add(keyRow);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    verticalList = [];
     return Container(
       child: Column(
         children: buildKeyboard(),
@@ -108,13 +71,11 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
       inHorizontalList: widget.inHorizontalList,
       currentFocusedKeyIndex: widget.currentFocusedHorizontalListIndex,
     );
-    verticalList.add(horizontalList);
     return horizontalList;
   }
 
   KeyboardHorizontalList buildLastRow(bool isFocused) {
     KeyboardHorizontalList horizontalList = KeyboardHorizontalList(
-      keyStringList: lastRow,
       onCapslock: widget.onCapslock,
       onBackspace: _backSpaceHandler,
       isFocused: isFocused,
@@ -122,7 +83,6 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
       currentFocusedKeyIndex: widget.currentFocusedHorizontalListIndex,
       isLastRow: true,
     );
-    verticalList.add(horizontalList);
     return horizontalList;
   }
 }

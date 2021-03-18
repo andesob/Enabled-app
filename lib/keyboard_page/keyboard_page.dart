@@ -15,25 +15,19 @@ class KeyboardPage extends StatefulWidget {
   KeyboardPage({
     Key key,
     this.title,
-    this.pageKey,
   }) : super(key: key);
 
   final String title;
-  final GlobalKey<PageState> pageKey;
 
   _KeyboardPageState createState() => _KeyboardPageState();
 }
 
 class _KeyboardPageState extends PageState<KeyboardPage> {
   TextEditingController _controller = TextEditingController();
-  Color appBarColorLight = Color(StaticColors.apricot);
-  Color appBarColorDark = Color(StaticColors.melon);
 
   int currentFocusedVerticalListIndex;
   int currentFocusedHorizontalListIndex;
   bool inHorizontalList = false;
-
-  bool darkmode = false;
   bool isUpperCase = true;
 
   List<String> firstRow = [" ", "E", "A", "N", "L", "F"];
@@ -44,12 +38,6 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
   List<String> lastRow = ["Caps", "Send", "Backspace"];
 
   List<List<String>> allRows;
-
-  void _changeDarkmode() {
-    setState(() {
-      darkmode = !darkmode;
-    });
-  }
 
   @override
   void initState() {
@@ -64,6 +52,7 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
     allRows.add(fifthRow);
   }
 
+  //TODO: GO OVER CODE BELOW
   void _insertText(String myText) {
     final text = _controller.text;
     final textSelection = _controller.selection;
