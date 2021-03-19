@@ -29,6 +29,7 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
   bool inHorizontalList = false;
   bool isUpperCase = true;
 
+
   List<String> firstRow = [" ", "E", "A", "N", "L", "F"];
   List<String> secondRow = ["T", "O", "S", "D", "P", "B"];
   List<String> thirdRow = ["I", "R", "C", "G", "V", "J"];
@@ -65,6 +66,8 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
       baseOffset: textSelection.start + myTextLength,
       extentOffset: textSelection.start + myTextLength,
     );
+    setState(() {
+    });
   }
 
   void _onBackspace() {
@@ -107,6 +110,9 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
       baseOffset: newStart,
       extentOffset: newStart,
     );
+    setState(() {
+
+    });
   }
 
   void _onDictItemChosen(String myText) {
@@ -172,6 +178,7 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
             Expanded(
               child: CustomDictionary(
                 onDictItemChosen: _onDictItemChosen,
+                text: _controller.text,
               ),
               flex: 1,
             )
