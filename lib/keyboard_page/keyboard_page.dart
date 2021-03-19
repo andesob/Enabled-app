@@ -1,10 +1,10 @@
-import 'package:enabled_app/colors/colors.dart';
+import 'package:enabled_app/global_data/colors.dart';
 import 'package:enabled_app/keyboard_page/custom_keyboard.dart';
 import 'package:enabled_app/keyboard_page/custom_dictionary.dart';
 import 'package:enabled_app/main_layout/main_appbar.dart';
 import 'package:enabled_app/main_layout/button_controller.dart';
 import 'package:enabled_app/page_state.dart';
-import 'package:enabled_app/strings/strings.dart';
+import 'package:enabled_app/global_data/strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

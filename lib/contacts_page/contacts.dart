@@ -1,6 +1,6 @@
 import 'package:enabled_app/contacts_page/contact_item.dart';
 import 'package:enabled_app/contacts_page/contact_popup.dart';
-import 'package:enabled_app/colors/colors.dart';
+import 'package:enabled_app/global_data/colors.dart';
 import 'package:enabled_app/main_layout/button_controller.dart';
 import 'package:enabled_app/main_layout/main_appbar.dart';
 import 'package:enabled_app/page_state.dart';

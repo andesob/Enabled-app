@@ -1,4 +1,4 @@
-import 'package:enabled_app/colors/colors.dart';
+import 'package:enabled_app/global_data/colors.dart';
 import 'package:enabled_app/emergency_page/emergency_popup.dart';
 import 'package:enabled_app/main_layout/themes.dart';
 import 'package:flutter/cupertino.dart';

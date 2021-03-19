@@ -1,4 +1,4 @@
-import 'package:enabled_app/colors/colors.dart';
+import 'package:enabled_app/global_data/colors.dart';
 import 'package:enabled_app/keyboard_page/keyboard_backspace_key.dart';
 import 'package:enabled_app/keyboard_page/keyboard_capslock_key.dart';
 import 'package:enabled_app/keyboard_page/keyboard_horizontal_list.dart';

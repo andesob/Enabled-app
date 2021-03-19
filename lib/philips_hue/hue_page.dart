@@ -1,4 +1,4 @@
-import 'package:enabled_app/colors/colors.dart';
+import 'package:enabled_app/global_data/colors.dart';
 import 'package:enabled_app/contacts_page/contact_popup.dart';
 import 'package:enabled_app/libraries/hue/main/hue_api.dart';
 import 'package:enabled_app/page_state.dart';

@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:enabled_app/colors/colors.dart';
+import 'package:enabled_app/global_data/colors.dart';
 import 'package:enabled_app/emergency_page/emergency_alert.dart';
 
 import 'package:enabled_app/emergency_page/emergency_contact.dart';
