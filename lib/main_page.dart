@@ -1,17 +1,17 @@
-import 'package:enabled_app/colors/colors.dart';
+import 'package:enabled_app/global_data/colors.dart';
 import 'package:enabled_app/main_layout/button_controller.dart';
 import 'package:enabled_app/main_layout/main_appbar.dart';
-import 'package:enabled_app/main_page/home_page.dart';
 import 'package:enabled_app/page_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MainPage extends StatefulWidget {
-  MainPage({Key key, this.pageContent, this.title, this.pageKey})
+  MainPage({Key key, this.pageContent, this.title, this.pageKey, this.hasDropDown})
       : super(key: key);
   final StatefulWidget pageContent;
   final String title;
   final GlobalKey<PageState> pageKey;
+  final bool hasDropDown;
 
   _MainPageState createState() => _MainPageState();
 }
@@ -21,11 +21,6 @@ class _MainPageState extends State<MainPage> {
   Color darkPeach = Color(StaticColors.apricot);
   Color backgroundColor = Color(StaticColors.onyx);
   bool darkmode = false;
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +36,7 @@ class _MainPageState extends State<MainPage> {
         backgroundColor: darkmode ? backgroundColor : Colors.white,
         appBar: MyAppBar(
           title: widget.title,
-          hasDropDown: true,
+          hasDropDown: widget.hasDropDown,
         ),
         body: widget.pageContent,
         bottomNavigationBar: ButtonController(

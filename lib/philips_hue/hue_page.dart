@@ -1,7 +1,6 @@
-import 'package:enabled_app/colors/colors.dart';
+import 'package:enabled_app/global_data/colors.dart';
 import 'package:enabled_app/contacts_page/contact_popup.dart';
 import 'package:enabled_app/libraries/hue/main/hue_api.dart';
-import 'package:enabled_app/main_page/main_page_button.dart';
 import 'package:enabled_app/page_state.dart';
 import 'package:enabled_app/philips_hue/hue_button.dart';
 import 'package:enabled_app/philips_hue/hue_dropdown.dart';
@@ -27,11 +26,6 @@ class _HuePageState extends PageState<HuePage> {
 
   @override
   Widget build(BuildContext context) {
-    const Color lightPeach = Color(0xffffecd2);
-    const Color darkPeach = Color(0xfffcb7a0);
-    var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
-    HueApi api = new HueApi();
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[

@@ -1,32 +1,29 @@
 import 'dart:ui';
 
 import 'package:enabled_app/global_data/colors.dart';
-import 'package:enabled_app/emergency_page/emergency_alert.dart';
-
-import 'package:enabled_app/emergency_page/emergency_contact.dart';
-import 'package:enabled_app/emergency_page/emergency_popup.dart';
-import 'package:enabled_app/home_page/home_page_button.dart';
+import 'package:enabled_app/global_data/strings.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:gradient_text/gradient_text.dart';
 
-class EmergencyButton extends StatefulWidget {
+class HomePageButton extends StatefulWidget {
   final String text;
-  final VoidCallback onPressed;
   final bool focused;
 
-  EmergencyButton({
+  HomePageButton({
     Key key,
     this.text,
     this.focused = false,
-    this.onPressed,
   }) : super(key: key);
 
   @override
-  EmergencyButtonState createState() => EmergencyButtonState();
+  HomePageButtonState createState() => HomePageButtonState();
 }
 
-class EmergencyButtonState extends State<EmergencyButton> {
+class HomePageButtonState extends State<HomePageButton> {
+  void pushPressed(){
+    Navigator.pushNamed(context, widget.text);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -50,7 +47,7 @@ class EmergencyButtonState extends State<EmergencyButton> {
           ),
         ),
         onPressed: () {
-          widget.onPressed?.call();
+          pushPressed();
         },
       ),
     );

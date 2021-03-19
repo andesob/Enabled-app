@@ -1,4 +1,4 @@
-import 'package:enabled_app/colors/colors.dart';
+import 'package:enabled_app/global_data/colors.dart';
 import 'package:enabled_app/emergency_page/emergency_popup.dart';
 import 'package:enabled_app/main_layout/themes.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,7 +19,7 @@ class MyAppBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class MyAppBarState extends State<MyAppBar> {
-
+  final themeNotifier = ThemeNotifier();
   createDropDown() {
     return <Widget>[
       Material(
@@ -36,7 +36,7 @@ class MyAppBarState extends State<MyAppBar> {
           ],
           onSelected: (selected) {
             if (selected == 0) {
-              null;
+              themeNotifier.switchTheme();
             }
             if (selected == 1) {
               showDialog(
