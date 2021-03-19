@@ -1,7 +1,7 @@
 import 'package:enabled_app/colors/colors.dart';
+import 'package:enabled_app/home_page/home_page_button.dart';
 import 'package:enabled_app/libraries/hue/main/bridge_api.dart';
 import 'package:enabled_app/libraries/hue/main/hue_api.dart';
-import 'package:enabled_app/main_page/main_page_button.dart';
 import 'package:enabled_app/page_state.dart';
 import 'package:enabled_app/strings/strings.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,7 +26,7 @@ class SmartMainPageState extends PageState<SmartMainPage> {
 
   bool darkmode = false;
 
-  List<MainPageButton> smartPageBtnList = [];
+  List<HomePageButton> smartPageBtnList = [];
 
   @override
   void initState() {
@@ -67,8 +67,8 @@ class SmartMainPageState extends PageState<SmartMainPage> {
   }
 
   void addDefaultButtons() {
-    smartPageBtnList.add(MainPageButton(text: Strings.chromecast));
-    smartPageBtnList.add(MainPageButton(text: Strings.hue));
+    smartPageBtnList.add(HomePageButton(text: Strings.chromecast));
+    smartPageBtnList.add(HomePageButton(text: Strings.hue));
   }
 
   @override
