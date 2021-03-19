@@ -1,7 +1,6 @@
 import 'package:enabled_app/colors/colors.dart';
 import 'package:enabled_app/contacts_page/contact_popup.dart';
 import 'package:enabled_app/libraries/hue/main/hue_api.dart';
-import 'package:enabled_app/main_page/main_page_button.dart';
 import 'package:enabled_app/page_state.dart';
 import 'package:enabled_app/philips_hue/hue_button.dart';
 import 'package:enabled_app/philips_hue/hue_dropdown.dart';

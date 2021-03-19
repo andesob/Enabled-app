@@ -1,7 +1,6 @@
 import 'package:enabled_app/colors/colors.dart';
 import 'package:enabled_app/keyboard_page/custom_keyboard.dart';
 import 'package:enabled_app/keyboard_page/custom_dictionary.dart';
-import 'package:enabled_app/main_page/home_page.dart';
 import 'package:enabled_app/main_layout/main_appbar.dart';
 import 'package:enabled_app/main_layout/button_controller.dart';
 import 'package:enabled_app/page_state.dart';
