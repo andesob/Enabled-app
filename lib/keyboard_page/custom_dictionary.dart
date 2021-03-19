@@ -1,12 +1,14 @@
 import 'package:csv/csv.dart';
 import 'package:enabled_app/keyboard_page/dictionary_item.dart';
+import 'package:enabled_app/keyboard_page/keyboard_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
 class CustomDictionary extends StatefulWidget {
-  CustomDictionary({Key key, this.onDictItemChosen});
+  CustomDictionary({Key key, this.onDictItemChosen, this.text});
 
   final ValueSetter<String> onDictItemChosen;
+  final String text;
 
   CustomDictionaryState createState() => CustomDictionaryState();
 }
@@ -30,15 +32,20 @@ class CustomDictionaryState extends State<CustomDictionary> {
 
   List<String> _searchList(String searchKey){
     List<String> hitList = [];
-    dictionary.forEach((word) {
-      if(word.contains(searchKey)){
+    for (String word in dictionary){
+      print(word);
+      if(word.contains(searchKey.toLowerCase())){
         hitList.add(word);
       }
-    });
+    }
     if(hitList.isEmpty){
       return dictionary.sublist(0,4);
     }else{
-      return hitList.sublist(0,4);
+      if(hitList.length<4) {
+        return hitList.sublist(0, hitList.length);
+      }else{
+        return hitList.sublist(0,4);
+      }
     }
   }
 
@@ -48,11 +55,20 @@ class CustomDictionaryState extends State<CustomDictionary> {
     _loadCSV();
   }
 
+  String getLastWord(){
+    if(widget.text.isNotEmpty) {
+      List<String> words = widget.text.split(" ");
+      return words.last;
+    }else{
+      return (" ");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Column(
-        children: _searchList("")
+        children: _searchList(getLastWord())
             .map(
               (text) => DictionaryItem(
                 onDictItemChosen: _onDictChosenHandler,
