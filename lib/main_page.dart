@@ -1,7 +1,6 @@
 import 'package:enabled_app/colors/colors.dart';
 import 'package:enabled_app/main_layout/button_controller.dart';
 import 'package:enabled_app/main_layout/main_appbar.dart';
-import 'package:enabled_app/main_page/home_page.dart';
 import 'package:enabled_app/page_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,11 +21,6 @@ class _MainPageState extends State<MainPage> {
   Color darkPeach = Color(StaticColors.apricot);
   Color backgroundColor = Color(StaticColors.onyx);
   bool darkmode = false;
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,5 @@
 import 'package:enabled_app/contacts_page//contacts.dart';
+import 'package:enabled_app/home_page/home_page.dart';
 import 'package:enabled_app/keyboard_page/keyboard_page.dart';
 import 'package:enabled_app/libraries/hue/main/bridge.dart';
 import 'package:enabled_app/libraries/hue/main/bridge_api.dart';
@@ -13,7 +14,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'libraries/hue/lights/light.dart';
-import 'main_page/home_page.dart';
 import 'package:provider/provider.dart';
 import 'colors/colors.dart';
 import 'strings/strings.dart';

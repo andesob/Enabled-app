@@ -5,50 +5,27 @@ import 'package:enabled_app/strings/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_text/gradient_text.dart';
 
-class MainPageButton extends StatefulWidget{
-  String text;
-  bool darkmode = false;
-  bool focused = false;
-  MainPageButtonState state;
+class HomePageButton extends StatefulWidget {
+  final String text;
+  final bool focused;
 
-  MainPageButton({Key key, this.text}) : super(key: key);
+  HomePageButton({
+    Key key,
+    this.text,
+    this.focused = false,
+  }) : super(key: key);
 
   @override
-  MainPageButtonState createState() {
-    state = MainPageButtonState();
-    return state;
-  }
+  HomePageButtonState createState() => HomePageButtonState();
 }
 
-class MainPageButtonState extends State<MainPageButton> {
-  pushPressed() {
+class HomePageButtonState extends State<HomePageButton> {
+  void pushPressed(){
     Navigator.pushNamed(context, widget.text);
-  }
-
-  setFocus() {
-    setState(() {
-      widget.focused = true;
-    });
-  }
-
-  removeFocus() {
-    setState(() {
-      widget.focused = false;
-    });
-  }
-
-  void initState() {
-    super.initState();
-    if (widget.text == Strings.needs) {
-      setFocus();
-    }
   }
 
   @override
   Widget build(BuildContext context) {
-    Color lightPeach = Color(StaticColors.lightPeach);
-    Color darkPeach = Color(StaticColors.darkPeach);
-
     return Container(
       margin: EdgeInsets.all(5),
       decoration: new BoxDecoration(
@@ -60,12 +37,11 @@ class MainPageButtonState extends State<MainPageButton> {
       child: FlatButton(
         child: new GradientText(
           widget.text,
-          style: TextStyle(
-            color: Color(
-                widget.darkmode ? StaticColors.black : StaticColors.white),
-          ),
           gradient: new LinearGradient(
-            colors: [lightPeach, darkPeach],
+            colors: [
+              Color(StaticColors.lightPeach),
+              Color(StaticColors.darkPeach)
+            ],
             begin: FractionalOffset.centerLeft,
             end: FractionalOffset.centerRight,
           ),

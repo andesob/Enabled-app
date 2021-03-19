@@ -5,38 +5,30 @@ import 'package:enabled_app/emergency_page/emergency_alert.dart';
 
 import 'package:enabled_app/emergency_page/emergency_contact.dart';
 import 'package:enabled_app/emergency_page/emergency_popup.dart';
-import 'package:enabled_app/main_page/main_page_button.dart';
+import 'package:enabled_app/home_page/home_page_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:gradient_text/gradient_text.dart';
 
-class EmergencyButton extends MainPageButton{
-  String text;
-  bool darkmode = false;
-  bool focused = false;
-  MainPageButtonState state;
+class EmergencyButton extends StatefulWidget {
+  final String text;
+  final VoidCallback onPressed;
+  final bool focused;
 
-  EmergencyButton({Key key, this.text}) : super(key: key);
+  EmergencyButton({
+    Key key,
+    this.text,
+    this.focused = false,
+    this.onPressed,
+  }) : super(key: key);
 
   @override
-  MainPageButtonState createState() {
-    state = EmergencyButtonState();
-    return state;
-  }
+  EmergencyButtonState createState() => EmergencyButtonState();
 }
 
-class EmergencyButtonState extends MainPageButtonState {
-
-  @override
-  pushPressed() {
-    _launchURL(StaticEmergencyContact.emergencyContact);
-  }
-
+class EmergencyButtonState extends State<EmergencyButton> {
   @override
   Widget build(BuildContext context) {
-    Color lightPeach = Color(StaticColors.lightPeach);
-    Color darkPeach = Color(StaticColors.darkPeach);
-
     return Container(
       margin: EdgeInsets.all(5),
       decoration: new BoxDecoration(
@@ -48,37 +40,19 @@ class EmergencyButtonState extends MainPageButtonState {
       child: FlatButton(
         child: new GradientText(
           widget.text,
-          style: TextStyle(
-            color: Color(
-                widget.darkmode ? StaticColors.black : StaticColors.white),
-          ),
           gradient: new LinearGradient(
-            colors: [lightPeach, darkPeach],
+            colors: [
+              Color(StaticColors.lightPeach),
+              Color(StaticColors.darkPeach)
+            ],
             begin: FractionalOffset.centerLeft,
             end: FractionalOffset.centerRight,
           ),
         ),
         onPressed: () {
-          _launchURL(StaticEmergencyContact.emergencyContact);
+          widget.onPressed?.call();
         },
       ),
-    );
-  } 
-  _launchURL(number) async {
-    if(number != null) {
-      bool res = await FlutterPhoneDirectCaller.callNumber(number);
-    }
-    else{
-      showEmergencyContactAlert();
-    }
-  }
-
-  showEmergencyContactAlert(){
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return EmergencyAlert();
-      },
     );
   }
 }
