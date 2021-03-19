@@ -15,8 +15,8 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'libraries/hue/lights/light.dart';
 import 'package:provider/provider.dart';
-import 'colors/colors.dart';
-import 'strings/strings.dart';
+import 'global_data/colors.dart';
+import 'global_data/strings.dart';
 import 'package:enabled_app/custom_page/custom_page.dart';
 
 void main() {

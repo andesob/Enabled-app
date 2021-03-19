@@ -1,9 +1,9 @@
-import 'package:enabled_app/colors/colors.dart';
+import 'package:enabled_app/global_data/colors.dart';
 import 'package:enabled_app/home_page/home_page_button.dart';
 import 'package:enabled_app/libraries/hue/main/bridge_api.dart';
 import 'package:enabled_app/libraries/hue/main/hue_api.dart';
 import 'package:enabled_app/page_state.dart';
-import 'package:enabled_app/strings/strings.dart';
+import 'package:enabled_app/global_data/strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';

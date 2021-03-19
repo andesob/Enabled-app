@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:enabled_app/colors/colors.dart';
+import 'package:enabled_app/global_data/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_text/gradient_text.dart';

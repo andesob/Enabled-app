@@ -19,7 +19,7 @@ class CustomDictionaryState extends State<CustomDictionary> {
 
   // This function is triggered when the floating button is pressed
   void _loadCSV() async {
-    final _rawData = await rootBundle.loadString("assets/data/ord-norsk.csv");
+    final _rawData = await rootBundle.loadString("assets/data/words_no.csv");
     List<List<dynamic>> _listData = CsvToListConverter().convert(_rawData);
     dictionary = _listData.map((e) {
       return e[0].toString();
