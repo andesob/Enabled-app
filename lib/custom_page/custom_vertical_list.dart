@@ -36,13 +36,9 @@ class _CustomVerticaList extends State<CustomVerticalList> {
 
   /// Sets the focus around this list.
   void setFocus() {
-    if (this.mounted) {
       setState(() {
         widget.isFocused = true;
       });
-    } else {
-      print("not mounted");
-    }
   }
 
   /// Removes the focus of this list.
@@ -72,7 +68,7 @@ class _CustomVerticaList extends State<CustomVerticalList> {
     this.setButtonFocus();
   }
 
-  /// Scrolls the lsit to the left of the screen if possible.
+  /// Scrolls the list to the left of the screen if possible.
   void scrollLeft() {
     if (listIndex > 0) {
       listIndex--;
@@ -144,13 +140,13 @@ class _CustomVerticaList extends State<CustomVerticalList> {
           decoration: BoxDecoration(
               border: widget.isFocused
                   ? Border(
-                      top: BorderSide(width: 16, color: Colors.grey),
-                      bottom: BorderSide(width: 16, color: Colors.grey))
+                      top: BorderSide(width: 8, color: Colors.grey),
+                      bottom: BorderSide(width: 8, color: Colors.grey))
                   : null),
           margin: EdgeInsets.fromLTRB(12, 12, 12, 12),
           height: (MediaQuery.of(context).size.height -
-                  AppBar().preferredSize.height) /
-              6.0,
+                  AppBar().preferredSize.height - kBottomNavigationBarHeight) /
+              8,
           child: ScrollablePositionedList.builder(
             initialScrollIndex: 0,
             itemScrollController: scrollController,

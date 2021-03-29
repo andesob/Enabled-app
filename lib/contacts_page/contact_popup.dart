@@ -1,4 +1,4 @@
-import 'package:enabled_app/colors/colors.dart';
+import 'package:enabled_app/global_data/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -126,8 +126,10 @@ class _ContactPopupState extends State<ContactPopup> {
             child: Text("Submit"),
             color: Color(StaticColors.lightSlateGray),
             onPressed: () {
-              ContactItem cItem = ContactItem(firstname : firstNameController.text,
-                  surname : surnameController.text, number : numberController.text);
+              ContactItem cItem = ContactItem(
+                  firstname: firstNameController.text,
+                  surname: surnameController.text,
+                  number: numberController.text);
               widget.items.add(cItem);
               int cIndex = widget.items.indexOf(cItem);
               cItem.cIndex = cIndex;

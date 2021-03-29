@@ -1,4 +1,5 @@
-import 'package:enabled_app/colors/colors.dart';
+import 'package:enabled_app/global_data/colors.dart';
+import 'package:enabled_app/keyboard_page/keyboard_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -24,7 +25,7 @@ class DictionaryItemState extends State<DictionaryItem> {
     int flex = widget.flex;
     String text = widget.text;
     ValueSetter<String> onDictItemChosen = widget.onDictItemChosen;
-
+    print(text);
     return Expanded(
       flex: flex,
         child: Padding(

@@ -1,12 +1,13 @@
-import 'package:enabled_app/colors/colors.dart';
+import 'package:enabled_app/global_data/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_text/gradient_text.dart';
 
 // TODO Change the flatButton to raisedButton??
 class HuePageButton extends StatefulWidget {
-  HuePageButton({Key key, this.text}) : super(key: key);
+  HuePageButton({Key key, this.text, this.onClick}) : super(key: key);
 
   final String text;
+  final VoidCallback onClick;
   bool isFocused = false;
   _HuePageButton state;
 
@@ -22,7 +23,6 @@ class _HuePageButton extends State<HuePageButton> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     //setFocus();
     text = widget.text;
@@ -77,7 +77,9 @@ class _HuePageButton extends State<HuePageButton> {
             end: FractionalOffset.centerRight,
           ),
         ),
-        onPressed: () {},
+        onPressed: () {
+          widget.onClick.call();
+        },
       ),
     );
   }

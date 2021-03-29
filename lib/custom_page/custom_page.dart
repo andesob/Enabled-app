@@ -1,15 +1,10 @@
-import 'dart:async';
-
-import 'package:enabled_app/colors/colors.dart';
 import 'package:enabled_app/custom_page/custom_category.dart';
 import 'package:enabled_app/custom_page/custom_popup.dart';
 import 'package:enabled_app/custom_page/custom_vertical_list.dart';
 import 'package:enabled_app/custom_page/vertical_list_buttons.dart';
-import 'package:enabled_app/desktop_connection/server_socket.dart';
-
+import 'package:enabled_app/page_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 //TODO create a solution for the "result" object returned from the alert dialog.
@@ -23,7 +18,7 @@ class CustomPageHome extends StatefulWidget {
   _CustomPageHome createState() => _CustomPageHome();
 }
 
-class _CustomPageHome extends State<CustomPageHome> {
+class _CustomPageHome extends PageState<CustomPageHome> {
   List<CustomCategory> categoryList = [];
   List<CustomVerticalList> verticalList = [];
   List<VerticalListButtons> buttonList = [];
@@ -36,10 +31,8 @@ class _CustomPageHome extends State<CustomPageHome> {
   ItemScrollController childController;
   CustomVerticalList focusedList;
 
-  String command = "No message";
-
-  Stream stream;
-  StreamSubscription sub;
+  ItemScrollController itemScrollController;
+  ItemPositionsListener itemPositionsListener;
 
   bool inChildLevel = false;
 
@@ -79,61 +72,6 @@ class _CustomPageHome extends State<CustomPageHome> {
     focusedList.isFocused = true;
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    sub.cancel();
-  }
-
-  void control(state) {
-    switch (state) {
-      case "right":
-        {
-          downCommand();
-        }
-        break;
-      case "left":
-        {
-          upCommand();
-        }
-        break;
-
-      case "push":
-        {
-          selectCommand();
-        }
-        break;
-
-      case "pull":
-        {
-          backCommand();
-        }
-        break;
-
-      default:
-        break;
-    }
-  }
-
-  /// Controller to scroll or jump to a particular item.
-  final ItemScrollController itemScrollController = ItemScrollController();
-
-  /// Listener that reports the position of items when the list is scrolled.
-  final ItemPositionsListener itemPositionsListener =
-      ItemPositionsListener.create();
-
-  /// Sets the focus around the selected list.
-  void setListFocus() {
-    if (focusedList == null) {
-      focusedList = verticalList[0];
-      focusedList.state.setFocus();
-    } else {
-      focusedList.state.removeFocus();
-      focusedList = verticalList[verticalListIndex];
-      focusedList.state.setFocus();
-    }
-  }
-
   /// Scrolls the list down to the selected index.
   void scrollDown() {
     itemScrollController.scrollTo(
@@ -166,6 +104,19 @@ class _CustomPageHome extends State<CustomPageHome> {
     verticalList[verticalListIndex].state.scrollLeft();
   }
 
+  /// Sets the focus around the selected list.
+  void setListFocus() {
+    if (focusedList == null) {
+      focusedList = verticalList[0];
+      focusedList.state.setFocus();
+    } else {
+      focusedList.state.removeFocus();
+      focusedList = verticalList[verticalListIndex];
+      focusedList.state.setFocus();
+    }
+  }
+
+
   /// Checks if the list can scroll down or not.
   /// Returns a true if it can scroll and a false if it can't.
   bool canScrollDown() {
@@ -192,30 +143,60 @@ class _CustomPageHome extends State<CustomPageHome> {
     return canScroll;
   }
 
-  /// Removes the focus from the selected list.
-  void removeListFocus() {
-    if (focusedList != null) {
-      focusedList.state.removeFocus();
-    }
+  @override
+  Widget build(BuildContext context) {
+
+    /// Controller to scroll or jump to a particular item.
+    itemScrollController = ItemScrollController();
+
+    /// Listener that reports the position of items when the list is scrolled.
+    itemPositionsListener = ItemPositionsListener.create();
+
+    return Container(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Container(
+              child: Align(
+                  alignment: Alignment.centerRight,
+                  child: FlatButton(
+                    child: Text("Legg til"),
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return CustomPopup(
+                              items: categoryList,
+                            );
+                          }).then((value) {
+                        setState(() {
+                          print("reached: " + value);
+                          CustomCategory customCategory = new CustomCategory(
+                              categoryObjects: ['1', '2', '3'],
+                              categoryName: value);
+                          categoryList.add(customCategory);
+                        });
+                      }).catchError((error) {
+                        print(error);
+                      });
+                    },
+                  ))),
+          Expanded(
+            child: ScrollablePositionedList.builder(
+                initialScrollIndex: 0,
+                itemScrollController: itemScrollController,
+                itemPositionsListener: itemPositionsListener,
+                itemCount: verticalList.length,
+                scrollDirection: Axis.vertical,
+                itemBuilder: (context, index) => verticalList[index]),
+          ),
+        ],
+      ),
+    );
   }
 
-  /// Takes a input from the EEG-brainwear to simulate a down-command.
-  void downCommand() {
-    if (!inChildLevel && verticalListIndex < verticalList.length - 1) {
-      verticalListIndex++;
-      if (canScrollDown()) {
-        lastScrollIndexDown = verticalListIndex;
-        lastScrollIndex = verticalListIndex;
-        scrollDown();
-      }
-      setListFocus();
-    } else if (inChildLevel) {
-      scrollRight();
-    }
-  }
-
-  /// Takes a input from the EEG-brainwear to simulate an up-command.
-  void upCommand() {
+  @override
+  void leftPressed() {
     if (!inChildLevel && verticalListIndex > 0) {
       verticalListIndex--;
       if (canScrollUp()) {
@@ -229,124 +210,30 @@ class _CustomPageHome extends State<CustomPageHome> {
     }
   }
 
-  /// Takes a input from the EEG-brainwear to simulate a select-command.
-  void selectCommand() {
-    verticalList[verticalListIndex].state.setButtonFocus();
-    inChildLevel = true;
-  }
-
-  /// Takes a input from the EEG-brainwear to simulate a back-command.
-  void backCommand() {
+  @override
+  void pullPressed() {
     inChildLevel = false;
     verticalList[verticalListIndex].state.removeButtonFocus();
   }
 
   @override
-  Widget build(BuildContext context) {
-    Color lightPeach = Color(StaticColors.lightPeach);
-    Color darkPeach = Color(StaticColors.darkPeach);
-    bool isPortrait =
-        MediaQuery.of(context).orientation == Orientation.portrait;
+  void pushPressed() {
+    verticalList[verticalListIndex].state.setButtonFocus();
+    inChildLevel = true;
+  }
 
-    return Container(
-      decoration: new BoxDecoration(
-          gradient: new LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.topRight,
-              stops: [0.0, 1.0],
-              colors: [lightPeach, darkPeach])),
-      child: Scaffold(
-        appBar: PreferredSize(
-            preferredSize: Size.fromHeight(isPortrait ? 50 : 30),
-            child: GradientAppBar(
-                gradient: LinearGradient(colors: [lightPeach, darkPeach]),
-                actions: <Widget>[
-                  Material(
-                    type: MaterialType.transparency,
-                  )
-                ])),
-        body: Container(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Container(
-                  child: Align(
-                      alignment: Alignment.centerRight,
-                      child: FlatButton(
-                        child: Text(command),
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return CustomPopup(
-                                  items: categoryList,
-                                );
-                              }).then((value) {
-                            setState(() {
-                              print("reached: " + value);
-                              CustomCategory customCategory =
-                                  new CustomCategory(
-                                      categoryObjects: ['1', '2', '3'],
-                                      categoryName: value);
-                              categoryList.add(customCategory);
-                            });
-                          }).catchError((error) {
-                            print(error);
-                          });
-                        },
-                      ))),
-              Expanded(
-                child: ScrollablePositionedList.builder(
-                    initialScrollIndex: 0,
-                    itemScrollController: itemScrollController,
-                    itemPositionsListener: itemPositionsListener,
-                    itemCount: verticalList.length,
-                    scrollDirection: Axis.vertical,
-                    itemBuilder: (context, index) => verticalList[index]),
-              ),
-              Center(
-                child: Row(
-                  children: [
-                    Container(
-                      child: FlatButton(
-                        child: new Text("Opp"),
-                        onPressed: () {
-                          upCommand();
-                        },
-                      ),
-                    ),
-                    Container(
-                      child: FlatButton(
-                        child: new Text("Ned"),
-                        onPressed: () {
-                          downCommand();
-                        },
-                      ),
-                    ),
-                    Container(
-                      child: FlatButton(
-                        child: new Text("Ok"),
-                        onPressed: () {
-                          selectCommand();
-                        },
-                      ),
-                    ),
-                    //TODO Add back logic
-                    Container(
-                      child: FlatButton(
-                        child: new Text("Tilbake"),
-                        onPressed: () {
-                          backCommand();
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
+  @override
+  void rightPressed() {
+    if (!inChildLevel && verticalListIndex < verticalList.length - 1) {
+      verticalListIndex++;
+      if (canScrollDown()) {
+        lastScrollIndexDown = verticalListIndex;
+        lastScrollIndex = verticalListIndex;
+        scrollDown();
+      }
+      setListFocus();
+    } else if (inChildLevel) {
+      scrollRight();
+    }
   }
 }

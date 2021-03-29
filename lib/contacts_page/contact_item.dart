@@ -1,4 +1,4 @@
-import 'package:enabled_app/colors/colors.dart';
+import 'package:enabled_app/global_data/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
@@ -19,33 +19,25 @@ class ContactItem extends StatefulWidget {
 }
 
 class _ContactItem extends State<ContactItem>{
-  bool boldFont;
+  /// The current highlight of font in the contact item, where true is highlighted.
+  bool highlightFont;
 
   @override
   void initState() {
     super.initState();
     print("INDEX: " + widget.cIndex.toString());
     if(widget.cIndex == 0){
-      boldFont = true;
+      highlightFont = true;
     } else {
-      boldFont = false;
+      highlightFont = false;
     }
   }
 
-  setBold(){
+  /// Changes the highlighting of the item
+  setHighlightState(bool highlightState){
     setState(() {
-      boldFont = true;
+      highlightFont = highlightState;
     });
-  }
-
-  removeBold(){
-    setState(() {
-      boldFont = false;
-    });
-  }
-
-  FontWeight setFontWeight(){
-
   }
 
   @override
@@ -59,17 +51,16 @@ class _ContactItem extends State<ContactItem>{
       child: ListTile(
         onTap: () => _launchURL(number),
         leading: CircleAvatar(
-          backgroundColor: boldFont ? Color(StaticColors.charcoal): Color(StaticColors.lighterSlateGray),
+          backgroundColor: highlightFont ? Color(StaticColors.charcoal): Color(StaticColors.lighterSlateGray),
           child: Text(
             firstname[0],
             style: TextStyle(color: Color(StaticColors.white)),
           ),
         ),
-        title: Text(firstname + " " + surname, style: boldFont ? TextStyle(fontWeight: FontWeight.bold): TextStyle(fontWeight: FontWeight.normal),),
-        subtitle: Text(number, style: boldFont ? TextStyle(fontWeight: FontWeight.bold): TextStyle(fontWeight: FontWeight.normal),),
+        title: Text(firstname + " " + surname, style: highlightFont ? TextStyle(fontWeight: FontWeight.bold): TextStyle(fontWeight: FontWeight.normal),),
+        subtitle: Text(number, style: highlightFont ? TextStyle(fontWeight: FontWeight.bold): TextStyle(fontWeight: FontWeight.normal),),
       ),
     );
-    throw UnimplementedError();
   }
 
   _launchURL(number) async {
