@@ -5,7 +5,6 @@ import 'package:enabled_app/desktop_connection/network_service.dart';
 class SocketSingleton {
   static final SocketSingleton _singleton = SocketSingleton._internal();
   String _localIP;
-  String _externalIP;
   HttpServer _serverSocket;
   WebSocket _clientSocket;
   int _port = 9000;

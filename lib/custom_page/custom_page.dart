@@ -40,7 +40,7 @@ class _CustomPageHome extends PageState<CustomPageHome> {
   @override
   void initState() {
     super.initState();
-
+/**
     SocketSingleton socket = SocketSingleton();
 
     stream = socket.getStream();
@@ -50,6 +50,7 @@ class _CustomPageHome extends PageState<CustomPageHome> {
         command = value;
       });
     });
+    **/
 
     /// For testing purposes
     List<String> testObjects = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
@@ -116,7 +117,6 @@ class _CustomPageHome extends PageState<CustomPageHome> {
     }
   }
 
-
   /// Checks if the list can scroll down or not.
   /// Returns a true if it can scroll and a false if it can't.
   bool canScrollDown() {
@@ -145,7 +145,6 @@ class _CustomPageHome extends PageState<CustomPageHome> {
 
   @override
   Widget build(BuildContext context) {
-
     /// Controller to scroll or jump to a particular item.
     itemScrollController = ItemScrollController();
 
