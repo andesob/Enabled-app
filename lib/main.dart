@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:enabled_app/contacts_page//contacts.dart';
+import 'package:enabled_app/desktop_connection/server_socket.dart';
 import 'package:enabled_app/home_page/home_page.dart';
 import 'package:enabled_app/keyboard_page/keyboard_page.dart';
 import 'package:enabled_app/libraries/hue/main/bridge.dart';
@@ -24,6 +27,16 @@ void main() {
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
     runApp(new MyApp());
+  });
+  SocketSingleton socket = SocketSingleton();
+  StreamSubscription sub;
+  Stream stream = socket.getStream();
+  sub = stream.listen((value) {
+    /** setState(() {
+        command = value;
+        });
+     **/
+    print("value: " + value);
   });
 }
 
