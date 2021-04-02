@@ -31,6 +31,7 @@ dependencies:
   flutter_phone_direct_caller: ^1.0.1
   scrollable_positioned_list: ^0.1.9
   hue_dart: ^0.2.1
+  wifi: ^0.1.5
   http: ^0.12.2
   shared_preferences: ^0.5.12+4
   provider: ^3.1.0+1

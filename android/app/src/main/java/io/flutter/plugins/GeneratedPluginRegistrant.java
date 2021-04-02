@@ -19,5 +19,6 @@ public final class GeneratedPluginRegistrant {
     flutterEngine.getPlugins().add(new dev.flutter.plugins.integration_test.IntegrationTestPlugin());
     flutterEngine.getPlugins().add(new io.flutter.plugins.sharedpreferences.SharedPreferencesPlugin());
     flutterEngine.getPlugins().add(new io.flutter.plugins.urllauncher.UrlLauncherPlugin());
+      com.ly.wifi.WifiPlugin.registerWith(shimPluginRegistry.registrarFor("com.ly.wifi.WifiPlugin"));
   }
 }

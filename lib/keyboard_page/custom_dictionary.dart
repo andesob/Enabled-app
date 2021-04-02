@@ -30,21 +30,21 @@ class CustomDictionaryState extends State<CustomDictionary> {
     });
   }
 
-  List<String> _searchList(String searchKey){
+  List<String> _searchList(String searchKey) {
     List<String> hitList = [];
-    for (String word in dictionary){
+    for (String word in dictionary) {
       print(word);
-      if(word.contains(searchKey.toLowerCase())){
+      if (word.contains(searchKey.toLowerCase())) {
         hitList.add(word);
       }
     }
-    if(hitList.isEmpty){
-      return dictionary.sublist(0,4);
-    }else{
-      if(hitList.length<4) {
+    if (hitList.isEmpty) {
+      return dictionary.sublist(0, 4);
+    } else {
+      if (hitList.length < 4) {
         return hitList.sublist(0, hitList.length);
-      }else{
-        return hitList.sublist(0,4);
+      } else {
+        return hitList.sublist(0, 4);
       }
     }
   }
@@ -55,11 +55,11 @@ class CustomDictionaryState extends State<CustomDictionary> {
     _loadCSV();
   }
 
-  String getLastWord(){
-    if(widget.text.isNotEmpty) {
+  String getLastWord() {
+    if (widget.text.isNotEmpty) {
       List<String> words = widget.text.split(" ");
       return words.last;
-    }else{
+    } else {
       return (" ");
     }
   }

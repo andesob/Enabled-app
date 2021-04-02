@@ -28,6 +28,12 @@
 @import url_launcher;
 #endif
 
+#if __has_include(<wifi/WifiPlugin.h>)
+#import <wifi/WifiPlugin.h>
+#else
+@import wifi;
+#endif
+
 @implementation GeneratedPluginRegistrant
 
 + (void)registerWithRegistry:(NSObject<FlutterPluginRegistry>*)registry {
@@ -35,6 +41,7 @@
   [IntegrationTestPlugin registerWithRegistrar:[registry registrarForPlugin:@"IntegrationTestPlugin"]];
   [FLTSharedPreferencesPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTSharedPreferencesPlugin"]];
   [FLTURLLauncherPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTURLLauncherPlugin"]];
+  [WifiPlugin registerWithRegistrar:[registry registrarForPlugin:@"WifiPlugin"]];
 }
 
 @end

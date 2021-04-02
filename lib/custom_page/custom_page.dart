@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:enabled_app/custom_page/custom_category.dart';
 import 'package:enabled_app/custom_page/custom_popup.dart';
 import 'package:enabled_app/custom_page/custom_vertical_list.dart';
 import 'package:enabled_app/custom_page/vertical_list_buttons.dart';
+import 'package:enabled_app/desktop_connection/server_socket.dart';
 import 'package:enabled_app/page_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -34,12 +37,58 @@ class _CustomPageHome extends PageState<CustomPageHome> {
   ItemScrollController itemScrollController;
   ItemPositionsListener itemPositionsListener;
 
+  StreamSubscription sub;
+
   bool inChildLevel = false;
+
+  @override
+  void dispose() {
+    super.dispose();
+    sub.cancel();
+  }
 
   // TODO remove test objects.
   @override
   void initState() {
     super.initState();
+
+    void mentalCommands(state) {
+      switch (state) {
+        case 'right':
+          {
+            rightPressed();
+          }
+          break;
+
+        case 'left':
+          {
+            leftPressed();
+          }
+          break;
+        case 'push':
+          {
+            pushPressed();
+          }
+          break;
+        case 'pull':
+          {
+            pullPressed();
+          }
+          break;
+        default:
+          {}
+          break;
+      }
+    }
+
+    SocketSingleton socket = SocketSingleton();
+    Stream stream = socket.getStream();
+    sub = stream.listen((value) {
+      setState(() {
+        print('Custom page command: ' + value);
+        mentalCommands(value);
+      });
+    });
 
     /// For testing purposes
     List<String> testObjects = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
@@ -106,7 +155,6 @@ class _CustomPageHome extends PageState<CustomPageHome> {
     }
   }
 
-
   /// Checks if the list can scroll down or not.
   /// Returns a true if it can scroll and a false if it can't.
   bool canScrollDown() {
@@ -135,7 +183,6 @@ class _CustomPageHome extends PageState<CustomPageHome> {
 
   @override
   Widget build(BuildContext context) {
-
     /// Controller to scroll or jump to a particular item.
     itemScrollController = ItemScrollController();
 
