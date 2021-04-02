@@ -46,7 +46,7 @@ class SocketSingleton {
 
     _clientSocket.listen(
       (data) {
-        print(data);
+        //print(data);
         controller.add(data);
       },
       onError: (e) {

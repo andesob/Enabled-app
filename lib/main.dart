@@ -29,15 +29,6 @@ void main() {
     runApp(new MyApp());
   });
   SocketSingleton socket = SocketSingleton();
-  StreamSubscription sub;
-  Stream stream = socket.getStream();
-  sub = stream.listen((value) {
-    /** setState(() {
-        command = value;
-        });
-     **/
-    print("value: " + value);
-  });
 }
 
 class MyApp extends StatelessWidget {
