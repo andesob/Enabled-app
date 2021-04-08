@@ -1,3 +1,4 @@
+import 'package:enabled_app/global_data/strings.dart';
 import 'package:enabled_app/needs/needs_category.dart';
 import 'package:enabled_app/needs/needs_vertical_list.dart';
 import 'package:enabled_app/page_state.dart';
@@ -33,14 +34,46 @@ class _NeedsPageState extends PageState<NeedsPage> {
   void initState() {
     super.initState();
 
-    List<String> testObjects = ['1', '2', '3', '4', '5'];
-    NeedsCategory needsCategory = new NeedsCategory();
-    needsCategory.categoryName = 'Sundeersot123';
-    needsCategory.categoryObjects = testObjects;
+    List<String> foodDrinkObjects = [
+      Strings.HUNGRY,
+      Strings.THIRSTY,
+      Strings.SNACKS,
+    ];
+    List<String> hygieneObjects = [
+      Strings.TOILET,
+      Strings.SHOWER,
+      Strings.BATH,
+      Strings.MEDICATION,
+    ];
+    List<String> emotionObjects = [
+      Strings.HAPPY,
+      Strings.SAD,
+      Strings.ANGRY,
+      Strings.TIRED,
+      Strings.SCARED,
+      Strings.SURPRISED,
+    ];
+    List<String> roomObjects = [
+      Strings.OUTSIDE,
+      Strings.LIVING_ROOM,
+      Strings.KITCHEN,
+      Strings.BEDROOM,
+      Strings.BASEMENT,
+    ];
 
-    for (var i = 0; i < 5; i++) {
-      categoryList.add(needsCategory);
-    }
+    NeedsCategory foodDrinkCategory =
+        new NeedsCategory(Strings.FOOD_DRINK, foodDrinkObjects);
+    NeedsCategory hygieneCategory =
+        new NeedsCategory(Strings.HYGIENE, hygieneObjects);
+    NeedsCategory emotionsCategory =
+        new NeedsCategory(Strings.EMOTIONS, emotionObjects);
+    NeedsCategory roomCategory = new NeedsCategory(Strings.ROOMS, roomObjects);
+
+    categoryList.add(foodDrinkCategory);
+    categoryList.add(hygieneCategory);
+    categoryList.add(emotionsCategory);
+    categoryList.add(roomCategory);
+
     for (var item in categoryList) {
       NeedsVerticalList list = new NeedsVerticalList(
         categoryTitle: item.categoryName,
@@ -96,7 +129,6 @@ class _NeedsPageState extends PageState<NeedsPage> {
     }
   }
 
-
   /// Checks if the list can scroll down or not.
   /// Returns a true if it can scroll and a false if it can't.
   bool canScrollDown() {
@@ -123,7 +155,6 @@ class _NeedsPageState extends PageState<NeedsPage> {
     return canScroll;
   }
 
-
   @override
   Widget build(BuildContext context) {
     itemScrollController = ItemScrollController();
@@ -134,7 +165,9 @@ class _NeedsPageState extends PageState<NeedsPage> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          SizedBox(height: 20,),
+          SizedBox(
+            height: 20,
+          ),
           Expanded(
             child: ScrollablePositionedList.builder(
                 initialScrollIndex: 0,

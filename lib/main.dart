@@ -39,60 +39,60 @@ class MyApp extends StatelessWidget {
     //final themeState = Provider.of<ThemeNotifier>(context);
 
     return MaterialApp(
-      title: Strings.enabled,
-      initialRoute: Strings.home,
+      title: Strings.ENABLED,
+      initialRoute: Strings.HOME,
       //theme: themeState.getTheme(),
       theme: ThemeData(
         brightness: Brightness.light,
         backgroundColor: Colors.white,
       ),
       routes: {
-        Strings.home: (context) => MainPage(
+        Strings.HOME: (context) => MainPage(
             pageContent: MyHomePage(
-                key: PageGlobalKeys.homePageKey, title: Strings.home),
-            title: Strings.home,
+                key: PageGlobalKeys.homePageKey, title: Strings.HOME),
+            title: Strings.HOME,
             hasDropDown: true,
             pageKey: PageGlobalKeys.homePageKey),
-        Strings.needs: (context) => MainPage(
+        Strings.NEEDS: (context) => MainPage(
             pageContent: NeedsPage(key: PageGlobalKeys.needsPageKey),
-            title: Strings.needs,
+            title: Strings.NEEDS,
             hasDropDown: false,
             pageKey: PageGlobalKeys.needsPageKey),
-        Strings.contacts: (context) => MainPage(
+        Strings.CONTACTS: (context) => MainPage(
               pageContent: contacts(
                 key: PageGlobalKeys.contactsPageKey,
               ),
-              title: Strings.contacts,
+              title: Strings.CONTACTS,
               hasDropDown: false,
               pageKey: PageGlobalKeys.contactsPageKey,
             ),
-        Strings.custom: (context) => MainPage(
+        Strings.CUSTOM: (context) => MainPage(
               pageContent: CustomPageHome(
                 key: PageGlobalKeys.customPageKey,
               ),
-              title: Strings.custom,
+              title: Strings.CUSTOM,
               hasDropDown: false,
               pageKey: PageGlobalKeys.customPageKey,
             ),
-        Strings.keyboard: (context) => MainPage(
+        Strings.KEYBOARD: (context) => MainPage(
               pageContent: KeyboardPage(
                 key: PageGlobalKeys.keyboardPageKey,
               ),
-              title: Strings.keyboard,
+              title: Strings.KEYBOARD,
               hasDropDown: false,
               pageKey: PageGlobalKeys.keyboardPageKey,
             ),
-        Strings.smart: (context) => MainPage(
+        Strings.SMART: (context) => MainPage(
               pageContent: SmartMainPage(
                 key: PageGlobalKeys.smartPageKey,
               ),
-              title: Strings.smart,
+              title: Strings.SMART,
               hasDropDown: false,
               pageKey: PageGlobalKeys.smartPageKey,
             ),
-        Strings.hue: (context) => MainPage(
+        Strings.HUE: (context) => MainPage(
               pageContent: HuePage(key: PageGlobalKeys.huePageKey),
-              title: Strings.hue,
+              title: Strings.HUE,
               hasDropDown: false,
               pageKey: PageGlobalKeys.huePageKey,
             ),

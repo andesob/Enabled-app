@@ -21,11 +21,11 @@ class NeedsPageButton extends StatefulWidget {
 //var picture;
 }
 
-class _NeedsPageButton extends State<NeedsPageButton>{
+class _NeedsPageButton extends State<NeedsPageButton> {
   String text;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     text = widget.text;
   }
@@ -54,37 +54,43 @@ class _NeedsPageButton extends State<NeedsPageButton>{
     const Color darkPeach = Color(0xfffcb7a0);
 
     return Container(
-        margin: EdgeInsets.all(10),
-        child: new Column(
+      margin: EdgeInsets.all(5),
+      child: new RaisedButton(
+        highlightColor: Color(StaticColors.deepSpaceSparkle),
+        color: widget.isFocused
+            ? Color(StaticColors.deepSpaceSparkle)
+            : Color(StaticColors.lighterSlateGray),
+        elevation: widget.isFocused ? 10 : 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+          side: BorderSide(
+            color: widget.isFocused ? Colors.black : Colors.black12,
+          ),
+        ),
+        textColor: Colors.white,
+        padding: const EdgeInsets.all(0.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Flexible(
-              child: new Center(
-                child: new RaisedButton(
-                  highlightColor: Color(StaticColors.deepSpaceSparkle),
-                  color: widget.isFocused
-                      ? Color(StaticColors.deepSpaceSparkle)
-                      : Color(StaticColors.lighterSlateGray),
-                  elevation: widget.isFocused ? 10 : 0,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                      side: BorderSide(
-                          color: widget.isFocused ? Colors.black : Colors.black12)),
-                  textColor: Colors.white,
-                  padding: const EdgeInsets.all(0.0),
-                  child: new GradientText(
-                    widget.text,
-                    style: TextStyle(color: Color(StaticColors.white)),
-                    gradient: new LinearGradient(
-                      colors: [lightPeach, darkPeach],
-                      begin: FractionalOffset.centerLeft,
-                      end: FractionalOffset.centerRight,
-                    ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.accessibility),
+                GradientText(
+                  widget.text,
+                  style: TextStyle(fontSize: 12),
+                  gradient: new LinearGradient(
+                    colors: [lightPeach, darkPeach],
+                    begin: FractionalOffset.centerLeft,
+                    end: FractionalOffset.centerRight,
                   ),
-                  onPressed: () {},
                 ),
-              ),
+              ],
             ),
           ],
-        ));
+        ),
+        onPressed: () {},
+      ),
+    );
   }
 }

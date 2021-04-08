@@ -67,8 +67,8 @@ class SmartMainPageState extends PageState<SmartMainPage> {
   }
 
   void addDefaultButtons() {
-    smartPageBtnList.add(HomePageButton(text: Strings.chromecast));
-    smartPageBtnList.add(HomePageButton(text: Strings.hue));
+    smartPageBtnList.add(HomePageButton(text: Strings.CHROMECAST));
+    smartPageBtnList.add(HomePageButton(text: Strings.HUE));
   }
 
   @override
