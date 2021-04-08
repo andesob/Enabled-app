@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:gradient_text/gradient_text.dart';
 
 class NeedsPageButton extends StatefulWidget {
-  NeedsPageButton({Key key, this.text}) : super(key: key);
+  NeedsPageButton({Key key, this.text, this.icon}) : super(key: key);
   final String text;
+  final Icon icon;
   bool isFocused = false;
   _NeedsPageButton state;
 
@@ -75,7 +76,7 @@ class _NeedsPageButton extends State<NeedsPageButton> {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.accessibility),
+                widget.icon,
                 GradientText(
                   widget.text,
                   style: TextStyle(fontSize: 12),

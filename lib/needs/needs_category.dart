@@ -7,7 +7,7 @@ class NeedsCategory {
 
   NeedsCategory(this.categoryName, [this.categoryObjects]);
 
-  String get name{
+  String get name {
     return this.categoryName;
   }
 
@@ -15,20 +15,23 @@ class NeedsCategory {
     return this.categoryObjects;
   }
 
-  void addCategoryObjectsList(List<NeedsObject> objects){
-    for(NeedsObject s in objects){
+  void addCategoryObjectsList(List<NeedsObject> objects) {
+    for (NeedsObject s in objects) {
       categoryObjects.add(s);
     }
   }
 
-  void addCategoryObject(NeedsObject object){
+  void addCategoryObject(NeedsObject object) {
     categoryObjects.add(object);
   }
 
-  List<NeedsPageButton> allButtons(){
+  List<NeedsPageButton> allButtons() {
     List<NeedsPageButton> buttonList = [];
-    for(var i = 0; i<categoryObjects.length; i++){
-      NeedsPageButton button = new NeedsPageButton(text: categoryObjects[i].text);
+    for (var i = 0; i < categoryObjects.length; i++) {
+      NeedsPageButton button = new NeedsPageButton(
+        text: categoryObjects[i].text,
+        icon: categoryObjects[i].icon,
+      );
       buttonList.add(button);
     }
     return buttonList;

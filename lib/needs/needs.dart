@@ -56,7 +56,7 @@ class _NeedsPageState extends PageState<NeedsPage> {
         categoryTitle: item.categoryName,
         buttonList: item.allButtons(),
       );
-      
+
       verticalList.add(list);
       focusedList = verticalList[0];
       focusedList.isFocused = true;
