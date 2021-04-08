@@ -1,8 +1,9 @@
+import 'needs_object.dart';
 import 'needs_page_button.dart';
 
 class NeedsCategory {
   String categoryName;
-  List<String> categoryObjects = [];
+  List<NeedsObject> categoryObjects = [];
 
   NeedsCategory(this.categoryName, [this.categoryObjects]);
 
@@ -10,24 +11,24 @@ class NeedsCategory {
     return this.categoryName;
   }
 
-  List<String> get allObjects {
+  List<NeedsObject> get allObjects {
     return this.categoryObjects;
   }
 
-  void addCategoryObjectsList(List<String> objects){
-    for(String s in objects){
+  void addCategoryObjectsList(List<NeedsObject> objects){
+    for(NeedsObject s in objects){
       categoryObjects.add(s);
     }
   }
 
-  void addCategoryObject(String object){
+  void addCategoryObject(NeedsObject object){
     categoryObjects.add(object);
   }
 
   List<NeedsPageButton> allButtons(){
     List<NeedsPageButton> buttonList = [];
     for(var i = 0; i<categoryObjects.length; i++){
-      NeedsPageButton button = new NeedsPageButton(text: categoryObjects[i]);
+      NeedsPageButton button = new NeedsPageButton(text: categoryObjects[i].text);
       buttonList.add(button);
     }
     return buttonList;

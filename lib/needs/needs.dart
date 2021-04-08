@@ -1,9 +1,12 @@
 import 'package:enabled_app/global_data/strings.dart';
 import 'package:enabled_app/needs/needs_category.dart';
+import 'package:enabled_app/needs/needs_data.dart';
 import 'package:enabled_app/needs/needs_vertical_list.dart';
 import 'package:enabled_app/page_state.dart';
 import 'package:flutter/material.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+
+import 'needs_object.dart';
 
 class NeedsPage extends StatefulWidget {
   NeedsPage({Key key, this.title}) : super(key: key);
@@ -34,40 +37,14 @@ class _NeedsPageState extends PageState<NeedsPage> {
   void initState() {
     super.initState();
 
-    List<String> foodDrinkObjects = [
-      Strings.HUNGRY,
-      Strings.THIRSTY,
-      Strings.SNACKS,
-    ];
-    List<String> hygieneObjects = [
-      Strings.TOILET,
-      Strings.SHOWER,
-      Strings.BATH,
-      Strings.MEDICATION,
-    ];
-    List<String> emotionObjects = [
-      Strings.HAPPY,
-      Strings.SAD,
-      Strings.ANGRY,
-      Strings.TIRED,
-      Strings.SCARED,
-      Strings.SURPRISED,
-    ];
-    List<String> roomObjects = [
-      Strings.OUTSIDE,
-      Strings.LIVING_ROOM,
-      Strings.KITCHEN,
-      Strings.BEDROOM,
-      Strings.BASEMENT,
-    ];
-
     NeedsCategory foodDrinkCategory =
-        new NeedsCategory(Strings.FOOD_DRINK, foodDrinkObjects);
+        new NeedsCategory(Strings.FOOD_DRINK, NeedsData.FOOD_DRINK_OBJECTS);
     NeedsCategory hygieneCategory =
-        new NeedsCategory(Strings.HYGIENE, hygieneObjects);
+        new NeedsCategory(Strings.HYGIENE, NeedsData.HYGIENE_OBJECTS);
     NeedsCategory emotionsCategory =
-        new NeedsCategory(Strings.EMOTIONS, emotionObjects);
-    NeedsCategory roomCategory = new NeedsCategory(Strings.ROOMS, roomObjects);
+        new NeedsCategory(Strings.EMOTIONS, NeedsData.EMOTION_OBJECTS);
+    NeedsCategory roomCategory =
+        new NeedsCategory(Strings.ROOMS, NeedsData.ROOM_OBJECTS);
 
     categoryList.add(foodDrinkCategory);
     categoryList.add(hygieneCategory);
@@ -79,6 +56,7 @@ class _NeedsPageState extends PageState<NeedsPage> {
         categoryTitle: item.categoryName,
         buttonList: item.allButtons(),
       );
+      
       verticalList.add(list);
       focusedList = verticalList[0];
       focusedList.isFocused = true;

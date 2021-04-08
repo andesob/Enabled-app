@@ -20,6 +20,7 @@ class Strings{
   static const String HUNGRY = "Hungry";
   static const String THIRSTY = "Thirsty";
   static const String SNACKS = "Snacks";
+  static const String CANDY = "Candy";
   static const String TOILET = "Toilet";
   static const String SHOWER = "Shower";
   static const String BATH = "Bath";
