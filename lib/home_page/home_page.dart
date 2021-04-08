@@ -27,16 +27,16 @@ class MyHomePageState extends PageState<MyHomePage> {
   int verticalBtns;
 
   List<int> currPos = [0, 0];
-  String currBtnString = Strings.needs;
+  String currBtnString = Strings.NEEDS;
 
   List<HomePageButton> mainPageBtnList = [];
   List<String> btnTextList = [
-    Strings.needs,
-    Strings.custom,
-    Strings.keyboard,
-    Strings.contacts,
-    Strings.smart,
-    Strings.emergency,
+    Strings.NEEDS,
+    Strings.CUSTOM,
+    Strings.KEYBOARD,
+    Strings.CONTACTS,
+    Strings.SMART,
+    Strings.EMERGENCY,
   ];
   var list;
 
@@ -79,7 +79,7 @@ class MyHomePageState extends PageState<MyHomePage> {
 
   @override
   void pushPressed() {
-    if(currBtnString == Strings.emergency){
+    if(currBtnString == Strings.EMERGENCY){
       _launchURL();
       return;
     }
@@ -139,7 +139,7 @@ class MyHomePageState extends PageState<MyHomePage> {
             physics: NeverScrollableScrollPhysics(),
             crossAxisCount: useMobileLayout ? 2 : 3,
             children: btnTextList.map((string) {
-              if (string == Strings.emergency) {
+              if (string == Strings.EMERGENCY) {
                 return EmergencyButton(
                   text: string,
                   focused: currBtnString == string,

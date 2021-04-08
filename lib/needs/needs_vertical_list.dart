@@ -128,39 +128,46 @@ class _NeedsVerticalList extends State<NeedsVerticalList> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(mainAxisSize: MainAxisSize.min, children: [
-      Align(alignment: Alignment.topCenter, child: Text(widget.categoryTitle)),
-      Flexible(
-        child: Container(
-          //color: Colors.grey,
-          decoration: BoxDecoration(
-              border: widget.isFocused
-                  ? Border(
-                      top: BorderSide(width: 8, color: Colors.grey),
-                      bottom: BorderSide(width: 8, color: Colors.grey))
-                  : null),
-          margin: EdgeInsets.fromLTRB(12, 12, 12, 12),
-          height: (MediaQuery.of(context).size.height -
-                  AppBar().preferredSize.height -
-                  kBottomNavigationBarHeight) /
-              6.0,
-          child: ScrollablePositionedList.builder(
-            initialScrollIndex: 0,
-            itemScrollController: scrollController,
-            itemPositionsListener: itemPositionsListener,
-            itemCount: widget.buttonList.length,
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) => Row(
-              children: [
-                Container(
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Align(
+          alignment: Alignment.topCenter,
+          child: Text(widget.categoryTitle),
+        ),
+        Flexible(
+          child: Container(
+            decoration: BoxDecoration(
+                border: widget.isFocused
+                    ? Border(
+                        top: BorderSide(width: 8, color: Colors.grey),
+                        bottom: BorderSide(width: 8, color: Colors.grey),
+                      )
+                    : null),
+            margin: EdgeInsets.fromLTRB(6, 6, 6, 6),
+            height: (MediaQuery.of(context).size.height -
+                    AppBar().preferredSize.height -
+                    kBottomNavigationBarHeight) /
+                6.0,
+            child: ScrollablePositionedList.builder(
+              initialScrollIndex: 0,
+              itemScrollController: scrollController,
+              itemPositionsListener: itemPositionsListener,
+              itemCount: widget.buttonList.length,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) => Row(
+                children: [
+                  Container(
                     height: MediaQuery.of(context).size.width * (0.24),
                     width: MediaQuery.of(context).size.width * (0.24),
-                    child: widget.buttonList[index])
-              ],
+                    child: widget.buttonList[index],
+                  )
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    ]);
+      ],
+    );
   }
 }
