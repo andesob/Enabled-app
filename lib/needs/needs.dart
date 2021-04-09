@@ -32,7 +32,7 @@ class _NeedsPageState extends PageState<NeedsPage> {
 
   int lastScrollIndexLeft = 0;
   int lastScrollIndexRight = 0;
-  int lastScrollIndex = 0;
+  int lastHorizontalScrollIndex = 0;
 
   ItemScrollController itemScrollController;
   ItemScrollController childScrollController;
@@ -61,7 +61,7 @@ class _NeedsPageState extends PageState<NeedsPage> {
   void scrollRight() {
     if (canScrollRight()) {
       lastScrollIndexRight = currentFocusedHorizontalListIndex;
-      lastScrollIndex = currentFocusedHorizontalListIndex;
+      lastHorizontalScrollIndex = currentFocusedHorizontalListIndex;
 
       childScrollController.scrollTo(
         index: currentFocusedHorizontalListIndex,
@@ -74,10 +74,26 @@ class _NeedsPageState extends PageState<NeedsPage> {
     }
   }
 
+  // Scrolls one of the child list left.
+  void scrollLeft() {
+    if (canScrollLeft()) {
+      lastScrollIndexLeft = currentFocusedHorizontalListIndex;
+      lastHorizontalScrollIndex = currentFocusedHorizontalListIndex;
+
+      childScrollController.scrollTo(
+        index: currentFocusedHorizontalListIndex,
+        duration: Duration(
+          seconds: 1,
+        ),
+        curve: Curves.ease,
+      );
+    }
+  }
+
   bool canScrollRight() {
     //If rightmost button on screen is focused
     if (currentFocusedHorizontalListIndex > lastScrollIndexLeft + 3 &&
-        currentFocusedHorizontalListIndex > lastScrollIndex) {
+        currentFocusedHorizontalListIndex > lastHorizontalScrollIndex) {
       return true;
     }
     return false;
@@ -90,22 +106,6 @@ class _NeedsPageState extends PageState<NeedsPage> {
       return true;
     }
     return false;
-  }
-
-  /// Scrolls one of the child list left.
-  void scrollLeft() {
-    if (canScrollLeft()) {
-      lastScrollIndexLeft = currentFocusedHorizontalListIndex;
-      lastScrollIndex = currentFocusedHorizontalListIndex;
-
-      childScrollController.scrollTo(
-        index: currentFocusedHorizontalListIndex,
-        duration: Duration(
-          seconds: 1,
-        ),
-        curve: Curves.ease,
-      );
-    }
   }
 
   void scrollToStart() {
@@ -175,6 +175,29 @@ class _NeedsPageState extends PageState<NeedsPage> {
   }
 
   @override
+  void rightPressed() {
+    setState(() {
+      if (inHorizontalList) {
+        List<NeedsObject> horizontalList =
+            categoryList[currentFocusedVerticalListIndex].objects;
+
+        //If not at end of horizontal list
+        if (currentFocusedHorizontalListIndex < horizontalList.length - 1) {
+          currentFocusedHorizontalListIndex++;
+          scrollRight();
+        }
+        return;
+      }
+
+      //If not at end of vertical list
+      if (currentFocusedVerticalListIndex < categoryList.length - 1) {
+        currentFocusedVerticalListIndex++;
+        return;
+      }
+    });
+  }
+
+  @override
   void leftPressed() {
     setState(() {
       if (inHorizontalList) {
@@ -199,7 +222,7 @@ class _NeedsPageState extends PageState<NeedsPage> {
         currentFocusedHorizontalListIndex = 0;
         lastScrollIndexRight = 0;
         lastScrollIndexLeft = 0;
-        lastScrollIndex = 0;
+        lastHorizontalScrollIndex = 0;
         inHorizontalList = false;
         scrollToStart();
       } else {
@@ -212,29 +235,6 @@ class _NeedsPageState extends PageState<NeedsPage> {
   void pushPressed() {
     setState(() {
       inHorizontalList = true;
-    });
-  }
-
-  @override
-  void rightPressed() {
-    setState(() {
-      if (inHorizontalList) {
-        List<NeedsObject> horizontalList =
-            categoryList[currentFocusedVerticalListIndex].objects;
-
-        //If not at end of horizontal list
-        if (currentFocusedHorizontalListIndex < horizontalList.length - 1) {
-          currentFocusedHorizontalListIndex++;
-          scrollRight();
-        }
-        return;
-      }
-
-      //If not at end of vertical list
-      if (currentFocusedVerticalListIndex < categoryList.length - 1) {
-        currentFocusedVerticalListIndex++;
-        return;
-      }
     });
   }
 }

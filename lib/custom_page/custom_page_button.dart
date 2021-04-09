@@ -4,10 +4,14 @@ import 'package:gradient_text/gradient_text.dart';
 
 // TODO Change the flatButton to raisedButton??
 class CustomPageButton extends StatefulWidget {
-  CustomPageButton({Key key, this.text}) : super(key: key);
+  CustomPageButton({
+    Key key,
+    this.text,
+    this.isFocused = false,
+  }) : super(key: key);
 
   final String text;
-  bool isFocused = false;
+  bool isFocused;
   _CustomPageButton state;
 
   @override
@@ -18,15 +22,6 @@ class CustomPageButton extends StatefulWidget {
 }
 
 class _CustomPageButton extends State<CustomPageButton> {
-  String text;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    //setFocus();
-    text = widget.text;
-  }
 
   /// Sets the focus the button to true
   void setFocus() {

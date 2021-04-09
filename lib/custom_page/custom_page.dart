@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:enabled_app/custom_page/custom_category.dart';
+import 'package:enabled_app/custom_page/custom_page_button.dart';
 import 'package:enabled_app/custom_page/custom_popup.dart';
-import 'package:enabled_app/custom_page/custom_vertical_list.dart';
-import 'package:enabled_app/custom_page/vertical_list_buttons.dart';
+import 'package:enabled_app/custom_page/custom_horizontal_list.dart';
 import 'package:enabled_app/desktop_connection/server_socket.dart';
 import 'package:enabled_app/page_state.dart';
 import 'package:flutter/material.dart';
@@ -23,23 +23,23 @@ class CustomPageHome extends StatefulWidget {
 
 class _CustomPageHome extends PageState<CustomPageHome> {
   List<CustomCategory> categoryList = [];
-  List<CustomVerticalList> verticalList = [];
-  List<VerticalListButtons> buttonList = [];
 
-  int verticalListIndex = 0;
+  bool inHorizontalList = false;
+  int currentFocusedVerticalListIndex;
+  int currentFocusedHorizontalListIndex;
+
   int lastScrollIndexDown = 0;
   int lastScrollIndexUp = 0;
-  int lastScrollIndex = 0;
-
-  ItemScrollController childController;
-  CustomVerticalList focusedList;
+  int lastScrollIndexLeft = 0;
+  int lastScrollIndexRight = 0;
+  int lastVerticalScrollIndex = 0;
+  int lastHorizontalScrollIndex = 0;
 
   ItemScrollController itemScrollController;
+  ItemScrollController childScrollController;
   ItemPositionsListener itemPositionsListener;
 
   StreamSubscription sub;
-
-  bool inChildLevel = false;
 
   @override
   void dispose() {
@@ -51,6 +51,8 @@ class _CustomPageHome extends PageState<CustomPageHome> {
   @override
   void initState() {
     super.initState();
+    currentFocusedVerticalListIndex = 0;
+    currentFocusedHorizontalListIndex = 0;
 
     void mentalCommands(state) {
       switch (state) {
@@ -92,93 +94,126 @@ class _CustomPageHome extends PageState<CustomPageHome> {
 
     /// For testing purposes
     List<String> testObjects = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
-    CustomCategory customCategory = new CustomCategory();
-    customCategory.categoryName = "Eskil";
-    customCategory.categoryObjects = testObjects;
+    CustomCategory customCategory = new CustomCategory("Eskil", testObjects);
 
     for (var i = 0; i < 7; i++) {
       categoryList.add(customCategory);
     }
-
-    for (var item in categoryList) {
-      CustomVerticalList list = new CustomVerticalList(
-        categoryTitle: item.categoryName,
-        buttonList: item.allButtons(),
-      );
-      verticalList.add(list);
-    }
-    focusedList = verticalList[0];
-    focusedList.isFocused = true;
   }
 
   /// Scrolls the list down to the selected index.
   void scrollDown() {
-    itemScrollController.scrollTo(
-        index: verticalListIndex,
+    if (canScrollDown()) {
+      lastScrollIndexDown = currentFocusedVerticalListIndex;
+      lastVerticalScrollIndex = currentFocusedVerticalListIndex;
+
+      itemScrollController.scrollTo(
+        index: currentFocusedVerticalListIndex,
         duration: Duration(
           seconds: 1,
         ),
         alignment: 0.75,
-        curve: Curves.ease);
+        curve: Curves.ease,
+      );
+    }
   }
 
   /// Scrolls the list up to the selected index.
   void scrollUp() {
-    itemScrollController.scrollTo(
-        index: verticalListIndex,
+    if (canScrollUp()) {
+      lastScrollIndexUp = currentFocusedVerticalListIndex;
+      lastVerticalScrollIndex = currentFocusedVerticalListIndex;
+
+      itemScrollController.scrollTo(
+        index: currentFocusedVerticalListIndex,
         duration: Duration(
           seconds: 1,
         ),
         alignment: 0,
-        curve: Curves.ease);
+        curve: Curves.ease,
+      );
+    }
   }
 
   ///Scrolls one of the child list right.
   void scrollRight() {
-    verticalList[verticalListIndex].state.scrollRight();
+    if (canScrollRight()) {
+      lastScrollIndexRight = currentFocusedHorizontalListIndex;
+      lastHorizontalScrollIndex = currentFocusedHorizontalListIndex;
+
+      childScrollController.scrollTo(
+        index: currentFocusedHorizontalListIndex,
+        duration: Duration(
+          seconds: 1,
+        ),
+        alignment: 0.75,
+        curve: Curves.ease,
+      );
+    }
   }
 
-  /// Scrolls one of the child list left.
+  // Scrolls one of the child list left.
   void scrollLeft() {
-    verticalList[verticalListIndex].state.scrollLeft();
-  }
+    if (canScrollLeft()) {
+      lastScrollIndexLeft = currentFocusedHorizontalListIndex;
+      lastHorizontalScrollIndex = currentFocusedHorizontalListIndex;
 
-  /// Sets the focus around the selected list.
-  void setListFocus() {
-    if (focusedList == null) {
-      focusedList = verticalList[0];
-      focusedList.state.setFocus();
-    } else {
-      focusedList.state.removeFocus();
-      focusedList = verticalList[verticalListIndex];
-      focusedList.state.setFocus();
+      childScrollController.scrollTo(
+        index: currentFocusedHorizontalListIndex,
+        duration: Duration(
+          seconds: 1,
+        ),
+        curve: Curves.ease,
+      );
     }
   }
 
-  /// Checks if the list can scroll down or not.
-  /// Returns a true if it can scroll and a false if it can't.
-  bool canScrollDown() {
-    bool canScroll = false;
-    if (verticalListIndex < verticalList.length && verticalListIndex > 3) {
-      if (verticalListIndex > lastScrollIndexUp + 3 &&
-          verticalListIndex > lastScrollIndex) {
-        canScroll = true;
-      }
-    }
-    return canScroll;
-  }
-
-  /// Checks if the list can scroll up or not.
-  /// Returns a true if it can scroll and a false if it can't.
   bool canScrollUp() {
-    bool canScroll = false;
-    if (verticalListIndex < verticalList.length - 4) {
-      if (lastScrollIndexDown != 0 &&
-          verticalListIndex < lastScrollIndexDown - 3) {
-        canScroll = true;
-      }
+    if (currentFocusedVerticalListIndex < lastScrollIndexDown - 3 &&
+        lastScrollIndexDown != 0) {
+      return true;
     }
-    return canScroll;
+    return false;
+  }
+
+  bool canScrollDown() {
+    if (currentFocusedVerticalListIndex > lastScrollIndexUp + 3 &&
+        currentFocusedVerticalListIndex > lastVerticalScrollIndex) {
+      return true;
+    }
+    return false;
+  }
+
+  bool canScrollRight() {
+    //If rightmost button on screen is focused
+    if (currentFocusedHorizontalListIndex > lastScrollIndexLeft + 3 &&
+        currentFocusedHorizontalListIndex > lastHorizontalScrollIndex) {
+      return true;
+    }
+    return false;
+  }
+
+  bool canScrollLeft() {
+    //If leftmost button on screen is focused
+    if (lastScrollIndexRight != 0 &&
+        currentFocusedHorizontalListIndex < lastScrollIndexRight - 3) {
+      return true;
+    }
+    return false;
+  }
+
+  void scrollToStart() {
+    childScrollController.scrollTo(
+      index: 0,
+      duration: Duration(
+        seconds: 1,
+      ),
+      curve: Curves.ease,
+    );
+  }
+
+  void setChildScrollController(ItemScrollController controller) {
+    childScrollController = controller;
   }
 
   @override
@@ -194,83 +229,133 @@ class _CustomPageHome extends PageState<CustomPageHome> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Container(
-              child: Align(
-                  alignment: Alignment.centerRight,
-                  child: FlatButton(
-                    child: Text("Legg til"),
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return CustomPopup(
-                              items: categoryList,
-                            );
-                          }).then((value) {
-                        setState(() {
-                          print("reached: " + value);
-                          CustomCategory customCategory = new CustomCategory(
-                              categoryObjects: ['1', '2', '3'],
-                              categoryName: value);
-                          categoryList.add(customCategory);
-                        });
-                      }).catchError((error) {
-                        print(error);
-                      });
-                    },
-                  ))),
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: FlatButton(
+                child: Text("Legg til"),
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return CustomPopup(
+                          items: categoryList,
+                        );
+                      }).then((value) {
+                    setState(() {
+                      print("reached: " + value);
+                      CustomCategory customCategory = new CustomCategory(
+                        value,
+                        ['1', '2', '3'],
+                      );
+                      categoryList.add(customCategory);
+                    });
+                  }).catchError((error) {
+                    print(error);
+                  });
+                },
+              ),
+            ),
+          ),
           Expanded(
             child: ScrollablePositionedList.builder(
-                initialScrollIndex: 0,
-                itemScrollController: itemScrollController,
-                itemPositionsListener: itemPositionsListener,
-                itemCount: verticalList.length,
-                scrollDirection: Axis.vertical,
-                itemBuilder: (context, index) => verticalList[index]),
+              initialScrollIndex: 0,
+              itemScrollController: itemScrollController,
+              itemPositionsListener: itemPositionsListener,
+              itemCount: categoryList.length,
+              scrollDirection: Axis.vertical,
+              itemBuilder: (context, index) {
+                return new CustomHorizontalList(
+                  categoryTitle: categoryList[index].name,
+                  buttonList: createButtons(index),
+                  isFocused: index == currentFocusedVerticalListIndex,
+                  setScrollController: setChildScrollController,
+                );
+              },
+            ),
           ),
         ],
       ),
     );
   }
 
-  @override
-  void leftPressed() {
-    if (!inChildLevel && verticalListIndex > 0) {
-      verticalListIndex--;
-      if (canScrollUp()) {
-        lastScrollIndexUp = verticalListIndex;
-        lastScrollIndex = verticalListIndex;
-        scrollUp();
-      }
-      setListFocus();
-    } else if (inChildLevel) {
-      scrollLeft();
+  List<CustomPageButton> createButtons(index) {
+    List<CustomPageButton> buttonList = [];
+    List<String> objects = categoryList[index].objects;
+    for (int i = 0; i < objects.length; i++) {
+      CustomPageButton button = new CustomPageButton(
+        text: objects[i],
+        isFocused: inHorizontalList &&
+            i == currentFocusedHorizontalListIndex &&
+            index == currentFocusedVerticalListIndex,
+      );
+      buttonList.add(button);
     }
-  }
-
-  @override
-  void pullPressed() {
-    inChildLevel = false;
-    verticalList[verticalListIndex].state.removeButtonFocus();
-  }
-
-  @override
-  void pushPressed() {
-    verticalList[verticalListIndex].state.setButtonFocus();
-    inChildLevel = true;
+    return buttonList;
   }
 
   @override
   void rightPressed() {
-    if (!inChildLevel && verticalListIndex < verticalList.length - 1) {
-      verticalListIndex++;
-      if (canScrollDown()) {
-        lastScrollIndexDown = verticalListIndex;
-        lastScrollIndex = verticalListIndex;
-        scrollDown();
+    setState(() {
+      if (inHorizontalList) {
+        List<String> horizontalList =
+            categoryList[currentFocusedVerticalListIndex].objects;
+
+        //If not at end of horizontal list
+        if (currentFocusedHorizontalListIndex < horizontalList.length - 1) {
+          currentFocusedHorizontalListIndex++;
+          scrollRight();
+        }
+        return;
       }
-      setListFocus();
-    } else if (inChildLevel) {
-      scrollRight();
-    }
+
+      //If not at end of vertical list
+      if (currentFocusedVerticalListIndex < categoryList.length - 1) {
+        currentFocusedVerticalListIndex++;
+        scrollDown();
+        return;
+      }
+    });
+  }
+
+  @override
+  void leftPressed() {
+    setState(() {
+      if (inHorizontalList) {
+        if (currentFocusedHorizontalListIndex > 0) {
+          currentFocusedHorizontalListIndex--;
+          scrollLeft();
+        }
+        return;
+      }
+
+      if (currentFocusedVerticalListIndex > 0) {
+        currentFocusedVerticalListIndex--;
+        scrollUp();
+        return;
+      }
+    });
+  }
+
+  @override
+  void pullPressed() {
+    setState(() {
+      if (inHorizontalList) {
+        currentFocusedHorizontalListIndex = 0;
+        lastScrollIndexRight = 0;
+        lastScrollIndexLeft = 0;
+        lastHorizontalScrollIndex = 0;
+        inHorizontalList = false;
+        scrollToStart();
+      } else {
+        Navigator.pop(context);
+      }
+    });
+  }
+
+  @override
+  void pushPressed() {
+    setState(() {
+      inHorizontalList = true;
+    });
   }
 }

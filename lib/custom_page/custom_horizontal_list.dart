@@ -1,10 +1,10 @@
-import 'package:enabled_app/needs/needs_page_button.dart';
+import 'package:enabled_app/custom_page/custom_page_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-class NeedsHorizontalList extends StatefulWidget {
-  NeedsHorizontalList({
+class CustomHorizontalList extends StatefulWidget {
+  CustomHorizontalList({
     Key key,
     this.categoryTitle,
     this.buttonList,
@@ -13,29 +13,31 @@ class NeedsHorizontalList extends StatefulWidget {
   }) : super(key: key);
 
   final String categoryTitle;
-  final List<NeedsPageButton> buttonList;
+  final List<CustomPageButton> buttonList;
   final bool isFocused;
   final ValueSetter<ItemScrollController> setScrollController;
 
   @override
-  _NeedsHorizontalList createState() => _NeedsHorizontalList();
+  _CustomHorizontalList createState() => _CustomHorizontalList();
 }
 
-class _NeedsHorizontalList extends State<NeedsHorizontalList> {
+// TODO - See if i can change "container" with raised button for elevation effect when focused.
+class _CustomHorizontalList extends State<CustomHorizontalList> {
+  /// Controller to scroll or jump to a particular item.
   ItemScrollController scrollController;
 
   @override
   void initState() {
     super.initState();
     scrollController = new ItemScrollController();
-    if(widget.isFocused){
+    if (widget.isFocused) {
       widget.setScrollController(scrollController);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if(widget.isFocused){
+    if (widget.isFocused) {
       widget.setScrollController(scrollController);
     }
 
