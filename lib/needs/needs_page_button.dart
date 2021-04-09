@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:enabled_app/global_data/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:gradient_text/gradient_text.dart';
 
 class NeedsPageButton extends StatefulWidget {
@@ -41,6 +42,7 @@ class _NeedsPageButton extends State<NeedsPageButton> {
           ),
         ),
         padding: const EdgeInsets.all(0.0),
+        textColor: Colors.white,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -61,7 +63,10 @@ class _NeedsPageButton extends State<NeedsPageButton> {
             ),
           ],
         ),
-        onPressed: () {},
+        onPressed: () {
+          FlutterTts flutterTts = FlutterTts();
+          flutterTts.speak(widget.text);
+        },
       ),
     );
   }
