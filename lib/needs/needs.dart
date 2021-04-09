@@ -19,11 +19,6 @@ class NeedsPage extends StatefulWidget {
 }
 
 class _NeedsPageState extends PageState<NeedsPage> {
-  NeedsCategory foodDrinkCategory;
-  NeedsCategory hygieneCategory;
-  NeedsCategory emotionsCategory;
-  NeedsCategory roomCategory;
-
   List<NeedsCategory> categoryList = [];
 
   bool inHorizontalList = false;
@@ -34,9 +29,7 @@ class _NeedsPageState extends PageState<NeedsPage> {
   int lastScrollIndexRight = 0;
   int lastHorizontalScrollIndex = 0;
 
-  ItemScrollController itemScrollController;
   ItemScrollController childScrollController;
-  ItemPositionsListener itemPositionsListener;
 
   void initState() {
     super.initState();
@@ -44,12 +37,14 @@ class _NeedsPageState extends PageState<NeedsPage> {
     currentFocusedVerticalListIndex = 0;
     currentFocusedHorizontalListIndex = 0;
 
-    foodDrinkCategory =
+    NeedsCategory foodDrinkCategory =
         NeedsCategory(Strings.FOOD_DRINK, NeedsData.FOOD_DRINK_OBJECTS);
-    hygieneCategory = NeedsCategory(Strings.HYGIENE, NeedsData.HYGIENE_OBJECTS);
-    emotionsCategory =
+    NeedsCategory hygieneCategory =
+        NeedsCategory(Strings.HYGIENE, NeedsData.HYGIENE_OBJECTS);
+    NeedsCategory emotionsCategory =
         NeedsCategory(Strings.EMOTIONS, NeedsData.EMOTION_OBJECTS);
-    roomCategory = NeedsCategory(Strings.ROOMS, NeedsData.ROOM_OBJECTS);
+    NeedsCategory roomCategory =
+        NeedsCategory(Strings.ROOMS, NeedsData.ROOM_OBJECTS);
 
     categoryList.add(foodDrinkCategory);
     categoryList.add(hygieneCategory);
@@ -124,9 +119,6 @@ class _NeedsPageState extends PageState<NeedsPage> {
 
   @override
   Widget build(BuildContext context) {
-    itemScrollController = ItemScrollController();
-    itemPositionsListener = ItemPositionsListener.create();
-
     return Container(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -137,12 +129,9 @@ class _NeedsPageState extends PageState<NeedsPage> {
           Expanded(
             child: ScrollablePositionedList.builder(
               initialScrollIndex: 0,
-              itemScrollController: itemScrollController,
-              itemPositionsListener: itemPositionsListener,
               itemCount: categoryList.length,
               scrollDirection: Axis.vertical,
               itemBuilder: (context, index) {
-                //print(index == currentFocusedVerticalListIndex);
                 return new NeedsHorizontalList(
                   categoryTitle: categoryList[index].name,
                   buttonList: createButtons(index),

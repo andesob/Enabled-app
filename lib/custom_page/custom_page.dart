@@ -37,7 +37,6 @@ class _CustomPageHome extends PageState<CustomPageHome> {
 
   ItemScrollController itemScrollController;
   ItemScrollController childScrollController;
-  ItemPositionsListener itemPositionsListener;
 
   StreamSubscription sub;
 
@@ -53,6 +52,8 @@ class _CustomPageHome extends PageState<CustomPageHome> {
     super.initState();
     currentFocusedVerticalListIndex = 0;
     currentFocusedHorizontalListIndex = 0;
+
+    itemScrollController = ItemScrollController();
 
     void mentalCommands(state) {
       switch (state) {
@@ -129,7 +130,6 @@ class _CustomPageHome extends PageState<CustomPageHome> {
         duration: Duration(
           seconds: 1,
         ),
-        alignment: 0,
         curve: Curves.ease,
       );
     }
@@ -218,11 +218,6 @@ class _CustomPageHome extends PageState<CustomPageHome> {
 
   @override
   Widget build(BuildContext context) {
-    /// Controller to scroll or jump to a particular item.
-    itemScrollController = ItemScrollController();
-
-    /// Listener that reports the position of items when the list is scrolled.
-    itemPositionsListener = ItemPositionsListener.create();
 
     return Container(
       child: Column(
@@ -260,7 +255,6 @@ class _CustomPageHome extends PageState<CustomPageHome> {
             child: ScrollablePositionedList.builder(
               initialScrollIndex: 0,
               itemScrollController: itemScrollController,
-              itemPositionsListener: itemPositionsListener,
               itemCount: categoryList.length,
               scrollDirection: Axis.vertical,
               itemBuilder: (context, index) {
