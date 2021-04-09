@@ -1,8 +1,10 @@
 import 'dart:ui';
 
 import 'package:enabled_app/global_data/colors.dart';
+import 'package:enabled_app/tts_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:gradient_text/gradient_text.dart';
 
 class NeedsPageButton extends StatefulWidget {
@@ -21,6 +23,8 @@ class NeedsPageButton extends StatefulWidget {
 }
 
 class _NeedsPageButton extends State<NeedsPageButton> {
+  FlutterTts flutterTts = TTSController().flutterTts;
+
   @override
   Widget build(BuildContext context) {
     const Color lightPeach = Color(0xffffecd2);
@@ -41,6 +45,7 @@ class _NeedsPageButton extends State<NeedsPageButton> {
           ),
         ),
         padding: const EdgeInsets.all(0.0),
+        textColor: Colors.white,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -61,7 +66,9 @@ class _NeedsPageButton extends State<NeedsPageButton> {
             ),
           ],
         ),
-        onPressed: () {},
+        onPressed: () {
+          flutterTts.speak(widget.text);
+        },
       ),
     );
   }
