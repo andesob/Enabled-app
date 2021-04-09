@@ -3,23 +3,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-class NeedsVerticalList extends StatefulWidget {
-  NeedsVerticalList({Key key, this.categoryTitle, this.buttonList})
-      : super(key: key);
+class NeedsHorizontalList extends StatefulWidget {
+  NeedsHorizontalList({
+    Key key,
+    this.categoryTitle,
+    this.buttonList,
+    this.inHorizontalList,
+    this.isFocused = false,
+    this.currentFocusedButtonIndex = 0,
+  }) : super(key: key);
 
   final String categoryTitle;
   final List<NeedsPageButton> buttonList;
-  _NeedsVerticalList state;
-  bool isFocused = false;
+  final bool inHorizontalList;
+  final int currentFocusedButtonIndex;
+  _NeedsHorizontalList state;
+  final bool isFocused;
 
   @override
-  _NeedsVerticalList createState() {
-    state = _NeedsVerticalList();
+  _NeedsHorizontalList createState() {
+    state = _NeedsHorizontalList();
     return state;
   }
 }
 
-class _NeedsVerticalList extends State<NeedsVerticalList> {
+class _NeedsHorizontalList extends State<NeedsHorizontalList> {
   int listIndex = 0;
   int lastScrollIndexLeft = 0;
   int lastScrollIndexRight = 0;
@@ -33,14 +41,14 @@ class _NeedsVerticalList extends State<NeedsVerticalList> {
   /// Sets the focus around this list.
   void setFocus() {
     setState(() {
-      widget.isFocused = true;
+      //widget.isFocused = true;
     });
   }
 
   /// Removes the focus of this list.
   void removeFocus() {
     setState(() {
-      widget.isFocused = false;
+      //widget.isFocused = false;
     });
   }
 

@@ -1,12 +1,8 @@
-import 'package:enabled_app/custom_page/custom_page_button.dart';
-import 'package:enabled_app/keyboard_page/custom_dictionary.dart';
-import 'package:enabled_app/keyboard_page/custom_keyboard.dart';
 import 'package:enabled_app/keyboard_page/keyboard_backspace_key.dart';
 import 'package:enabled_app/keyboard_page/keyboard_capslock_key.dart';
 import 'package:enabled_app/keyboard_page/keyboard_key.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class KeyboardHorizontalList extends StatefulWidget {
   KeyboardHorizontalList({
