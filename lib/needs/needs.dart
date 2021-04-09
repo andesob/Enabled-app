@@ -19,11 +19,6 @@ class NeedsPage extends StatefulWidget {
 }
 
 class _NeedsPageState extends PageState<NeedsPage> {
-  NeedsCategory foodDrinkCategory;
-  NeedsCategory hygieneCategory;
-  NeedsCategory emotionsCategory;
-  NeedsCategory roomCategory;
-
   List<NeedsCategory> categoryList = [];
 
   bool inHorizontalList = false;
@@ -32,11 +27,9 @@ class _NeedsPageState extends PageState<NeedsPage> {
 
   int lastScrollIndexLeft = 0;
   int lastScrollIndexRight = 0;
-  int lastScrollIndex = 0;
+  int lastHorizontalScrollIndex = 0;
 
-  ItemScrollController itemScrollController;
   ItemScrollController childScrollController;
-  ItemPositionsListener itemPositionsListener;
 
   void initState() {
     super.initState();
@@ -44,12 +37,14 @@ class _NeedsPageState extends PageState<NeedsPage> {
     currentFocusedVerticalListIndex = 0;
     currentFocusedHorizontalListIndex = 0;
 
-    foodDrinkCategory =
+    NeedsCategory foodDrinkCategory =
         NeedsCategory(Strings.FOOD_DRINK, NeedsData.FOOD_DRINK_OBJECTS);
-    hygieneCategory = NeedsCategory(Strings.HYGIENE, NeedsData.HYGIENE_OBJECTS);
-    emotionsCategory =
+    NeedsCategory hygieneCategory =
+        NeedsCategory(Strings.HYGIENE, NeedsData.HYGIENE_OBJECTS);
+    NeedsCategory emotionsCategory =
         NeedsCategory(Strings.EMOTIONS, NeedsData.EMOTION_OBJECTS);
-    roomCategory = NeedsCategory(Strings.ROOMS, NeedsData.ROOM_OBJECTS);
+    NeedsCategory roomCategory =
+        NeedsCategory(Strings.ROOMS, NeedsData.ROOM_OBJECTS);
 
     categoryList.add(foodDrinkCategory);
     categoryList.add(hygieneCategory);
@@ -61,7 +56,7 @@ class _NeedsPageState extends PageState<NeedsPage> {
   void scrollRight() {
     if (canScrollRight()) {
       lastScrollIndexRight = currentFocusedHorizontalListIndex;
-      lastScrollIndex = currentFocusedHorizontalListIndex;
+      lastHorizontalScrollIndex = currentFocusedHorizontalListIndex;
 
       childScrollController.scrollTo(
         index: currentFocusedHorizontalListIndex,
@@ -74,10 +69,26 @@ class _NeedsPageState extends PageState<NeedsPage> {
     }
   }
 
+  // Scrolls one of the child list left.
+  void scrollLeft() {
+    if (canScrollLeft()) {
+      lastScrollIndexLeft = currentFocusedHorizontalListIndex;
+      lastHorizontalScrollIndex = currentFocusedHorizontalListIndex;
+
+      childScrollController.scrollTo(
+        index: currentFocusedHorizontalListIndex,
+        duration: Duration(
+          seconds: 1,
+        ),
+        curve: Curves.ease,
+      );
+    }
+  }
+
   bool canScrollRight() {
     //If rightmost button on screen is focused
     if (currentFocusedHorizontalListIndex > lastScrollIndexLeft + 3 &&
-        currentFocusedHorizontalListIndex > lastScrollIndex) {
+        currentFocusedHorizontalListIndex > lastHorizontalScrollIndex) {
       return true;
     }
     return false;
@@ -90,22 +101,6 @@ class _NeedsPageState extends PageState<NeedsPage> {
       return true;
     }
     return false;
-  }
-
-  /// Scrolls one of the child list left.
-  void scrollLeft() {
-    if (canScrollLeft()) {
-      lastScrollIndexLeft = currentFocusedHorizontalListIndex;
-      lastScrollIndex = currentFocusedHorizontalListIndex;
-
-      childScrollController.scrollTo(
-        index: currentFocusedHorizontalListIndex,
-        duration: Duration(
-          seconds: 1,
-        ),
-        curve: Curves.ease,
-      );
-    }
   }
 
   void scrollToStart() {
@@ -124,9 +119,6 @@ class _NeedsPageState extends PageState<NeedsPage> {
 
   @override
   Widget build(BuildContext context) {
-    itemScrollController = ItemScrollController();
-    itemPositionsListener = ItemPositionsListener.create();
-
     return Container(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -137,12 +129,9 @@ class _NeedsPageState extends PageState<NeedsPage> {
           Expanded(
             child: ScrollablePositionedList.builder(
               initialScrollIndex: 0,
-              itemScrollController: itemScrollController,
-              itemPositionsListener: itemPositionsListener,
               itemCount: categoryList.length,
               scrollDirection: Axis.vertical,
               itemBuilder: (context, index) {
-                //print(index == currentFocusedVerticalListIndex);
                 return new NeedsHorizontalList(
                   categoryTitle: categoryList[index].name,
                   buttonList: createButtons(index),
@@ -175,6 +164,29 @@ class _NeedsPageState extends PageState<NeedsPage> {
   }
 
   @override
+  void rightPressed() {
+    setState(() {
+      if (inHorizontalList) {
+        List<NeedsObject> horizontalList =
+            categoryList[currentFocusedVerticalListIndex].objects;
+
+        //If not at end of horizontal list
+        if (currentFocusedHorizontalListIndex < horizontalList.length - 1) {
+          currentFocusedHorizontalListIndex++;
+          scrollRight();
+        }
+        return;
+      }
+
+      //If not at end of vertical list
+      if (currentFocusedVerticalListIndex < categoryList.length - 1) {
+        currentFocusedVerticalListIndex++;
+        return;
+      }
+    });
+  }
+
+  @override
   void leftPressed() {
     setState(() {
       if (inHorizontalList) {
@@ -199,7 +211,7 @@ class _NeedsPageState extends PageState<NeedsPage> {
         currentFocusedHorizontalListIndex = 0;
         lastScrollIndexRight = 0;
         lastScrollIndexLeft = 0;
-        lastScrollIndex = 0;
+        lastHorizontalScrollIndex = 0;
         inHorizontalList = false;
         scrollToStart();
       } else {
@@ -212,29 +224,6 @@ class _NeedsPageState extends PageState<NeedsPage> {
   void pushPressed() {
     setState(() {
       inHorizontalList = true;
-    });
-  }
-
-  @override
-  void rightPressed() {
-    setState(() {
-      if (inHorizontalList) {
-        List<NeedsObject> horizontalList =
-            categoryList[currentFocusedVerticalListIndex].objects;
-
-        //If not at end of horizontal list
-        if (currentFocusedHorizontalListIndex < horizontalList.length - 1) {
-          currentFocusedHorizontalListIndex++;
-          scrollRight();
-        }
-        return;
-      }
-
-      //If not at end of vertical list
-      if (currentFocusedVerticalListIndex < categoryList.length - 1) {
-        currentFocusedVerticalListIndex++;
-        return;
-      }
     });
   }
 }

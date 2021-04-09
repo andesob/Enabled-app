@@ -37,10 +37,9 @@ class _NeedsPageButton extends State<NeedsPageButton> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
           side: BorderSide(
-            color: widget.isFocused ? Colors.black : Colors.black12,
+            color: Colors.transparent,
           ),
         ),
-        textColor: Colors.white,
         padding: const EdgeInsets.all(0.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

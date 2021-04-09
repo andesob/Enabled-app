@@ -48,7 +48,7 @@ class _CustomPopup extends State<CustomPopup> {
         DropdownMenuItem(
           child: Center(
             child: Text(
-              item.categoryName,
+              item.name,
               style: TextStyle(
                 decoration: TextDecoration.underline,
                 fontSize: 16,
@@ -101,7 +101,7 @@ class _CustomPopup extends State<CustomPopup> {
                             style: TextStyle(
                                 color: Color(StaticColors.lightSlateGray)))
                         : Text(
-                            selectedCategory.categoryName,
+                            selectedCategory.name,
                             style: TextStyle(
                               color: Color(StaticColors.lightSlateGray),
                             ),
