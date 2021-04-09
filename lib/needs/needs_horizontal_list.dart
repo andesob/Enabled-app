@@ -8,134 +8,36 @@ class NeedsHorizontalList extends StatefulWidget {
     Key key,
     this.categoryTitle,
     this.buttonList,
-    this.inHorizontalList,
     this.isFocused = false,
-    this.currentFocusedButtonIndex = 0,
+    this.setScrollController,
   }) : super(key: key);
 
   final String categoryTitle;
   final List<NeedsPageButton> buttonList;
-  final bool inHorizontalList;
-  final int currentFocusedButtonIndex;
-  _NeedsHorizontalList state;
+  final ValueSetter<ItemScrollController> setScrollController;
   final bool isFocused;
 
   @override
-  _NeedsHorizontalList createState() {
-    state = _NeedsHorizontalList();
-    return state;
-  }
+  _NeedsHorizontalList createState() => _NeedsHorizontalList();
 }
 
 class _NeedsHorizontalList extends State<NeedsHorizontalList> {
-  int listIndex = 0;
-  int lastScrollIndexLeft = 0;
-  int lastScrollIndexRight = 0;
-  int lastScrollIndex = 0;
-  NeedsPageButton currentFocusButton;
+  ItemScrollController scrollController;
 
-  final ItemScrollController scrollController = ItemScrollController();
-  final ItemPositionsListener itemPositionsListener =
-      ItemPositionsListener.create();
-
-  /// Sets the focus around this list.
-  void setFocus() {
-    setState(() {
-      //widget.isFocused = true;
-    });
-  }
-
-  /// Removes the focus of this list.
-  void removeFocus() {
-    setState(() {
-      //widget.isFocused = false;
-    });
-  }
-
-  /// Scrolls the list to the right of the screen if possible.
-  void scrollRight() {
-    if (listIndex < widget.buttonList.length - 1) {
-      listIndex++;
-      if (canScrollRight()) {
-        lastScrollIndexRight = listIndex;
-        lastScrollIndex = listIndex;
-        print("last scroll right :" + lastScrollIndexRight.toString());
-        scrollController.scrollTo(
-            index: listIndex,
-            duration: Duration(
-              seconds: 1,
-            ),
-            alignment: 0.75,
-            curve: Curves.ease);
-      }
-    }
-    this.setButtonFocus();
-  }
-
-  /// Scrolls the list to the left of the screen if possible.
-  void scrollLeft() {
-    if (listIndex > 0) {
-      listIndex--;
-      if (canScrollLeft()) {
-        lastScrollIndexLeft = listIndex;
-        lastScrollIndex = listIndex;
-        scrollController.scrollTo(
-            index: listIndex,
-            duration: Duration(
-              seconds: 1,
-            ),
-            curve: Curves.ease);
-      }
-      this.setButtonFocus();
-    }
-  }
-
-  /// Checks of the list can scroll to the right or not.
-  /// Return true if it can scroll and false if it can't.
-  bool canScrollRight() {
-    bool canScroll = false;
-    if (listIndex < widget.buttonList.length && listIndex > 3) {
-      if (listIndex > lastScrollIndexLeft + 3 && listIndex > lastScrollIndex) {
-        canScroll = true;
-      }
-    }
-    return canScroll;
-  }
-
-  /// Checks of the list can scroll to the left or not.
-  /// Return true if it can scroll and false if it can't.
-  bool canScrollLeft() {
-    bool canScroll = false;
-    if (listIndex < widget.buttonList.length - 3) {
-      if (lastScrollIndexRight != 0 && listIndex < lastScrollIndexRight - 3) {
-        canScroll = true;
-      }
-    }
-    return canScroll;
-  }
-
-  /// Sets the focus of a button.
-  void setButtonFocus() {
-    if (currentFocusButton == null) {
-      currentFocusButton = widget.buttonList[0];
-      currentFocusButton = widget.buttonList[listIndex];
-      currentFocusButton.state.setFocus();
-    } else {
-      currentFocusButton.state.removeFocus();
-      currentFocusButton = widget.buttonList[listIndex];
-      currentFocusButton.state.setFocus();
-    }
-  }
-
-  /// Removes the focus of a button.
-  void removeButtonFocus() {
-    if (currentFocusButton != null) {
-      currentFocusButton.state.removeFocus();
+  @override
+  void initState() {
+    super.initState();
+    scrollController = new ItemScrollController();
+    if(widget.isFocused){
+      widget.setScrollController(scrollController);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    if(widget.isFocused){
+      widget.setScrollController(scrollController);
+    }
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -160,7 +62,6 @@ class _NeedsHorizontalList extends State<NeedsHorizontalList> {
             child: ScrollablePositionedList.builder(
               initialScrollIndex: 0,
               itemScrollController: scrollController,
-              itemPositionsListener: itemPositionsListener,
               itemCount: widget.buttonList.length,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) => Row(

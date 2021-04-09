@@ -6,49 +6,21 @@ import 'package:flutter/material.dart';
 import 'package:gradient_text/gradient_text.dart';
 
 class NeedsPageButton extends StatefulWidget {
-  NeedsPageButton({Key key, this.text, this.icon}) : super(key: key);
+  NeedsPageButton({
+    Key key,
+    this.text,
+    this.icon,
+    this.isFocused = false,
+  }) : super(key: key);
   final String text;
   final Icon icon;
-  bool isFocused = false;
-  _NeedsPageButton state;
+  final bool isFocused;
 
   @override
-  _NeedsPageButton createState() {
-    state = _NeedsPageButton();
-    return state;
-  }
-
-//TODO
-//var picture;
+  _NeedsPageButton createState() => _NeedsPageButton();
 }
 
 class _NeedsPageButton extends State<NeedsPageButton> {
-  String text;
-
-  @override
-  void initState() {
-    super.initState();
-    text = widget.text;
-  }
-
-  /// Sets the focus the button to true
-  void setFocus() {
-    if (this.mounted) {
-      setState(() {
-        widget.isFocused = true;
-      });
-    } else {
-      print("not mounted");
-    }
-  }
-
-  /// Removes the focus of the button.
-  void removeFocus() {
-    setState(() {
-      widget.isFocused = false;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     const Color lightPeach = Color(0xffffecd2);

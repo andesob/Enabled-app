@@ -19,36 +19,30 @@ class NeedsPage extends StatefulWidget {
 }
 
 class _NeedsPageState extends PageState<NeedsPage> {
-  bool inHorizontalList = false;
-  int currentFocusedVerticalListIndex;
-  int currentFocusedHorizontalListIndex;
-
   NeedsCategory foodDrinkCategory;
   NeedsCategory hygieneCategory;
   NeedsCategory emotionsCategory;
   NeedsCategory roomCategory;
 
   List<NeedsCategory> categoryList = [];
-  List<NeedsHorizontalList> verticalList = [];
 
-  int verticalListIndex = 0;
-  int lastScrollIndexDown = 0;
-  int lastScrollIndexUp = 0;
+  bool inHorizontalList = false;
+  int currentFocusedVerticalListIndex;
+  int currentFocusedHorizontalListIndex;
+
+  int lastScrollIndexLeft = 0;
+  int lastScrollIndexRight = 0;
   int lastScrollIndex = 0;
 
-  ItemScrollController childController;
-  NeedsHorizontalList focusedList;
-
   ItemScrollController itemScrollController;
+  ItemScrollController childScrollController;
   ItemPositionsListener itemPositionsListener;
-
-  bool inChildLevel = false;
 
   void initState() {
     super.initState();
 
-     currentFocusedVerticalListIndex = 0;
-     currentFocusedHorizontalListIndex = 0;
+    currentFocusedVerticalListIndex = 0;
+    currentFocusedHorizontalListIndex = 0;
 
     foodDrinkCategory =
         NeedsCategory(Strings.FOOD_DRINK, NeedsData.FOOD_DRINK_OBJECTS);
@@ -61,93 +55,76 @@ class _NeedsPageState extends PageState<NeedsPage> {
     categoryList.add(hygieneCategory);
     categoryList.add(emotionsCategory);
     categoryList.add(roomCategory);
-
-    for (var item in categoryList) {
-      NeedsHorizontalList list = new NeedsHorizontalList(
-        categoryTitle: item.categoryName,
-        buttonList: item.allButtons(),
-      );
-
-      verticalList.add(list);
-      focusedList = verticalList[0];
-      //focusedList.isFocused = true;
-    }
-  }
-
-  /// Scrolls the list down to the selected index.
-  void scrollDown() {
-    itemScrollController.scrollTo(
-        index: verticalListIndex,
-        duration: Duration(
-          seconds: 1,
-        ),
-        alignment: 0.75,
-        curve: Curves.ease);
-  }
-
-  /// Scrolls the list up to the selected index.
-  void scrollUp() {
-    itemScrollController.scrollTo(
-        index: verticalListIndex,
-        duration: Duration(
-          seconds: 1,
-        ),
-        alignment: 0,
-        curve: Curves.ease);
   }
 
   ///Scrolls one of the child list right.
   void scrollRight() {
-    verticalList[verticalListIndex].state.scrollRight();
+    if (canScrollRight()) {
+      lastScrollIndexRight = currentFocusedHorizontalListIndex;
+      lastScrollIndex = currentFocusedHorizontalListIndex;
+
+      childScrollController.scrollTo(
+        index: currentFocusedHorizontalListIndex,
+        duration: Duration(
+          seconds: 1,
+        ),
+        alignment: 0.75,
+        curve: Curves.ease,
+      );
+    }
+  }
+
+  bool canScrollRight() {
+    //If rightmost button on screen is focused
+    if (currentFocusedHorizontalListIndex > lastScrollIndexLeft + 3 &&
+        currentFocusedHorizontalListIndex > lastScrollIndex) {
+      return true;
+    }
+    return false;
+  }
+
+  bool canScrollLeft() {
+    //If leftmost button on screen is focused
+    if (lastScrollIndexRight != 0 &&
+        currentFocusedHorizontalListIndex < lastScrollIndexRight - 3) {
+      return true;
+    }
+    return false;
   }
 
   /// Scrolls one of the child list left.
   void scrollLeft() {
-    verticalList[verticalListIndex].state.scrollLeft();
-  }
+    if (canScrollLeft()) {
+      lastScrollIndexLeft = currentFocusedHorizontalListIndex;
+      lastScrollIndex = currentFocusedHorizontalListIndex;
 
-  /// Sets the focus around the selected list.
-  void setListFocus() {
-    if (focusedList == null) {
-      focusedList = verticalList[0];
-      focusedList.state.setFocus();
-    } else {
-      focusedList.state.removeFocus();
-      focusedList = verticalList[verticalListIndex];
-      focusedList.state.setFocus();
+      childScrollController.scrollTo(
+        index: currentFocusedHorizontalListIndex,
+        duration: Duration(
+          seconds: 1,
+        ),
+        curve: Curves.ease,
+      );
     }
   }
 
-  /// Checks if the list can scroll down or not.
-  /// Returns a true if it can scroll and a false if it can't.
-  bool canScrollDown() {
-    bool canScroll = false;
-    if (verticalListIndex < verticalList.length && verticalListIndex > 3) {
-      if (verticalListIndex > lastScrollIndexUp + 3 &&
-          verticalListIndex > lastScrollIndex) {
-        canScroll = true;
-      }
-    }
-    return canScroll;
+  void scrollToStart() {
+    childScrollController.scrollTo(
+      index: 0,
+      duration: Duration(
+        seconds: 1,
+      ),
+      curve: Curves.ease,
+    );
   }
 
-  /// Checks if the list can scroll up or not.
-  /// Returns a true if it can scroll and a false if it can't.
-  bool canScrollUp() {
-    bool canScroll = false;
-    if (verticalListIndex < verticalList.length - 4) {
-      if (lastScrollIndexDown != 0 &&
-          verticalListIndex < lastScrollIndexDown - 3) {
-        canScroll = true;
-      }
-    }
-    return canScroll;
+  void setChildScrollController(ItemScrollController controller) {
+    childScrollController = controller;
   }
 
   @override
   Widget build(BuildContext context) {
     itemScrollController = ItemScrollController();
-
     itemPositionsListener = ItemPositionsListener.create();
 
     return Container(
@@ -162,16 +139,15 @@ class _NeedsPageState extends PageState<NeedsPage> {
               initialScrollIndex: 0,
               itemScrollController: itemScrollController,
               itemPositionsListener: itemPositionsListener,
-              itemCount: verticalList.length,
+              itemCount: categoryList.length,
               scrollDirection: Axis.vertical,
               itemBuilder: (context, index) {
-                print(index == currentFocusedVerticalListIndex);
+                //print(index == currentFocusedVerticalListIndex);
                 return new NeedsHorizontalList(
-                  categoryTitle: categoryList[index].categoryName,
+                  categoryTitle: categoryList[index].name,
                   buttonList: createButtons(index),
                   isFocused: index == currentFocusedVerticalListIndex,
-                  currentFocusedButtonIndex: currentFocusedHorizontalListIndex,
-                  inHorizontalList: inHorizontalList,
+                  setScrollController: setChildScrollController,
                 );
               },
             ),
@@ -181,13 +157,16 @@ class _NeedsPageState extends PageState<NeedsPage> {
     );
   }
 
-  List<NeedsPageButton> createButtons(index){
+  List<NeedsPageButton> createButtons(index) {
     List<NeedsPageButton> buttonList = [];
-    List<NeedsObject> objects = categoryList[index].categoryObjects;
-    for(int i = 0; i < objects.length; i++){
+    List<NeedsObject> objects = categoryList[index].objects;
+    for (int i = 0; i < objects.length; i++) {
       NeedsPageButton button = new NeedsPageButton(
         text: objects[i].text,
         icon: objects[i].icon,
+        isFocused: inHorizontalList &&
+            i == currentFocusedHorizontalListIndex &&
+            index == currentFocusedVerticalListIndex,
       );
       buttonList.add(button);
     }
@@ -198,52 +177,64 @@ class _NeedsPageState extends PageState<NeedsPage> {
   @override
   void leftPressed() {
     setState(() {
-      currentFocusedVerticalListIndex--;
-    });
-
-    /*
-    if (!inChildLevel && verticalListIndex > 0) {
-      verticalListIndex--;
-      if (canScrollUp()) {
-        lastScrollIndexUp = verticalListIndex;
-        lastScrollIndex = verticalListIndex;
-        scrollUp();
+      if (inHorizontalList) {
+        if (currentFocusedHorizontalListIndex > 0) {
+          currentFocusedHorizontalListIndex--;
+          scrollLeft();
+        }
+        return;
       }
-      setListFocus();
-    } else if (inChildLevel) {
-      scrollLeft();
-    }*/
+
+      if (currentFocusedVerticalListIndex > 0) {
+        currentFocusedVerticalListIndex--;
+        return;
+      }
+    });
   }
 
   @override
   void pullPressed() {
-    inChildLevel = false;
-    verticalList[verticalListIndex].state.removeButtonFocus();
+    setState(() {
+      if (inHorizontalList) {
+        currentFocusedHorizontalListIndex = 0;
+        lastScrollIndexRight = 0;
+        lastScrollIndexLeft = 0;
+        lastScrollIndex = 0;
+        inHorizontalList = false;
+        scrollToStart();
+      } else {
+        Navigator.pop(context);
+      }
+    });
   }
 
   @override
   void pushPressed() {
-    verticalList[verticalListIndex].state.setButtonFocus();
-    inChildLevel = true;
+    setState(() {
+      inHorizontalList = true;
+    });
   }
 
   @override
   void rightPressed() {
     setState(() {
-      currentFocusedVerticalListIndex++;
-    });
+      if (inHorizontalList) {
+        List<NeedsObject> horizontalList =
+            categoryList[currentFocusedVerticalListIndex].objects;
 
-    /*
-    if (!inChildLevel && verticalListIndex < verticalList.length - 1) {
-      verticalListIndex++;
-      if (canScrollDown()) {
-        lastScrollIndexDown = verticalListIndex;
-        lastScrollIndex = verticalListIndex;
-        scrollDown();
+        //If not at end of horizontal list
+        if (currentFocusedHorizontalListIndex < horizontalList.length - 1) {
+          currentFocusedHorizontalListIndex++;
+          scrollRight();
+        }
+        return;
       }
-      setListFocus();
-    } else if (inChildLevel) {
-      scrollRight();
-    }*/
+
+      //If not at end of vertical list
+      if (currentFocusedVerticalListIndex < categoryList.length - 1) {
+        currentFocusedVerticalListIndex++;
+        return;
+      }
+    });
   }
 }
