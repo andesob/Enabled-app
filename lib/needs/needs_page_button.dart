@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:enabled_app/global_data/colors.dart';
+import 'package:enabled_app/tts_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
@@ -22,6 +23,8 @@ class NeedsPageButton extends StatefulWidget {
 }
 
 class _NeedsPageButton extends State<NeedsPageButton> {
+  FlutterTts flutterTts = TTSController().flutterTts;
+
   @override
   Widget build(BuildContext context) {
     const Color lightPeach = Color(0xffffecd2);
@@ -64,7 +67,6 @@ class _NeedsPageButton extends State<NeedsPageButton> {
           ],
         ),
         onPressed: () {
-          FlutterTts flutterTts = FlutterTts();
           flutterTts.speak(widget.text);
         },
       ),

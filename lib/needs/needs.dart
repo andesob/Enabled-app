@@ -4,7 +4,9 @@ import 'package:enabled_app/needs/needs_data.dart';
 import 'package:enabled_app/needs/needs_horizontal_list.dart';
 import 'package:enabled_app/needs/needs_page_button.dart';
 import 'package:enabled_app/page_state.dart';
+import 'package:enabled_app/tts_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import 'needs_object.dart';
@@ -19,6 +21,8 @@ class NeedsPage extends StatefulWidget {
 }
 
 class _NeedsPageState extends PageState<NeedsPage> {
+  FlutterTts flutterTts = TTSController().flutterTts;
+
   List<NeedsCategory> categoryList = [];
 
   bool inHorizontalList = false;
@@ -213,6 +217,9 @@ class _NeedsPageState extends PageState<NeedsPage> {
         lastScrollIndexLeft = 0;
         lastHorizontalScrollIndex = 0;
         inHorizontalList = false;
+        categoryList[currentFocusedVerticalListIndex]
+            .objects[currentFocusedHorizontalListIndex]
+            .text;
         scrollToStart();
       } else {
         Navigator.pop(context);
@@ -223,7 +230,18 @@ class _NeedsPageState extends PageState<NeedsPage> {
   @override
   void pushPressed() {
     setState(() {
+      if(inHorizontalList){
+        textToSpeech();
+        return;
+      }
       inHorizontalList = true;
     });
+  }
+
+  void textToSpeech() {
+    NeedsCategory currCategory = categoryList[currentFocusedVerticalListIndex];
+    List<NeedsObject> buttonList = currCategory.objects;
+    NeedsObject currentButton = buttonList[currentFocusedHorizontalListIndex];
+    flutterTts.speak(currentButton.text);
   }
 }
