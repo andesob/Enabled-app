@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:enabled_app/contacts_page/contact_item.dart';
 import 'package:enabled_app/global_data/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'custom_category.dart';
 
 class CustomPopup extends StatefulWidget {
@@ -15,6 +18,7 @@ class CustomPopup extends StatefulWidget {
 }
 
 class _CustomPopup extends State<CustomPopup> {
+  SharedPreferences prefs;
   final textInputController = TextEditingController();
   final categoryInputController = TextEditingController();
   FocusNode firstFocusNode;
@@ -35,10 +39,15 @@ class _CustomPopup extends State<CustomPopup> {
   @override
   void initState() {
     super.initState();
+    initPrefs();
     firstFocusNode = new FocusNode();
     firstFocusNode.addListener(_onOnFocusNodeEvent);
     secondFocusNode = new FocusNode();
     secondFocusNode.addListener(_onOnFocusNodeEvent);
+  }
+
+  initPrefs() async {
+    prefs = await SharedPreferences.getInstance();
   }
 
   _onOnFocusNodeEvent() {
@@ -67,7 +76,9 @@ class _CustomPopup extends State<CustomPopup> {
                 focusNode: firstFocusNode,
                 controller: textInputController,
                 decoration: InputDecoration(
-                  errorText: validateTextfield ? null : "Enter a name for the shortcut",
+                  errorText: validateTextfield
+                      ? null
+                      : "Enter a name for the shortcut",
                   labelStyle:
                       new TextStyle(color: _getLabelColor(firstFocusNode)),
                   labelText: 'New shortcut',
@@ -103,7 +114,8 @@ class _CustomPopup extends State<CustomPopup> {
                             errors++;
                           }
 
-                          if(categoryInputController.text.isEmpty && addingCategory){
+                          if (categoryInputController.text.isEmpty &&
+                              addingCategory) {
                             validateCategoryTextfield = false;
                             errors++;
                           }
@@ -113,24 +125,33 @@ class _CustomPopup extends State<CustomPopup> {
                             errors++;
                           }
 
-                          if(errors > 0){
+                          if (errors > 0) {
                             return;
                           }
 
                           if (addingCategory) {
                             CustomCategory category = new CustomCategory(
-                                categoryInputController.text, []);
+                              categoryName: categoryInputController.text,
+                              categoryObjects: [],
+                            );
+
                             widget.items.add(category);
                             category.objects.add(textInputController.text);
-                            FocusScope.of(context).unfocus();
-                            Navigator.pop(context, category.name);
                           } else {
                             selectedCategory.objects
                                 .add(textInputController.text);
-                            FocusScope.of(context).unfocus();
-                            Navigator.pop(context, textInputController.text);
                           }
+
+                          List<String> prefList = [];
+                          for (CustomCategory c in widget.items) {
+                            prefList.add(jsonEncode(c.toJson()));
+                          }
+
+                          prefs.setStringList("categories", prefList);
                         });
+
+                        FocusScope.of(context).unfocus();
+                        Navigator.pop(context);
                       },
                     ),
                   ],
@@ -151,6 +172,7 @@ class _CustomPopup extends State<CustomPopup> {
         onPressed: () {
           setState(() {
             addingCategory = true;
+            secondFocusNode.requestFocus();
           });
         },
       ),
@@ -162,7 +184,8 @@ class _CustomPopup extends State<CustomPopup> {
       focusNode: secondFocusNode,
       controller: categoryInputController,
       decoration: InputDecoration(
-        errorText: validateCategoryTextfield ? null : "Enter a name for the category",
+        errorText:
+            validateCategoryTextfield ? null : "Enter a name for the category",
         labelStyle: new TextStyle(color: _getLabelColor(secondFocusNode)),
         labelText: 'New category',
         enabledBorder: UnderlineInputBorder(
