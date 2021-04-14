@@ -7,8 +7,10 @@ import 'package:enabled_app/custom_page/custom_popup.dart';
 import 'package:enabled_app/custom_page/custom_horizontal_list.dart';
 import 'package:enabled_app/desktop_connection/server_socket.dart';
 import 'package:enabled_app/page_state.dart';
+import 'package:enabled_app/tts_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
@@ -25,9 +27,12 @@ class CustomPageHome extends StatefulWidget {
 }
 
 class _CustomPageHome extends PageState<CustomPageHome> {
+  FlutterTts flutterTts = TTSController().flutterTts;
+
   SharedPreferences prefs;
 
   List<CustomCategory> categoryList = [];
+  List<String> horizontalList = [];
 
   bool inHorizontalList = false;
   int currentFocusedVerticalListIndex;
@@ -300,12 +305,10 @@ class _CustomPageHome extends PageState<CustomPageHome> {
   void rightPressed() {
     setState(() {
       if (inHorizontalList) {
-        List<String> horizontalList =
-            categoryList[currentFocusedVerticalListIndex].objects;
-
         //If not at end of horizontal list
         if (currentFocusedHorizontalListIndex < horizontalList.length - 1) {
           currentFocusedHorizontalListIndex++;
+          flutterTts.speak(horizontalList[currentFocusedHorizontalListIndex]);
           scrollRight();
         }
         return;
@@ -315,6 +318,8 @@ class _CustomPageHome extends PageState<CustomPageHome> {
       if (currentFocusedVerticalListIndex < categoryList.length - 1) {
         currentFocusedVerticalListIndex++;
         scrollDown();
+        flutterTts
+            .speak(categoryList[currentFocusedVerticalListIndex].categoryName);
         return;
       }
     });
@@ -326,6 +331,7 @@ class _CustomPageHome extends PageState<CustomPageHome> {
       if (inHorizontalList) {
         if (currentFocusedHorizontalListIndex > 0) {
           currentFocusedHorizontalListIndex--;
+          flutterTts.speak(horizontalList[currentFocusedHorizontalListIndex]);
           scrollLeft();
         }
         return;
@@ -334,6 +340,8 @@ class _CustomPageHome extends PageState<CustomPageHome> {
       if (currentFocusedVerticalListIndex > 0) {
         currentFocusedVerticalListIndex--;
         scrollUp();
+        flutterTts
+            .speak(categoryList[currentFocusedVerticalListIndex].categoryName);
         return;
       }
     });
@@ -348,6 +356,8 @@ class _CustomPageHome extends PageState<CustomPageHome> {
         lastScrollIndexLeft = 0;
         lastHorizontalScrollIndex = 0;
         inHorizontalList = false;
+        flutterTts
+            .speak(categoryList[currentFocusedVerticalListIndex].categoryName);
         scrollToStart();
       } else {
         Navigator.pop(context);
@@ -358,6 +368,8 @@ class _CustomPageHome extends PageState<CustomPageHome> {
   @override
   void pushPressed() {
     setState(() {
+      horizontalList = categoryList[currentFocusedVerticalListIndex].objects;
+      flutterTts.speak(horizontalList[currentFocusedHorizontalListIndex]);
       inHorizontalList = true;
     });
   }

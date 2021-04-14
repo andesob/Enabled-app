@@ -1,5 +1,7 @@
 import 'package:enabled_app/global_data/colors.dart';
+import 'package:enabled_app/tts_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:gradient_text/gradient_text.dart';
 
 // TODO Change the flatButton to raisedButton??
@@ -18,6 +20,8 @@ class CustomPageButton extends StatefulWidget {
 }
 
 class _CustomPageButton extends State<CustomPageButton> {
+  FlutterTts flutterTts = TTSController().flutterTts;
+
   @override
   Widget build(BuildContext context) {
     Color lightPeach = Color(StaticColors.lightPeach);
@@ -49,7 +53,9 @@ class _CustomPageButton extends State<CustomPageButton> {
             end: FractionalOffset.centerRight,
           ),
         ),
-        onPressed: () {},
+        onPressed: () {
+          flutterTts.speak(widget.text);
+        },
       ),
     );
   }
