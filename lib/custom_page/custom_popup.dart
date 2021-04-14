@@ -32,6 +32,7 @@ class _CustomPopup extends State<CustomPopup> {
   @override
   void dispose() {
     firstFocusNode.dispose();
+    secondFocusNode.dispose();
 
     super.dispose();
   }

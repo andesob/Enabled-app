@@ -1,7 +1,10 @@
 import 'package:enabled_app/custom_page/custom_page_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+
+import '../tts_controller.dart';
 
 class CustomHorizontalList extends StatefulWidget {
   CustomHorizontalList({
@@ -23,6 +26,8 @@ class CustomHorizontalList extends StatefulWidget {
 
 // TODO - See if i can change "container" with raised button for elevation effect when focused.
 class _CustomHorizontalList extends State<CustomHorizontalList> {
+  FlutterTts flutterTts = TTSController().flutterTts;
+
   /// Controller to scroll or jump to a particular item.
   ItemScrollController scrollController;
 
