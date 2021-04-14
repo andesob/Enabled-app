@@ -9,6 +9,7 @@ import 'package:enabled_app/page_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:uuid/uuid.dart';
 
 //TODO create a solution for the "result" object returned from the alert dialog.
 
@@ -94,10 +95,10 @@ class _CustomPageHome extends PageState<CustomPageHome> {
     });
 
     /// For testing purposes
-    List<String> testObjects = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
-    CustomCategory customCategory = new CustomCategory("Eskil", testObjects);
 
-    for (var i = 0; i < 7; i++) {
+    for (var i = 0; i < 0; i++) {
+      List<String> testObjects = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
+      CustomCategory customCategory = new CustomCategory("Eskil", testObjects);
       categoryList.add(customCategory);
     }
   }
@@ -218,7 +219,6 @@ class _CustomPageHome extends PageState<CustomPageHome> {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -238,11 +238,6 @@ class _CustomPageHome extends PageState<CustomPageHome> {
                       }).then((value) {
                     setState(() {
                       print("reached: " + value);
-                      CustomCategory customCategory = new CustomCategory(
-                        value,
-                        ['1', '2', '3'],
-                      );
-                      categoryList.add(customCategory);
                     });
                   }).catchError((error) {
                     print(error);
