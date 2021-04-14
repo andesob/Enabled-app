@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:enabled_app/custom_page/custom_category.dart';
 import 'package:enabled_app/custom_page/custom_page_button.dart';
@@ -9,6 +10,8 @@ import 'package:enabled_app/page_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
 
 //TODO create a solution for the "result" object returned from the alert dialog.
 
@@ -22,6 +25,8 @@ class CustomPageHome extends StatefulWidget {
 }
 
 class _CustomPageHome extends PageState<CustomPageHome> {
+  SharedPreferences prefs;
+
   List<CustomCategory> categoryList = [];
 
   bool inHorizontalList = false;
@@ -46,10 +51,24 @@ class _CustomPageHome extends PageState<CustomPageHome> {
     sub.cancel();
   }
 
+  initPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+    setState(() {
+      List<String> categories = prefs.getStringList('categories');
+      for (String s in categories) {
+        CustomCategory category = CustomCategory.fromJson(jsonDecode(s));
+        categoryList.add(category);
+      }
+    });
+  }
+
   // TODO remove test objects.
   @override
   void initState() {
     super.initState();
+
+    initPrefs();
+
     currentFocusedVerticalListIndex = 0;
     currentFocusedHorizontalListIndex = 0;
 
@@ -94,12 +113,12 @@ class _CustomPageHome extends PageState<CustomPageHome> {
     });
 
     /// For testing purposes
-    List<String> testObjects = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
-    CustomCategory customCategory = new CustomCategory("Eskil", testObjects);
-
-    for (var i = 0; i < 7; i++) {
+/*
+    for (var i = 0; i < 2; i++) {
+      List<String> testObjects = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
+      CustomCategory customCategory = new CustomCategory("Eskil", testObjects);
       categoryList.add(customCategory);
-    }
+    }*/
   }
 
   /// Scrolls the list down to the selected index.
@@ -218,7 +237,6 @@ class _CustomPageHome extends PageState<CustomPageHome> {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -235,16 +253,7 @@ class _CustomPageHome extends PageState<CustomPageHome> {
                         return CustomPopup(
                           items: categoryList,
                         );
-                      }).then((value) {
-                    setState(() {
-                      print("reached: " + value);
-                      CustomCategory customCategory = new CustomCategory(
-                        value,
-                        ['1', '2', '3'],
-                      );
-                      categoryList.add(customCategory);
-                    });
-                  }).catchError((error) {
+                      }).catchError((error) {
                     print(error);
                   });
                 },

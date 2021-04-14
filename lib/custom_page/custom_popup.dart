@@ -1,12 +1,15 @@
+import 'dart:convert';
+
 import 'package:enabled_app/contacts_page/contact_item.dart';
 import 'package:enabled_app/global_data/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'custom_category.dart';
 
 class CustomPopup extends StatefulWidget {
-  List<CustomCategory> items;
+  final List<CustomCategory> items;
 
   CustomPopup({Key key, this.items}) : super(key: key);
 
@@ -15,13 +18,16 @@ class CustomPopup extends StatefulWidget {
 }
 
 class _CustomPopup extends State<CustomPopup> {
-  final firstNameController = TextEditingController();
-  final surnameController = TextEditingController();
-  final numberController = TextEditingController();
+  SharedPreferences prefs;
+  final textInputController = TextEditingController();
+  final categoryInputController = TextEditingController();
   FocusNode firstFocusNode;
-
-  List<DropdownMenuItem<CustomCategory>> dropDownItems;
+  FocusNode secondFocusNode;
   CustomCategory selectedCategory;
+  bool addingCategory = false;
+  bool validateCategory = true;
+  bool validateCategoryTextfield = true;
+  bool validateTextfield = true;
 
   @override
   void dispose() {
@@ -33,34 +39,15 @@ class _CustomPopup extends State<CustomPopup> {
   @override
   void initState() {
     super.initState();
+    initPrefs();
     firstFocusNode = new FocusNode();
     firstFocusNode.addListener(_onOnFocusNodeEvent);
-
-    dropDownItems = buildDropDownMenuItems(widget.items);
-    //selectedCategory = dropDownItems[0].value;
+    secondFocusNode = new FocusNode();
+    secondFocusNode.addListener(_onOnFocusNodeEvent);
   }
 
-  List<DropdownMenuItem<CustomCategory>> buildDropDownMenuItems(
-      List categories) {
-    List<DropdownMenuItem<CustomCategory>> items = [];
-    for (CustomCategory item in categories) {
-      items.add(
-        DropdownMenuItem(
-          child: Center(
-            child: Text(
-              item.name,
-              style: TextStyle(
-                decoration: TextDecoration.underline,
-                fontSize: 16,
-                //fontStyle: FontStyle.italic,
-              ),
-            ),
-          ),
-          value: item,
-        ),
-      );
-    }
-    return items;
+  initPrefs() async {
+    prefs = await SharedPreferences.getInstance();
   }
 
   _onOnFocusNodeEvent() {
@@ -77,60 +64,24 @@ class _CustomPopup extends State<CustomPopup> {
   Widget build(BuildContext context) {
     return AlertDialog(
       scrollable: true,
-      title: Text('Legg til en ny snarvei'),
+      title: Text('Add a new shortcut'),
       content: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Form(
           child: Column(
             children: <Widget>[
-              InputDecorator(
-                isFocused: true,
-                decoration: InputDecoration(
-                  labelStyle: Theme.of(context)
-                      .primaryTextTheme
-                      .caption
-                      .copyWith(color: Colors.black),
-                  border: OutlineInputBorder(),
-                ),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton(
-                    focusColor: Color(StaticColors.darkPeach),
-                    isDense: true,
-                    hint: selectedCategory == null
-                        ? Text('Kategori',
-                            style: TextStyle(
-                                color: Color(StaticColors.lightSlateGray)))
-                        : Text(
-                            selectedCategory.name,
-                            style: TextStyle(
-                              color: Color(StaticColors.lightSlateGray),
-                            ),
-                          ),
-                    isExpanded: true,
-                    iconSize: 25.0,
-                    style: TextStyle(
-                      color: Color(
-                        StaticColors.darkPeach,
-                      ),
-                    ),
-                    items: dropDownItems,
-                    onChanged: (item) {
-                      setState(
-                        () {
-                          selectedCategory = item;
-                        },
-                      );
-                    },
-                  ),
-                ),
-              ),
+              addingCategory ? getAddCategory() : getDropdown(),
+              if (!addingCategory) getAddCategoryButton(),
               TextFormField(
                 focusNode: firstFocusNode,
-                controller: firstNameController,
+                controller: textInputController,
                 decoration: InputDecoration(
+                  errorText: validateTextfield
+                      ? null
+                      : "Enter a name for the shortcut",
                   labelStyle:
                       new TextStyle(color: _getLabelColor(firstFocusNode)),
-                  labelText: 'Tekst',
+                  labelText: 'New shortcut',
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
                       color: _getLabelColor(firstFocusNode),
@@ -145,7 +96,7 @@ class _CustomPopup extends State<CustomPopup> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     RaisedButton(
-                      child: Text("Lukk"),
+                      child: Text("Close"),
                       color: Color(StaticColors.lightSlateGray),
                       onPressed: () {
                         FocusScope.of(context).unfocus();
@@ -153,11 +104,54 @@ class _CustomPopup extends State<CustomPopup> {
                       },
                     ),
                     RaisedButton(
-                      child: Text("Legg til"),
+                      child: Text("Add"),
                       color: Color(StaticColors.lightSlateGray),
                       onPressed: () {
+                        setState(() {
+                          int errors = 0;
+                          if (selectedCategory == null && !addingCategory) {
+                            validateCategory = false;
+                            errors++;
+                          }
+
+                          if (categoryInputController.text.isEmpty &&
+                              addingCategory) {
+                            validateCategoryTextfield = false;
+                            errors++;
+                          }
+
+                          if (textInputController.text.isEmpty) {
+                            validateTextfield = false;
+                            errors++;
+                          }
+
+                          if (errors > 0) {
+                            return;
+                          }
+
+                          if (addingCategory) {
+                            CustomCategory category = new CustomCategory(
+                              categoryName: categoryInputController.text,
+                              categoryObjects: [],
+                            );
+
+                            widget.items.add(category);
+                            category.objects.add(textInputController.text);
+                          } else {
+                            selectedCategory.objects
+                                .add(textInputController.text);
+                          }
+
+                          List<String> prefList = [];
+                          for (CustomCategory c in widget.items) {
+                            prefList.add(jsonEncode(c.toJson()));
+                          }
+
+                          prefs.setStringList("categories", prefList);
+                        });
+
                         FocusScope.of(context).unfocus();
-                        Navigator.pop(context, firstNameController.text);
+                        Navigator.pop(context);
                       },
                     ),
                   ],
@@ -165,6 +159,101 @@ class _CustomPopup extends State<CustomPopup> {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Container getAddCategoryButton() {
+    return Container(
+      child: RaisedButton(
+        child: Text("Add category"),
+        color: Color(StaticColors.lightSlateGray),
+        onPressed: () {
+          setState(() {
+            addingCategory = true;
+            secondFocusNode.requestFocus();
+          });
+        },
+      ),
+    );
+  }
+
+  TextFormField getAddCategory() {
+    return TextFormField(
+      focusNode: secondFocusNode,
+      controller: categoryInputController,
+      decoration: InputDecoration(
+        errorText:
+            validateCategoryTextfield ? null : "Enter a name for the category",
+        labelStyle: new TextStyle(color: _getLabelColor(secondFocusNode)),
+        labelText: 'New category',
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: _getLabelColor(secondFocusNode),
+          ),
+        ),
+      ),
+    );
+  }
+
+  InputDecorator getDropdown() {
+    return InputDecorator(
+      isFocused: true,
+      decoration: InputDecoration(
+        errorText: validateCategory ? null : "Select a category",
+        labelStyle: Theme.of(context)
+            .primaryTextTheme
+            .caption
+            .copyWith(color: Colors.black),
+        border: OutlineInputBorder(),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton(
+          focusColor: Color(StaticColors.darkPeach),
+          isDense: true,
+          hint: selectedCategory == null
+              ? Text(
+                  'Category',
+                  style: TextStyle(
+                    color: Color(StaticColors.lightSlateGray),
+                  ),
+                )
+              : Text(
+                  selectedCategory.name,
+                  style: TextStyle(
+                    color: Color(StaticColors.lightSlateGray),
+                  ),
+                ),
+          isExpanded: true,
+          iconSize: 25.0,
+          style: TextStyle(
+            color: Color(
+              StaticColors.darkPeach,
+            ),
+          ),
+          items: widget.items.map((item) {
+            return new DropdownMenuItem(
+              child: Center(
+                child: Text(
+                  item.name,
+                  style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    fontSize: 16,
+                    //fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ),
+              value: item,
+            );
+          }).toList(),
+          onChanged: (item) {
+            setState(
+              () {
+                selectedCategory = item;
+              },
+            );
+          },
         ),
       ),
     );
