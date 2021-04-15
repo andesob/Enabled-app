@@ -54,19 +54,9 @@ class _CustomPageButton extends State<CustomPageButton> {
           ),
         ),
         onPressed: () {
-          getVoices();
-          flutterTts.setVoice({"name": "nb-NO-language", "locale": "nb-NO"});
           flutterTts.speak(widget.text);
         },
       ),
     );
-  }
-
-  Future<void> getVoices() async {
-    var voices = await flutterTts.getVoices;
-
-    for (var v in voices) {
-      print(v);
-    }
   }
 }
