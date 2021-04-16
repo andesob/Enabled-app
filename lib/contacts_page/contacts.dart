@@ -36,7 +36,7 @@ class _contactState extends PageState<contacts> {
   @override
   void initState(){
     super.initState();
-    for (var i = 0; i < 2; i++) {
+    for (var i = 0; i < 30; i++) {
       ContactItem cItem = ContactItem(firstname: "Trym", surname: "Jørgensen", number: "95945742",);
       items.add(cItem);
       int cIndex = items.indexOf(cItem);
@@ -115,7 +115,7 @@ class _contactState extends PageState<contacts> {
   Widget build(BuildContext context) {
 
     return ScrollablePositionedList.builder(
-      padding: EdgeInsets.all(8),
+      padding: EdgeInsets.all(0),
       itemCount: items.length,
       itemBuilder: (context, index) {
         final ContactItem item = items[index];

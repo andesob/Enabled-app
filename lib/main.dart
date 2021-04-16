@@ -48,8 +48,7 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         Strings.HOME: (context) => MainPage(
-            pageContent: MyHomePage(
-                key: PageGlobalKeys.homePageKey, title: Strings.HOME),
+            pageContent: MyHomePage(key: PageGlobalKeys.homePageKey),
             title: Strings.HOME,
             hasDropDown: true,
             pageKey: PageGlobalKeys.homePageKey),
