@@ -25,7 +25,6 @@ class _ContactItem extends State<ContactItem>{
   @override
   void initState() {
     super.initState();
-    print("INDEX: " + widget.cIndex.toString());
     if(widget.cIndex == 0){
       highlightFont = true;
     } else {
@@ -47,7 +46,7 @@ class _ContactItem extends State<ContactItem>{
     String number = widget.number;
 
     return Container(
-      height: (MediaQuery.of(context).size.height - Scaffold.of(context).appBarMaxHeight) * (0.14),
+      height: (MediaQuery.of(context).size.height * 0.1),
       child: ListTile(
         onTap: () => _launchURL(number),
         leading: CircleAvatar(

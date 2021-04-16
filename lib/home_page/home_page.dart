@@ -14,9 +14,7 @@ import 'home_page_button.dart';
 import '../global_data/strings.dart';
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
+  MyHomePage({Key key}) : super(key: key);
 
   @override
   MyHomePageState createState() => MyHomePageState();
