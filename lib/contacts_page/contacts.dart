@@ -20,7 +20,6 @@ class contacts extends StatefulWidget {
 }
 
 class _contactState extends PageState<contacts> {
-
   List<ContactItem> items = [];
   int focusIndex = 0;
   int lastFocusIndex = 0;
@@ -34,16 +33,19 @@ class _contactState extends PageState<contacts> {
   bool popupActive = false;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    for (var i = 0; i < 30; i++) {
-      ContactItem cItem = ContactItem(firstname: "Trym", surname: "Jørgensen", number: "95945742",);
+    for (var i = 0; i < 20; i++) {
+      ContactItem cItem = ContactItem(
+        firstname: "Trym",
+        surname: "Jørgensen",
+        number: "95945742",
+      );
       items.add(cItem);
       int cIndex = items.indexOf(cItem);
       cItem.cIndex = cIndex;
     }
   }
-
 
   setPopup(bool active) {
     popupActive = active;
@@ -113,16 +115,39 @@ class _contactState extends PageState<contacts> {
 
   @override
   Widget build(BuildContext context) {
-
-    return ScrollablePositionedList.builder(
-      padding: EdgeInsets.all(0),
-      itemCount: items.length,
-      itemBuilder: (context, index) {
-        final ContactItem item = items[index];
-        return item;
-      },
-      itemScrollController: itemScrollController,
-      itemPositionsListener: itemPositionsListener,
+    return Container(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Container(
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: FlatButton(
+                child: Text("Legg til"),
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return ContactPopup(items: items);
+                      });
+                },
+              ),
+            ),
+          ),
+          Expanded(
+            child: ScrollablePositionedList.builder(
+              padding: EdgeInsets.all(8),
+              itemCount: items.length,
+              itemBuilder: (context, index) {
+                final ContactItem item = items[index];
+                return item;
+              },
+              itemScrollController: itemScrollController,
+              itemPositionsListener: itemPositionsListener,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -141,7 +166,7 @@ class _contactState extends PageState<contacts> {
 
   @override
   void pullPressed() {
-      Navigator.pop(context);
+    Navigator.pop(context);
   }
 
   @override
@@ -163,8 +188,6 @@ class _contactState extends PageState<contacts> {
       }
     }
   }
-
-
 
   /// TODO
   ///  floatingActionButton: FloatingActionButton(
