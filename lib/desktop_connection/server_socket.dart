@@ -23,10 +23,10 @@ class SocketSingleton {
 
   _startSocket() async {
     print("start socket called");
-    _localIP = await getIP();
+    _localIP = await _getIP();
     print("Get ip: " + _localIP);
     _serverSocket = await HttpServer.bind(_localIP, _port, shared: true);
-    _serverSocket.transform(WebSocketTransformer()).listen(handleClient);
+    _serverSocket.transform(WebSocketTransformer()).listen(_handleClient);
     print("server ip: " + _serverSocket.address.toString());
     print("server port: " + _serverSocket.port.toString());
   }
@@ -35,12 +35,12 @@ class SocketSingleton {
     return this.command;
   }
 
-  Future<String> getIP() async {
+  Future<String> _getIP() async {
     String ip = await NetworkService.localIP;
     return ip;
   }
 
-  void handleClient(WebSocket client) {
+  void _handleClient(WebSocket client) {
     _clientSocket = client;
     stream = controller.stream;
 
@@ -50,16 +50,16 @@ class SocketSingleton {
         controller.add(data);
       },
       onError: (e) {
-        disconnectClient();
+        _disconnectClient();
       },
       onDone: () {
         print("Connection has terminated.");
-        disconnectClient();
+        _disconnectClient();
       },
     );
   }
 
-  void disconnectClient() {
+  void _disconnectClient() {
     if (_clientSocket != null) {
       _clientSocket.close();
       _clientSocket.close();
