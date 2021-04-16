@@ -1,5 +1,4 @@
 import 'package:enabled_app/custom_page/custom_page.dart';
-import 'package:enabled_app/custom_page/custom_page_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -9,10 +8,11 @@ void main(){
   }
 
   testWidgets("", (WidgetTester tester) async{
-    CustomPageHome page = CustomPageHome();
+    CustomPageHome page = CustomPageHome(title: "Custom", );
 
+    //Find only one Add Custom Button
     await tester.pumpWidget(makeTestableWidget(child: page));
-    
-    expect(find.byType(CustomPageButton), findsWidgets);
+    var addCustomButton = find.byType(FlatButton);
+    expect(addCustomButton, findsOneWidget);
   });
 }
