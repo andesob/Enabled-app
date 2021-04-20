@@ -13,14 +13,20 @@ class TTSController {
 
   FlutterTts get flutterTts => _flutterTts;
 
-  void setLanguage(String lang){
+  String setLanguage(String lang){
     switch(lang){
       case "NO":
         flutterTts.setVoice({"name": "nb-NO-language", "locale": "nb-NO"});
+        return lang + " language set";
         break;
       case "GB":
         flutterTts.setVoice({"name": "en-GB-language", "locale": "en-GB"});
+        return lang + " language set";
         break;
+      case "":
+        return "Enter language";
+      default:
+        return "Language not found";
     }
   }
 }

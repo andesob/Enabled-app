@@ -36,7 +36,7 @@ class _contactState extends PageState<contacts> {
   @override
   void initState() {
     super.initState();
-    for (var i = 0; i < 2; i++) {
+    for (var i = 0; i < 20; i++) {
       ContactItem cItem = ContactItem(
         firstname: "Trym",
         surname: "Jørgensen",
@@ -116,15 +116,39 @@ class _contactState extends PageState<contacts> {
 
   @override
   Widget build(BuildContext context) {
-    return ScrollablePositionedList.builder(
-      padding: EdgeInsets.all(8),
-      itemCount: items.length,
-      itemBuilder: (context, index) {
-        final ContactItem item = items[index];
-        return item;
-      },
-      itemScrollController: itemScrollController,
-      itemPositionsListener: itemPositionsListener,
+    return Container(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Container(
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: FlatButton(
+                child: Text("Legg til"),
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return ContactPopup(items: items);
+                      });
+                },
+              ),
+            ),
+          ),
+          Expanded(
+            child: ScrollablePositionedList.builder(
+              padding: EdgeInsets.all(8),
+              itemCount: items.length,
+              itemBuilder: (context, index) {
+                final ContactItem item = items[index];
+                return item;
+              },
+              itemScrollController: itemScrollController,
+              itemPositionsListener: itemPositionsListener,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -143,7 +167,7 @@ class _contactState extends PageState<contacts> {
 
   @override
   void pullPressed() {
-    _goBack();
+    Navigator.pop(context);
   }
 
   @override
