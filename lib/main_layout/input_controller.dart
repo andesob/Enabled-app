@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:enabled_app/desktop_connection/server_socket.dart';
 import 'package:enabled_app/global_data/colors.dart';
@@ -35,8 +36,13 @@ class ButtonControllerState extends State<ButtonController> {
     Stream stream = socket.getStream();
     sub = stream.listen((value) {
       setState(() {
-        print(widget.pageKey.currentState.toString() + 'Command: ' + value);
-        mentalCommands(value);
+        Map stream = jsonDecode(value);
+        print(stream);
+        if (stream['streamType'] == 'com') {
+          mentalCommands(stream['command']);
+        } else if (stream['streamType'] == 'fac') {
+          facialCommands(stream['command']);
+        }
       });
     });
   }
@@ -64,7 +70,39 @@ class ButtonControllerState extends State<ButtonController> {
         }
         break;
       default:
-        {}
+        {
+          print('Unknown mental command');
+        }
+        break;
+    }
+  }
+
+  void facialCommands(state) {
+    switch (state) {
+      case 'smile':
+        {
+          widget.pageKey.currentState?.pushPressed();
+        }
+        break;
+      case 'raise-brows':
+        {
+          widget.pageKey.currentState?.pullPressed();
+        }
+        break;
+      case 'wink-left':
+        {
+          widget.pageKey.currentState?.leftPressed();
+        }
+        break;
+      case 'wink-right':
+        {
+          widget.pageKey.currentState?.rightPressed();
+        }
+        break;
+      default:
+        {
+          print('Unknown facial command');
+        }
         break;
     }
   }

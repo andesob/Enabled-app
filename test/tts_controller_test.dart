@@ -21,8 +21,8 @@ void main() {
     expect(result, "Language not found");
   });
 
-  test("Valid language test", () {
-    when(mockController.setLanguage("NO")).thenReturn("NO language set");
+  test("Valid language test", () async {
+    when(await mockController.setLanguage("NO")).thenReturn("NO language set");
     var result = mockController.setLanguage("NO");
     expect(result, "NO language set");
   });
