@@ -13,14 +13,14 @@ class TTSController {
 
   FlutterTts get flutterTts => _flutterTts;
 
-  String setLanguage(String lang){
+  Future<String> setLanguage(String lang) async {
     switch(lang){
       case "NO":
-        flutterTts.setVoice({"name": "nb-NO-language", "locale": "nb-NO"});
+        await flutterTts.setLanguage("nb-NO");
         return lang + " language set";
         break;
-      case "GB":
-        flutterTts.setVoice({"name": "en-GB-language", "locale": "en-GB"});
+      case "US":
+        await flutterTts.setLanguage("en-US");
         return lang + " language set";
         break;
       case "":
