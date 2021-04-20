@@ -27,6 +27,8 @@ class _NeedsPageButton extends State<NeedsPageButton> {
 
   @override
   Widget build(BuildContext context) {
+    var shortestSide = MediaQuery.of(context).size.shortestSide;
+    bool isMobile = shortestSide < 600;
     const Color lightPeach = Color(0xffffecd2);
     const Color darkPeach = Color(0xfffcb7a0);
 
@@ -55,7 +57,7 @@ class _NeedsPageButton extends State<NeedsPageButton> {
                 widget.icon,
                 GradientText(
                   widget.text,
-                  style: TextStyle(fontSize: 12),
+                  style: TextStyle(fontSize: isMobile ? 10 : 20),
                   gradient: new LinearGradient(
                     colors: [lightPeach, darkPeach],
                     begin: FractionalOffset.centerLeft,

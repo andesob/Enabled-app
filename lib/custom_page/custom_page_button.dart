@@ -24,6 +24,8 @@ class _CustomPageButton extends State<CustomPageButton> {
 
   @override
   Widget build(BuildContext context) {
+    var shortestSide = MediaQuery.of(context).size.shortestSide;
+    bool isMobile = shortestSide < 600;
     Color lightPeach = Color(StaticColors.lightPeach);
     Color darkPeach = Color(StaticColors.darkPeach);
 
@@ -44,9 +46,7 @@ class _CustomPageButton extends State<CustomPageButton> {
         padding: const EdgeInsets.all(0.0),
         child: new GradientText(
           widget.text,
-          style: TextStyle(
-            fontSize: 12,
-          ),
+          style: TextStyle(fontSize: isMobile ? 10 : 20),
           gradient: new LinearGradient(
             colors: [lightPeach, darkPeach],
             begin: FractionalOffset.centerLeft,
