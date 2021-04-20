@@ -73,6 +73,9 @@ class _NeedsPageButton extends State<NeedsPageButton> {
         ),
         onPressed: () {
           flutterTts.speak(widget.text);
+          TTSController ttsC = TTSController();
+          ttsC.setLanguage("NO");
+          print(ttsC.setLanguage("NO"));
         },
       ),
     );
