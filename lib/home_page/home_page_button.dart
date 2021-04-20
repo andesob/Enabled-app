@@ -36,6 +36,7 @@ class HomePageButtonState extends State<HomePageButton> {
       child: FlatButton(
         child: new GradientText(
           widget.text,
+          style: TextStyle(fontSize: 20),
           gradient: new LinearGradient(
             colors: [
               Color(StaticColors.lightPeach),

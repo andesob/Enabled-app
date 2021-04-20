@@ -40,6 +40,7 @@ class EmergencyButtonState extends State<EmergencyButton> {
       child: FlatButton(
         child: new GradientText(
           widget.text,
+          style: TextStyle(fontSize: 20),
           gradient: new LinearGradient(
             colors: [
               Color(StaticColors.lightPeach),
