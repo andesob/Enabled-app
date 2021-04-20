@@ -26,7 +26,12 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((_) {
-    runApp(new MyApp());
+    runApp(
+      ChangeNotifierProvider<ThemeNotifier>(
+        create: (_) => ThemeNotifier(),
+        child: MyApp(),
+      ),
+    );
   });
   SocketSingleton socket = SocketSingleton();
 }
@@ -36,16 +41,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //final themeState = Provider.of<ThemeNotifier>(context);
-
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
+    addThemes(themeNotifier, context);
     return MaterialApp(
       title: Strings.ENABLED,
       initialRoute: Strings.HOME,
-      //theme: themeState.getTheme(),
-      theme: ThemeData(
-        brightness: Brightness.light,
-        backgroundColor: Colors.white,
-      ),
+      theme: themeNotifier.getTheme(),
       routes: {
         Strings.HOME: (context) => MainPage(
             pageContent: MyHomePage(key: PageGlobalKeys.homePageKey),
@@ -96,6 +97,38 @@ class MyApp extends StatelessWidget {
               pageKey: PageGlobalKeys.huePageKey,
             ),
       },
+    );
+  }
+
+  void addThemes(ThemeNotifier notifier, context) {
+    notifier.lightTheme = ThemeData(
+      brightness: Brightness.light,
+      primaryColor: Colors.white,
+      backgroundColor: Colors.white,
+      appBarTheme: AppBarTheme(
+        textTheme: ThemeData.light().textTheme.copyWith(
+          headline6: TextStyle(
+            color: Color(StaticColors.lighterSlateGray),
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+
+    notifier.darkTheme = ThemeData(
+      primaryColor: Color(StaticColors.lightGray),
+      backgroundColor: Color(StaticColors.lightPeach),
+      brightness: Brightness.dark,
+      appBarTheme: AppBarTheme(
+        textTheme: ThemeData.dark().textTheme.copyWith(
+              headline6: TextStyle(
+                color: Color(StaticColors.lightPeach),
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+      ),
     );
   }
 }
