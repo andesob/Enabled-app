@@ -34,7 +34,7 @@ class CustomDictionaryState extends State<CustomDictionary> {
     List<String> hitList = [];
     for (String word in dictionary) {
       //print(word);
-      if (word.contains(searchKey.toLowerCase())) {
+      if (word.startsWith(searchKey.toLowerCase())) {
         hitList.add(word);
       }
     }
