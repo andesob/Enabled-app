@@ -13,10 +13,7 @@ import 'package:gradient_app_bar/gradient_app_bar.dart';
 class KeyboardPage extends StatefulWidget {
   KeyboardPage({
     Key key,
-    this.title,
   }) : super(key: key);
-
-  final String title;
 
   _KeyboardPageState createState() => _KeyboardPageState();
 }
@@ -139,19 +136,21 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
   Widget build(BuildContext context) {
     return Column(children: [
       Container(
-        child: TextField(
-          controller: _controller,
-          readOnly: true,
-          showCursor: true,
-          autofocus: true,
-          style: TextStyle(
-            fontSize: MediaQuery.of(context).orientation == Orientation.portrait
-                ? 24
-                : 12,
-          ),
-          decoration: InputDecoration(
-            filled: true,
-            fillColor: Color(StaticColors.greenSheen),
+        child: Material(
+          child: TextField(
+            controller: _controller,
+            readOnly: true,
+            showCursor: true,
+            autofocus: true,
+            style: TextStyle(
+              fontSize: MediaQuery.of(context).orientation == Orientation.portrait
+                  ? 24
+                  : 12,
+            ),
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Color(StaticColors.greenSheen),
+            ),
           ),
         ),
       ),
