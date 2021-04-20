@@ -15,7 +15,7 @@ class NeedsPageButton extends StatefulWidget {
     this.isFocused = false,
   }) : super(key: key);
   final String text;
-  final Icon icon;
+  final IconData icon;
   final bool isFocused;
 
   @override
@@ -54,7 +54,10 @@ class _NeedsPageButton extends State<NeedsPageButton> {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                widget.icon,
+                Icon(
+                  widget.icon,
+                  size: isMobile ? 20 : 50,
+                ),
                 GradientText(
                   widget.text,
                   style: TextStyle(fontSize: isMobile ? 10 : 20),
