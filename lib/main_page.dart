@@ -5,6 +5,8 @@ import 'package:enabled_app/page_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'global_data/strings.dart';
+
 class MainPage extends StatefulWidget {
   MainPage(
       {Key key, this.pageContent, this.title, this.pageKey, this.hasDropDown})
@@ -33,15 +35,23 @@ class _MainPageState extends State<MainPage> {
           end: FractionalOffset.bottomCenter,
         ),
       ),
-      child: Scaffold(
-        backgroundColor: darkmode ? backgroundColor : Colors.white,
-        appBar: MyAppBar(
-          title: widget.title,
-          hasDropDown: widget.hasDropDown,
-        ),
-        body: widget.pageContent,
-        bottomNavigationBar: ButtonController(
-          pageKey: widget.pageKey,
+      child: WillPopScope(
+        onWillPop: () async {
+          if (widget.title != Strings.HOME) {
+            Navigator.pushReplacementNamed(context, Strings.HOME);
+          }
+          return false;
+        },
+        child: Scaffold(
+          backgroundColor: darkmode ? backgroundColor : Colors.white,
+          appBar: MyAppBar(
+            title: widget.title,
+            hasDropDown: widget.hasDropDown,
+          ),
+          body: widget.pageContent,
+          bottomNavigationBar: ButtonController(
+            pageKey: widget.pageKey,
+          ),
         ),
       ),
     );
