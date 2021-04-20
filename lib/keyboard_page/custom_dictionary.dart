@@ -3,6 +3,9 @@ import 'package:enabled_app/keyboard_page/dictionary_item.dart';
 import 'package:enabled_app/keyboard_page/keyboard_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_tts/flutter_tts.dart';
+
+import '../tts_controller.dart';
 
 class CustomDictionary extends StatefulWidget {
   CustomDictionary({Key key, this.onDictItemChosen, this.text});
@@ -19,7 +22,16 @@ class CustomDictionaryState extends State<CustomDictionary> {
 
   // This function is triggered when the floating button is pressed
   void _loadCSV() async {
-    final _rawData = await rootBundle.loadString("assets/data/words_no.csv");
+    String _rawData = null;
+    if(TTSController().getCurrentLanguage() == "NO") {
+      _rawData = await rootBundle.loadString("assets/data/words_no.csv");
+    }
+    else if(TTSController().getCurrentLanguage() == "US"){
+      _rawData = await rootBundle.loadString("assets/data/words_en_US.csv");
+    }
+    else{
+      _rawData = await rootBundle.loadString("assets/data/words_no.csv");
+    }
     List<List<dynamic>> _listData = CsvToListConverter().convert(_rawData);
     dictionary = _listData.map((e) {
       return e[0].toString();

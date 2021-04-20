@@ -44,4 +44,8 @@ class TTSController {
 
     return _currentLanguage;
   }
+
+  String getCurrentLanguage(){
+    return _currentLanguage;
+  }
 }
