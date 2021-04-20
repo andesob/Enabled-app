@@ -24,7 +24,7 @@ class CustomDictionaryState extends State<CustomDictionary> {
     dictionary = _listData.map((e) {
       return e[0].toString();
     }).toList();
-    print(dictionary);
+    //print(dictionary);
     setState(() {
       ///      dictionary = _listData.cast<String>();
     });
@@ -33,7 +33,7 @@ class CustomDictionaryState extends State<CustomDictionary> {
   List<String> _searchList(String searchKey) {
     List<String> hitList = [];
     for (String word in dictionary) {
-      print(word);
+      //print(word);
       if (word.contains(searchKey.toLowerCase())) {
         hitList.add(word);
       }

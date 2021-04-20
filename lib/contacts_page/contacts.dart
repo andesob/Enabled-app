@@ -1,7 +1,8 @@
 import 'package:enabled_app/contacts_page/contact_item.dart';
 import 'package:enabled_app/contacts_page/contact_popup.dart';
 import 'package:enabled_app/global_data/colors.dart';
-import 'package:enabled_app/main_layout/button_controller.dart';
+import 'package:enabled_app/global_data/strings.dart';
+import 'package:enabled_app/main_layout/input_controller.dart';
 import 'package:enabled_app/main_layout/main_appbar.dart';
 import 'package:enabled_app/page_state.dart';
 import 'package:flutter/cupertino.dart';
@@ -110,7 +111,7 @@ class _contactState extends PageState<contacts> {
   }
 
   void _goBack() {
-    Navigator.pop(context);
+    Navigator.pushReplacementNamed(context, Strings.HOME);
   }
 
   @override

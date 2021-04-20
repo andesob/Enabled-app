@@ -1,12 +1,13 @@
 import 'package:enabled_app/global_data/colors.dart';
-import 'package:enabled_app/main_layout/button_controller.dart';
+import 'package:enabled_app/main_layout/input_controller.dart';
 import 'package:enabled_app/main_layout/main_appbar.dart';
 import 'package:enabled_app/page_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MainPage extends StatefulWidget {
-  MainPage({Key key, this.pageContent, this.title, this.pageKey, this.hasDropDown})
+  MainPage(
+      {Key key, this.pageContent, this.title, this.pageKey, this.hasDropDown})
       : super(key: key);
   final StatefulWidget pageContent;
   final String title;

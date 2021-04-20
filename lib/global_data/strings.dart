@@ -1,4 +1,4 @@
-class Strings{
+class Strings {
   static const String ENABLED = "Enabled";
   static const String NEEDS = "Needs";
   static const String CUSTOM = "Custom";
@@ -36,5 +36,4 @@ class Strings{
   static const String KITCHEN = "Kitchen";
   static const String BEDROOM = "Bedroom";
   static const String BASEMENT = "Basement";
-
 }

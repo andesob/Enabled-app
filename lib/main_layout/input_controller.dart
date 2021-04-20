@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:enabled_app/desktop_connection/server_socket.dart';
 import 'package:enabled_app/global_data/colors.dart';
 import 'package:enabled_app/page_state.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,15 +9,66 @@ import 'package:flutter/material.dart';
 class ButtonController extends StatefulWidget {
   final GlobalKey<PageState> pageKey;
 
-  ButtonController(
-      {Key key, this.pageKey})
-      : super(key: key);
+  ButtonController({Key key, this.pageKey}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => ButtonControllerState();
 }
 
 class ButtonControllerState extends State<ButtonController> {
+  StreamSubscription sub;
+
+  @override
+  void initState() {
+    super.initState();
+    startStream();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    sub.cancel();
+  }
+
+  startStream() {
+    SocketSingleton socket = SocketSingleton();
+    Stream stream = socket.getStream();
+    sub = stream.listen((value) {
+      setState(() {
+        print(widget.pageKey.currentState.toString() + 'Command: ' + value);
+        mentalCommands(value);
+      });
+    });
+  }
+
+  void mentalCommands(state) {
+    switch (state) {
+      case 'push':
+        {
+          widget.pageKey.currentState?.pushPressed();
+        }
+        break;
+      case 'pull':
+        {
+          widget.pageKey.currentState?.pullPressed();
+        }
+        break;
+      case 'left':
+        {
+          widget.pageKey.currentState?.leftPressed();
+        }
+        break;
+      case 'right':
+        {
+          widget.pageKey.currentState?.rightPressed();
+        }
+        break;
+      default:
+        {}
+        break;
+    }
+  }
+
   buttonIsPressed(int index) {
     if (index == 0) {
       widget.pageKey.currentState?.pushPressed();

@@ -6,6 +6,7 @@ import 'package:enabled_app/custom_page/custom_page_button.dart';
 import 'package:enabled_app/custom_page/custom_popup.dart';
 import 'package:enabled_app/custom_page/custom_horizontal_list.dart';
 import 'package:enabled_app/desktop_connection/server_socket.dart';
+import 'package:enabled_app/global_data/strings.dart';
 import 'package:enabled_app/page_state.dart';
 import 'package:enabled_app/tts_controller.dart';
 import 'package:flutter/material.dart';
@@ -48,14 +49,6 @@ class _CustomPageHome extends PageState<CustomPageHome> {
   ItemScrollController itemScrollController;
   ItemScrollController childScrollController;
 
-  StreamSubscription sub;
-
-  @override
-  void dispose() {
-    super.dispose();
-    sub.cancel();
-  }
-
   initPrefs() async {
     prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -78,44 +71,6 @@ class _CustomPageHome extends PageState<CustomPageHome> {
     currentFocusedHorizontalListIndex = 0;
 
     itemScrollController = ItemScrollController();
-
-    void mentalCommands(state) {
-      switch (state) {
-        case 'right':
-          {
-            rightPressed();
-          }
-          break;
-
-        case 'left':
-          {
-            leftPressed();
-          }
-          break;
-        case 'push':
-          {
-            pushPressed();
-          }
-          break;
-        case 'pull':
-          {
-            pullPressed();
-          }
-          break;
-        default:
-          {}
-          break;
-      }
-    }
-
-    SocketSingleton socket = SocketSingleton();
-    Stream stream = socket.getStream();
-    sub = stream.listen((value) {
-      setState(() {
-        print('Custom page command: ' + value);
-        mentalCommands(value);
-      });
-    });
 
     /// For testing purposes
 /*
@@ -360,7 +315,7 @@ class _CustomPageHome extends PageState<CustomPageHome> {
             .speak(categoryList[currentFocusedVerticalListIndex].categoryName);
         scrollToStart();
       } else {
-        Navigator.pop(context);
+        Navigator.pushReplacementNamed(context, Strings.HOME);
       }
     });
   }

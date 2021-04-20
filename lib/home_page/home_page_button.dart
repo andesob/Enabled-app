@@ -19,8 +19,8 @@ class HomePageButton extends StatefulWidget {
 }
 
 class HomePageButtonState extends State<HomePageButton> {
-  void pushPressed(){
-    Navigator.pushNamed(context, widget.text);
+  void pushPressed() {
+    Navigator.pushReplacementNamed(context, widget.text);
   }
 
   @override

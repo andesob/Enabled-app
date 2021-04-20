@@ -1,7 +1,7 @@
 import 'package:enabled_app/page_state.dart';
 import 'package:flutter/cupertino.dart';
 
-class PageGlobalKeys{
+class PageGlobalKeys {
   static GlobalKey<PageState> homePageKey = GlobalKey();
   static GlobalKey<PageState> needsPageKey = GlobalKey();
   static GlobalKey<PageState> customPageKey = GlobalKey();

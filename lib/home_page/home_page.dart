@@ -3,7 +3,7 @@ import 'package:enabled_app/emergency_page/emergency_alert.dart';
 import 'package:enabled_app/emergency_page/emergency_button.dart';
 import 'package:enabled_app/emergency_page/emergency_contact.dart';
 import 'package:enabled_app/emergency_page/emergency_popup.dart';
-import 'package:enabled_app/main_layout/button_controller.dart';
+import 'package:enabled_app/main_layout/input_controller.dart';
 import 'package:enabled_app/main_layout/main_appbar.dart';
 import 'package:enabled_app/page_state.dart';
 import 'package:flutter/material.dart';
@@ -64,8 +64,7 @@ class MyHomePageState extends PageState<MyHomePage> {
   }
 
   @override
-  void pullPressed() {
-  }
+  void pullPressed() {}
 
   @override
   void rightPressed() {
@@ -77,24 +76,23 @@ class MyHomePageState extends PageState<MyHomePage> {
 
   @override
   void pushPressed() {
-    if(currBtnString == Strings.EMERGENCY){
+    if (currBtnString == Strings.EMERGENCY) {
       _launchURL();
       return;
     }
-    Navigator.pushNamed(context, currBtnString);
+    Navigator.pushReplacementNamed(context, currBtnString);
   }
 
   _launchURL() async {
     String number = StaticEmergencyContact.emergencyContact;
-    if(number != null) {
+    if (number != null) {
       bool res = await FlutterPhoneDirectCaller.callNumber(number);
-    }
-    else{
+    } else {
       showEmergencyContactAlert();
     }
   }
 
-  showEmergencyContactAlert(){
+  showEmergencyContactAlert() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
