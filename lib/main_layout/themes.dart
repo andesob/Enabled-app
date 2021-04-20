@@ -5,29 +5,33 @@ import 'package:flutter/material.dart';
 class ThemeNotifier with ChangeNotifier {
   ThemeData _themeData = ThemeData(
     brightness: Brightness.light,
+    primaryColor: Colors.white,
     backgroundColor: Colors.white,
+    appBarTheme: AppBarTheme(
+      textTheme: ThemeData.light().textTheme.copyWith(
+        headline6: TextStyle(
+          color: Color(StaticColors.lighterSlateGray),
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    ),
   );
   ThemeNotifier();
 
   getTheme() => _themeData;
 
-  final lightTheme = ThemeData(
-    brightness: Brightness.light,
-    backgroundColor: Colors.white,
-  );
+  ThemeData lightTheme;
 
-  final darkTheme = ThemeData(
-    backgroundColor: Color(StaticColors.lightPeach),
-    brightness: Brightness.dark,
-  );
+  ThemeData darkTheme;
 
-  static bool _isDark = false;
+  bool isDark = false;
 
   void switchTheme() {
     print("theme switched");
-    _isDark = !_isDark;
-    print(_isDark);
-    _themeData = _isDark ? darkTheme : lightTheme;
+    isDark = !isDark;
+    print(isDark);
+    _themeData = isDark ? darkTheme : lightTheme;
     notifyListeners();
   }
 }

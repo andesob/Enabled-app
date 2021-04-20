@@ -14,11 +14,13 @@ class MainPage extends StatefulWidget {
     this.title,
     this.pageKey,
     this.hasDropDown,
+    this.darkmode,
   }) : super(key: key);
   final StatefulWidget pageContent;
   final String title;
   final GlobalKey<PageState> pageKey;
   final bool hasDropDown;
+  final bool darkmode;
 
   _MainPageState createState() => _MainPageState();
 }
@@ -31,13 +33,6 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: new BoxDecoration(
-        gradient: new LinearGradient(
-          colors: [lightPeach, darkPeach],
-          begin: FractionalOffset.topCenter,
-          end: FractionalOffset.bottomCenter,
-        ),
-      ),
       child: WillPopScope(
         onWillPop: () async {
           if (widget.title != Strings.HOME) {
