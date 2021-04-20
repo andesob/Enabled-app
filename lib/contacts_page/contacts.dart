@@ -82,7 +82,7 @@ class _contactState extends PageState<contacts> {
 
   bool canScrollUp() {
     bool canScroll = false;
-    if (focusIndex < items.length - 7) {
+    if (focusIndex < items.length - 7 && lastFocusIndex != 0) {
       canScroll = true;
     }
     return canScroll;
