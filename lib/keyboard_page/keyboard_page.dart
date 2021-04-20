@@ -2,7 +2,7 @@ import 'package:enabled_app/global_data/colors.dart';
 import 'package:enabled_app/keyboard_page/custom_keyboard.dart';
 import 'package:enabled_app/keyboard_page/custom_dictionary.dart';
 import 'package:enabled_app/main_layout/main_appbar.dart';
-import 'package:enabled_app/main_layout/button_controller.dart';
+import 'package:enabled_app/main_layout/input_controller.dart';
 import 'package:enabled_app/page_state.dart';
 import 'package:enabled_app/global_data/strings.dart';
 import 'package:flutter/cupertino.dart';
@@ -28,7 +28,6 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
   int currentFocusedHorizontalListIndex;
   bool inHorizontalList = false;
   bool isUpperCase = true;
-
 
   List<String> firstRow = [" ", "E", "A", "N", "L", "F"];
   List<String> secondRow = ["T", "O", "S", "D", "P", "B"];
@@ -66,8 +65,7 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
       baseOffset: textSelection.start + myTextLength,
       extentOffset: textSelection.start + myTextLength,
     );
-    setState(() {
-    });
+    setState(() {});
   }
 
   void _onBackspace() {
@@ -110,9 +108,7 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
       baseOffset: newStart,
       extentOffset: newStart,
     );
-    setState(() {
-
-    });
+    setState(() {});
   }
 
   void _onDictItemChosen(String myText) {
@@ -220,7 +216,9 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
     setState(() {
       if (inHorizontalList) {
         inHorizontalList = !inHorizontalList;
+        return;
       }
+      Navigator.pushReplacementNamed(context, Strings.HOME);
     });
   }
 

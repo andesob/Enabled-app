@@ -1,7 +1,8 @@
 import 'package:enabled_app/contacts_page/contact_item.dart';
 import 'package:enabled_app/contacts_page/contact_popup.dart';
 import 'package:enabled_app/global_data/colors.dart';
-import 'package:enabled_app/main_layout/button_controller.dart';
+import 'package:enabled_app/global_data/strings.dart';
+import 'package:enabled_app/main_layout/input_controller.dart';
 import 'package:enabled_app/main_layout/main_appbar.dart';
 import 'package:enabled_app/page_state.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,7 +21,6 @@ class contacts extends StatefulWidget {
 }
 
 class _contactState extends PageState<contacts> {
-
   List<ContactItem> items = [];
   int focusIndex = 0;
   int lastFocusIndex = 0;
@@ -34,16 +34,19 @@ class _contactState extends PageState<contacts> {
   bool popupActive = false;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     for (var i = 0; i < 2; i++) {
-      ContactItem cItem = ContactItem(firstname: "Trym", surname: "Jørgensen", number: "95945742",);
+      ContactItem cItem = ContactItem(
+        firstname: "Trym",
+        surname: "Jørgensen",
+        number: "95945742",
+      );
       items.add(cItem);
       int cIndex = items.indexOf(cItem);
       cItem.cIndex = cIndex;
     }
   }
-
 
   setPopup(bool active) {
     popupActive = active;
@@ -108,12 +111,11 @@ class _contactState extends PageState<contacts> {
   }
 
   void _goBack() {
-    Navigator.pop(context);
+    Navigator.pushReplacementNamed(context, Strings.HOME);
   }
 
   @override
   Widget build(BuildContext context) {
-
     return ScrollablePositionedList.builder(
       padding: EdgeInsets.all(8),
       itemCount: items.length,
@@ -141,7 +143,7 @@ class _contactState extends PageState<contacts> {
 
   @override
   void pullPressed() {
-      Navigator.pop(context);
+    _goBack();
   }
 
   @override
@@ -163,8 +165,6 @@ class _contactState extends PageState<contacts> {
       }
     }
   }
-
-
 
   /// TODO
   ///  floatingActionButton: FloatingActionButton(

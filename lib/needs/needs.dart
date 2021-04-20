@@ -222,7 +222,7 @@ class _NeedsPageState extends PageState<NeedsPage> {
             .text;
         scrollToStart();
       } else {
-        Navigator.pop(context);
+        Navigator.pushReplacementNamed(context, Strings.HOME);
       }
     });
   }
@@ -230,7 +230,7 @@ class _NeedsPageState extends PageState<NeedsPage> {
   @override
   void pushPressed() {
     setState(() {
-      if(inHorizontalList){
+      if (inHorizontalList) {
         textToSpeech();
         return;
       }
