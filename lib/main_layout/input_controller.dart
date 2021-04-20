@@ -89,12 +89,12 @@ class ButtonControllerState extends State<ButtonController> {
           widget.pageKey.currentState?.pullPressed();
         }
         break;
-      case 'wink-left':
+      case 'winkL':
         {
           widget.pageKey.currentState?.leftPressed();
         }
         break;
-      case 'wink-right':
+      case 'winkR':
         {
           widget.pageKey.currentState?.rightPressed();
         }
