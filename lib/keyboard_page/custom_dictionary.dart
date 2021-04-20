@@ -39,12 +39,12 @@ class CustomDictionaryState extends State<CustomDictionary> {
       }
     }
     if (hitList.isEmpty) {
-      return dictionary.sublist(0, 4);
+      return dictionary.sublist(0, 8);
     } else {
-      if (hitList.length < 4) {
+      if (hitList.length < 8) {
         return hitList.sublist(0, hitList.length);
       } else {
-        return hitList.sublist(0, 4);
+        return hitList.sublist(0, 8);
       }
     }
   }
