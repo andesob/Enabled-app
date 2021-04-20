@@ -46,7 +46,7 @@ class _ContactItem extends State<ContactItem>{
     String number = widget.number;
 
     return Container(
-      height: ((MediaQuery.of(context).size.height - kBottomNavigationBarHeight)* 0.2),
+      height: ((MediaQuery.of(context).size.height)* 0.17),
       child: ListTile(
         onTap: () => _launchURL(number),
         leading: CircleAvatar(

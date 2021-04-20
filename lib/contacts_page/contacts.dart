@@ -23,7 +23,9 @@ class contacts extends StatefulWidget {
 class _contactState extends PageState<contacts> {
   List<ContactItem> items = [];
   int focusIndex = 0;
-  int lastFocusIndex = 0;
+  int lastScollIndex = 0;
+  int lastScrollIndexDown = 0;
+  int lastScrollIndexUp = 0;
   final int maxScrollLength = 3;
 
   bool firstRun = true;
@@ -54,46 +56,32 @@ class _contactState extends PageState<contacts> {
 
   ///Scrolls up to the previous contact on the list.
   void _scrollDown() {
-    if (focusIndex < items.length - 1) {
-      removeHighlight();
-      focusIndex++;
-      addHighlight();
-      if (canScrollDown()) {
-        itemScrollController.scrollTo(
-            index: focusIndex,
-            duration: Duration(seconds: 1),
-            alignment: 0.8572);
-      }
-    }
+    lastScrollIndexDown = focusIndex;
+    lastScollIndex = focusIndex;
+    itemScrollController.scrollTo(
+        index: focusIndex, duration: Duration(seconds: 1), alignment: 0.8572);
   }
 
   ///Scrolls down to the next contact on the list.
   void _scrollUp() {
-    if (focusIndex > 0) {
-      removeHighlight();
-      focusIndex--;
-      addHighlight();
-      if (canScrollUp()) {
-        itemScrollController.scrollTo(
-            index: focusIndex, duration: Duration(seconds: 1));
-      }
-    }
+    lastScrollIndexUp = focusIndex;
+    lastScollIndex = focusIndex;
+    itemScrollController.scrollTo(
+        index: focusIndex, duration: Duration(seconds: 1));
   }
 
-  bool canScrollUp() {
-    bool canScroll = false;
-    if (focusIndex < items.length - 7) {
-      canScroll = true;
+  bool _canScrollUp() {
+    if (focusIndex < lastScrollIndexDown - 5 && lastScrollIndexDown != 0) {
+      return true;
     }
-    return canScroll;
+    return false;
   }
 
-  bool canScrollDown() {
-    bool canScroll = false;
-    if (focusIndex > 6) {
-      canScroll = true;
+  bool _canScrollDown() {
+    if (focusIndex > lastScrollIndexUp + 5 && focusIndex > lastScollIndex) {
+      return true;
     }
-    return canScroll;
+    return false;
   }
 
   ///Adds bold font to the item in focus.
@@ -154,20 +142,32 @@ class _contactState extends PageState<contacts> {
 
   @override
   void leftPressed() {
-    if (focusIndex > 0) {
-      removeHighlight();
-      focusIndex--;
-      addHighlight();
-      if (canScrollUp()) {
-        itemScrollController.scrollTo(
-            index: focusIndex, duration: Duration(seconds: 1));
+    setState(() {
+      if (focusIndex > 0) {
+        goUp();
+//      removeHighlight();
+//      focusIndex--;
+//      addHighlight();
+//      if (canScrollUp()) {
+//        itemScrollController.scrollTo(
+//            index: focusIndex, duration: Duration(seconds: 1));
+
       }
+    });
+  }
+
+  void goUp() {
+    removeHighlight();
+    focusIndex--;
+    addHighlight();
+    if (_canScrollUp()) {
+      _scrollUp();
     }
   }
 
   @override
   void pullPressed() {
-    Navigator.pop(context);
+    Navigator.pushReplacementNamed(context, Strings.HOME);
   }
 
   @override
@@ -177,16 +177,19 @@ class _contactState extends PageState<contacts> {
 
   @override
   void rightPressed() {
-    if (focusIndex < items.length - 1) {
-      removeHighlight();
-      focusIndex++;
-      addHighlight();
-      if (canScrollDown()) {
-        itemScrollController.scrollTo(
-            index: focusIndex,
-            duration: Duration(seconds: 1),
-            alignment: 0.8572);
+    setState(() {
+      if (focusIndex < items.length - 1) {
+        goDown();
       }
+    });
+  }
+
+  void goDown() {
+    removeHighlight();
+    focusIndex++;
+    addHighlight();
+    if (_canScrollDown()) {
+      _scrollDown();
     }
   }
 

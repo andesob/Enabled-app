@@ -6,47 +6,47 @@ import 'package:flutter/material.dart';
 class NeedsData {
   //Food and drink needs page object
   static const NeedsObject HUNGRY_OBJECT =
-      const NeedsObject(Strings.HUNGRY, Icon(CustomIcons.food));
+      const NeedsObject(Strings.HUNGRY, CustomIcons.food);
   static const NeedsObject THIRSTY_OBJECT =
-      const NeedsObject(Strings.THIRSTY, Icon(Icons.local_drink));
+      const NeedsObject(Strings.THIRSTY, Icons.local_drink);
   static const NeedsObject SNACKS_OBJECT =
-      const NeedsObject(Strings.SNACKS, Icon(CustomIcons.cookie_bite));
+      const NeedsObject(Strings.SNACKS, CustomIcons.cookie_bite);
   static const NeedsObject CANDY_OBJECT =
-      const NeedsObject(Strings.CANDY, Icon(CustomIcons.candy_cane));
+      const NeedsObject(Strings.CANDY, CustomIcons.candy_cane);
 
   //Hygiene needs page object
   static const NeedsObject TOILET_OBJECT =
-      const NeedsObject(Strings.TOILET, Icon(CustomIcons.toilet));
+      const NeedsObject(Strings.TOILET, CustomIcons.toilet);
   static const NeedsObject SHOWER_OBJECT =
-      const NeedsObject(Strings.SHOWER, Icon(CustomIcons.shower));
+      const NeedsObject(Strings.SHOWER, CustomIcons.shower);
   static const NeedsObject BATH_OBJECT =
-      const NeedsObject(Strings.BATH, Icon(Icons.hot_tub));
+      const NeedsObject(Strings.BATH, Icons.hot_tub);
   static const NeedsObject MEDICATION_OBJECT =
-      const NeedsObject(Strings.MEDICATION, Icon(CustomIcons.briefcase_medical));
+      const NeedsObject(Strings.MEDICATION, CustomIcons.briefcase_medical);
 
   //Emotions needs page object
   static const NeedsObject HAPPY_OBJECT =
-      const NeedsObject(Strings.HAPPY, Icon(CustomIcons.smile_1));
+      const NeedsObject(Strings.HAPPY, CustomIcons.smile_1);
   static const NeedsObject SAD_OBJECT =
-      const NeedsObject(Strings.SAD, Icon(CustomIcons.frown));
+      const NeedsObject(Strings.SAD, CustomIcons.frown);
   static const NeedsObject ANGRY_OBJECT =
-      const NeedsObject(Strings.ANGRY, Icon(CustomIcons.angry));
+      const NeedsObject(Strings.ANGRY, CustomIcons.angry);
   static const NeedsObject TIRED_OBJECT =
-      const NeedsObject(Strings.TIRED, Icon(CustomIcons.tired));
+      const NeedsObject(Strings.TIRED, CustomIcons.tired);
   static const NeedsObject SURPRISED_OBJECT =
-      const NeedsObject(Strings.SURPRISED, Icon(CustomIcons.surprise));
+      const NeedsObject(Strings.SURPRISED, CustomIcons.surprise);
 
   //Room needs page object
   static const NeedsObject OUTSIDE_OBJECT =
-      const NeedsObject(Strings.OUTSIDE, Icon(CustomIcons.tree));
+      const NeedsObject(Strings.OUTSIDE, CustomIcons.tree);
   static const NeedsObject LIVING_ROOM_OBJECT =
-      const NeedsObject(Strings.LIVING_ROOM, Icon(CustomIcons.tv));
+      const NeedsObject(Strings.LIVING_ROOM, CustomIcons.tv);
   static const NeedsObject KITCHEN_OBJECT =
-      const NeedsObject(Strings.KITCHEN, Icon(CustomIcons.kitchen));
+      const NeedsObject(Strings.KITCHEN, CustomIcons.kitchen);
   static const NeedsObject BEDROOM_OBJECT =
-      const NeedsObject(Strings.BEDROOM, Icon(CustomIcons.bed));
+      const NeedsObject(Strings.BEDROOM, CustomIcons.bed);
   static const NeedsObject BASEMENT_OBJECT =
-      const NeedsObject(Strings.BASEMENT, Icon(CustomIcons.door_open));
+      const NeedsObject(Strings.BASEMENT, CustomIcons.door_open);
 
   //List for food and drink objects
   static const List<NeedsObject> FOOD_DRINK_OBJECTS = [

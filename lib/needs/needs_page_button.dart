@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:gradient_text/gradient_text.dart';
+import 'package:http/http.dart';
 
 class NeedsPageButton extends StatefulWidget {
   NeedsPageButton({
@@ -15,7 +16,7 @@ class NeedsPageButton extends StatefulWidget {
     this.isFocused = false,
   }) : super(key: key);
   final String text;
-  final Icon icon;
+  final IconData icon;
   final bool isFocused;
 
   @override
@@ -27,6 +28,8 @@ class _NeedsPageButton extends State<NeedsPageButton> {
 
   @override
   Widget build(BuildContext context) {
+    var shortestSide = MediaQuery.of(context).size.shortestSide;
+    bool isMobile = shortestSide < 600;
     const Color lightPeach = Color(0xffffecd2);
     const Color darkPeach = Color(0xfffcb7a0);
 
@@ -52,10 +55,13 @@ class _NeedsPageButton extends State<NeedsPageButton> {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                widget.icon,
+                Icon(
+                  widget.icon,
+                  size: isMobile ? 20 : 50,
+                ),
                 GradientText(
                   widget.text,
-                  style: TextStyle(fontSize: 12),
+                  style: TextStyle(fontSize: isMobile ? 10 : 20),
                   gradient: new LinearGradient(
                     colors: [lightPeach, darkPeach],
                     begin: FractionalOffset.centerLeft,
@@ -68,8 +74,15 @@ class _NeedsPageButton extends State<NeedsPageButton> {
         ),
         onPressed: () {
           flutterTts.speak(widget.text);
+          TTSController ttsC = TTSController();
+          ttsC.setLanguage("NO");
+          print(ttsC.setLanguage("NO"));
+          getVoices();
         },
       ),
     );
+  }
+  Future<void> getVoices() async {
+    print(await flutterTts.getLanguages);
   }
 }
