@@ -37,7 +37,6 @@ class ButtonControllerState extends State<ButtonController> {
     sub = stream.listen((value) {
       setState(() {
         Map stream = jsonDecode(value);
-        print(stream);
         if (stream['streamType'] == 'com') {
           mentalCommands(stream['command']);
         } else if (stream['streamType'] == 'fac') {
@@ -100,9 +99,7 @@ class ButtonControllerState extends State<ButtonController> {
         }
         break;
       default:
-        {
-          print('Unknown facial command');
-        }
+        {}
         break;
     }
   }
