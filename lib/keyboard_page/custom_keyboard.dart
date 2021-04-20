@@ -13,9 +13,9 @@ class CustomKeyboard extends StatefulWidget {
     this.onTextInput,
     this.onBackspace,
     this.onCapslock,
-    this.currentFocusedVerticalListIndex,
-    this.currentFocusedHorizontalListIndex,
-    this.inHorizontalList,
+    this.currentFocusedVerticalListIndex = 0,
+    this.currentFocusedHorizontalListIndex = 0,
+    this.inHorizontalList = false,
     this.allRows,
   }) : super(key: key);
 
