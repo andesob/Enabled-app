@@ -5,6 +5,7 @@ import 'package:enabled_app/tts_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
+import 'package:provider/provider.dart';
 
 class MyAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String title;
@@ -21,9 +22,8 @@ class MyAppBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class MyAppBarState extends State<MyAppBar> {
-  final themeNotifier = ThemeNotifier();
-
   createDropDown() {
+    final themeNotifier = Provider.of<ThemeNotifier>(context);
     return <Widget>[
       Material(
         type: MaterialType.transparency,
@@ -39,7 +39,9 @@ class MyAppBarState extends State<MyAppBar> {
           ],
           onSelected: (selected) {
             if (selected == 0) {
-              themeNotifier.switchTheme();
+              setState(() {
+                themeNotifier.switchTheme();
+              });
             }
             if (selected == 1) {
               showDialog(
