@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:gradient_text/gradient_text.dart';
+import 'package:http/http.dart';
 
 class NeedsPageButton extends StatefulWidget {
   NeedsPageButton({
@@ -76,8 +77,12 @@ class _NeedsPageButton extends State<NeedsPageButton> {
           TTSController ttsC = TTSController();
           ttsC.setLanguage("NO");
           print(ttsC.setLanguage("NO"));
+          getVoices();
         },
       ),
     );
+  }
+  Future<void> getVoices() async {
+    print(await flutterTts.getLanguages);
   }
 }
