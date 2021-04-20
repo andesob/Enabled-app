@@ -34,17 +34,17 @@ class CustomDictionaryState extends State<CustomDictionary> {
     List<String> hitList = [];
     for (String word in dictionary) {
       //print(word);
-      if (word.contains(searchKey.toLowerCase())) {
+      if (word.startsWith(searchKey.toLowerCase())) {
         hitList.add(word);
       }
     }
     if (hitList.isEmpty) {
-      return dictionary.sublist(0, 4);
+      return dictionary.sublist(0, 8);
     } else {
-      if (hitList.length < 4) {
+      if (hitList.length < 8) {
         return hitList.sublist(0, hitList.length);
       } else {
-        return hitList.sublist(0, 4);
+        return hitList.sublist(0, 8);
       }
     }
   }
