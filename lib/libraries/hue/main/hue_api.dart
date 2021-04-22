@@ -157,8 +157,9 @@ class HueApi {
   }
 
   void changeScene(String sceneId) {
-    if (bridgeApi != null) {
+    if (currentGroup.state.allOn) {
       bridgeApi.changeScene(sceneId, currentGroup.id);
+      updateAll();
     }
   }
 
