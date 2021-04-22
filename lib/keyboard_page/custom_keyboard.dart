@@ -17,11 +17,13 @@ class CustomKeyboard extends StatefulWidget {
     this.currentFocusedHorizontalListIndex = 0,
     this.inHorizontalList = false,
     this.allRows,
+    this.onSend,
   }) : super(key: key);
 
   final ValueSetter<String> onTextInput;
   final VoidCallback onBackspace;
   final VoidCallback onCapslock;
+  final VoidCallback onSend;
   final int currentFocusedVerticalListIndex;
   final int currentFocusedHorizontalListIndex;
   final bool inHorizontalList;
@@ -35,6 +37,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
   void _textInputHandler(String text) => widget.onTextInput?.call(text);
   void _backSpaceHandler() => widget.onBackspace?.call();
   void _capsLockHandler() => widget.onCapslock?.call();
+  void _onSendHandler() => widget.onSend?.call();
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +81,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
     KeyboardHorizontalList horizontalList = KeyboardHorizontalList(
       onCapslock: _capsLockHandler,
       onBackspace: _backSpaceHandler,
+      onSend: _onSendHandler,
       isFocused: isFocused,
       inHorizontalList: widget.inHorizontalList,
       currentFocusedKeyIndex: widget.currentFocusedHorizontalListIndex,

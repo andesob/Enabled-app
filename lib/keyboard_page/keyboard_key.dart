@@ -1,6 +1,8 @@
 import 'package:enabled_app/global_data/colors.dart';
+import 'package:enabled_app/tts_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
 class KeyboardKey extends StatefulWidget {
   KeyboardKey({
@@ -8,20 +10,21 @@ class KeyboardKey extends StatefulWidget {
     this.text,
     this.onTextInput,
     this.flex = 1,
-    this.onFocused,
+    this.onPressed,
     this.isFocused = false,
   }) : super(key: key);
 
   final String text;
   final ValueSetter<String> onTextInput;
   final int flex;
-  final VoidCallback onFocused;
+  final VoidCallback onPressed;
   final bool isFocused;
 
   KeyboardKeyState createState() => KeyboardKeyState();
 }
 
 class KeyboardKeyState extends State<KeyboardKey> {
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -33,6 +36,7 @@ class KeyboardKeyState extends State<KeyboardKey> {
           child: InkWell(
             onTap: () {
               widget.onTextInput?.call(widget.text);
+              widget.onPressed?.call();
             },
             child: Container(
               child: Center(

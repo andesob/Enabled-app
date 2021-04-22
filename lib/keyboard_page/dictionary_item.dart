@@ -25,7 +25,6 @@ class DictionaryItemState extends State<DictionaryItem> {
     int flex = widget.flex;
     String text = widget.text;
     ValueSetter<String> onDictItemChosen = widget.onDictItemChosen;
-    print(text);
     return Expanded(
       flex: flex,
         child: Padding(
