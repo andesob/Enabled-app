@@ -8,6 +8,7 @@ import 'package:enabled_app/libraries/hue/main/user.dart';
 import 'package:enabled_app/libraries/hue/scenes/scene.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:developer' as developer;
 
 class HueApi {
   static final HueApi _api = HueApi._internal();
@@ -55,12 +56,12 @@ class HueApi {
         await bridgeFinder.automatic();
 
     if (bridgeFinderResultList.isEmpty) {
-      print("No bridges found");
+      developer.log("No bridges found");
       return null;
     }
 
     bridgeFinderResult = bridgeFinderResultList.first;
-    print("HUE bridge found with IP: " + bridgeFinderResult.ip);
+    developer.log("HUE bridge found with IP: " + bridgeFinderResult.ip);
     bridgeApi = BridgeApi(client, bridgeFinderResult.ip);
 
     return bridgeFinderResult;
@@ -72,7 +73,7 @@ class HueApi {
       if (username.isNotEmpty) {
         user = new User(username);
         bridgeApi.username = username;
-        print("Found username in prefs\nAdding user with username: " +
+        developer.log("Found username in prefs\nAdding user with username: " +
             username);
         return user;
       }
@@ -86,7 +87,7 @@ class HueApi {
 
     if (response.keys.first == "success") {
       final success = response["success"];
-      print("Successfully created user: " + success.toString());
+      developer.log("Successfully created user: " + success.toString());
 
       user = new User(success["username"]);
       bridgeApi.username = user.username;
@@ -96,10 +97,10 @@ class HueApi {
     } else if (response.keys.first == "error") {
       final error = response["error"];
       if (error["type"] == 101) {
-        print(
+        developer.log(
             "Please press the button on your Philips HUE bridge and try again");
       } else {
-        print("Error creating user: " + error.toString());
+        developer.log("Error creating user: " + error.toString());
       }
     }
     return null;
