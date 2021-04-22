@@ -15,6 +15,7 @@ class KeyboardHorizontalList extends StatefulWidget {
     this.onBackspace,
     this.onCapslock,
     this.currentFocusedKeyIndex = 0,
+    this.onSend,
   }) : super(key: key);
 
   final List<String> keyStringList;
@@ -25,17 +26,20 @@ class KeyboardHorizontalList extends StatefulWidget {
   final ValueSetter<String> onTextInput;
   final VoidCallback onBackspace;
   final VoidCallback onCapslock;
+  final VoidCallback onSend;
 
   @override
   _KeyboardHorizontalList createState() => _KeyboardHorizontalList();
 }
 
 class _KeyboardHorizontalList extends State<KeyboardHorizontalList> {
-  void _textInputHandler(String text) => widget.onTextInput.call(text);
+  void _textInputHandler(String text) => widget.onTextInput?.call(text);
 
-  void _backSpaceHandler() => widget.onBackspace.call();
+  void _backSpaceHandler() => widget.onBackspace?.call();
 
-  void _capsLockHandler() => widget.onCapslock.call();
+  void _capsLockHandler() => widget.onCapslock?.call();
+
+  void _onSendHandler() => widget.onSend?.call();
 
   @override
   Widget build(BuildContext context) {
@@ -84,9 +88,13 @@ class _KeyboardHorizontalList extends State<KeyboardHorizontalList> {
             KeyboardKey(
               text: "Send",
               isFocused: sendKeyFocused(),
+              onPressed: _onSendHandler,
             ),
             KeyboardBackspaceKey(
-              icon: Icon(Icons.backspace),
+              icon: Icon(
+                Icons.backspace,
+                color: Colors.white,
+              ),
               onBackspace: _backSpaceHandler,
               isFocused: backSpaceKeyFocused(),
             ),

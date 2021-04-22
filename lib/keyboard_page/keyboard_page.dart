@@ -5,9 +5,11 @@ import 'package:enabled_app/main_layout/main_appbar.dart';
 import 'package:enabled_app/main_layout/input_controller.dart';
 import 'package:enabled_app/page_state.dart';
 import 'package:enabled_app/global_data/strings.dart';
+import 'package:enabled_app/tts_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 
 class KeyboardPage extends StatefulWidget {
@@ -19,6 +21,8 @@ class KeyboardPage extends StatefulWidget {
 }
 
 class _KeyboardPageState extends PageState<KeyboardPage> {
+  FlutterTts tts = TTSController().flutterTts;
+
   TextEditingController _controller = TextEditingController();
 
   int currentFocusedVerticalListIndex;
@@ -47,83 +51,54 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
     allRows.add(fifthRow);
   }
 
-  //TODO: GO OVER CODE BELOW
   void _insertText(String myText) {
-    final text = _controller.text;
-    final textSelection = _controller.selection;
-    final newText = text.replaceRange(
-      textSelection.start,
-      textSelection.end,
-      myText,
-    );
-    final myTextLength = myText.length;
-    _controller.text = newText;
-    _controller.selection = textSelection.copyWith(
-      baseOffset: textSelection.start + myTextLength,
-      extentOffset: textSelection.start + myTextLength,
-    );
-    setState(() {});
+    setState(() {
+      final text = _controller.text;
+      final newText = text + myText;
+      _controller.text = newText;
+      _controller.selection = TextSelection.fromPosition(
+        TextPosition(offset: _controller.text.length),
+      );
+      _ttsSpeak(myText);
+    });
   }
 
   void _onBackspace() {
-    final text = _controller.text;
-    final textSelection = _controller.selection;
-    final selectionLength = textSelection.end - textSelection.start;
-
-    // There is a selection.
-    if (selectionLength > 0) {
-      final newText = text.replaceRange(
-        textSelection.start,
-        textSelection.end,
-        '',
+    setState(() {
+      final text = _controller.text;
+      if (text.length == 0) {
+        return;
+      }
+      _controller.text = text.substring(0, text.length - 1);
+      _controller.selection = TextSelection.fromPosition(
+        TextPosition(offset: _controller.text.length),
       );
-      _controller.text = newText;
-      _controller.selection = textSelection.copyWith(
-        baseOffset: textSelection.start,
-        extentOffset: textSelection.start,
-      );
-      return;
-    }
-
-    // The cursor is at the beginning.
-    if (textSelection.start == 0) {
-      return;
-    }
-
-    // Delete the previous character
-    final previousCodeUnit = text.codeUnitAt(textSelection.start - 1);
-    final offset = _isUtf16Surrogate(previousCodeUnit) ? 2 : 1;
-    final newStart = textSelection.start - offset;
-    final newEnd = textSelection.start;
-    final newText = text.replaceRange(
-      newStart,
-      newEnd,
-      '',
-    );
-    _controller.text = newText;
-    _controller.selection = textSelection.copyWith(
-      baseOffset: newStart,
-      extentOffset: newStart,
-    );
-    setState(() {});
+    });
   }
 
   void _onDictItemChosen(String myText) {
-    final text = _controller.text;
-    final textArray = text.split(" ");
-    textArray.last = myText;
-    String newText = "";
-    for (String s in textArray) {
-      newText += s + " ";
-    }
-    _controller.text = newText;
-    _controller.selection = TextSelection.fromPosition(
-      TextPosition(offset: _controller.text.length),
-    );
+    setState(() {
+      final text = _controller.text;
+      final textArray = text.split(" ");
+      textArray.last = myText;
+      String newText = "";
+      for (String s in textArray) {
+        newText += s + " ";
+      }
+      _controller.text = newText;
+      _controller.selection = TextSelection.fromPosition(
+        TextPosition(offset: _controller.text.length),
+      );
+      _ttsSpeak(myText);
+    });
   }
 
-  bool _isUtf16Surrogate(int value) {
-    return value & 0xF800 == 0xD800;
+  void _ttsSpeak(String s) {
+    tts.speak(s);
+  }
+
+  void _onSendPressed() {
+    _ttsSpeak(_controller.text);
   }
 
   @override
@@ -137,9 +112,10 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
             showCursor: true,
             autofocus: true,
             style: TextStyle(
-              fontSize: MediaQuery.of(context).orientation == Orientation.portrait
-                  ? 24
-                  : 12,
+              fontSize:
+                  MediaQuery.of(context).orientation == Orientation.portrait
+                      ? 24
+                      : 12,
             ),
             decoration: InputDecoration(
               filled: true,
@@ -163,6 +139,7 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
                 inHorizontalList: inHorizontalList,
                 onBackspace: _onBackspace,
                 onCapslock: _onCapslockHandler,
+                onSend: _onSendPressed,
                 onTextInput: (myText) {
                   _insertText(myText);
                 },
@@ -230,16 +207,18 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
           if (currentFocusedHorizontalListIndex == 0) {
             _onCapslockHandler();
           }
-          //Send is pressed TODO: FIX
+          //Send is pressed
           else if (currentFocusedHorizontalListIndex == 1) {
+            _onSendPressed();
           }
           //Backspace is pressed
           else if (currentFocusedHorizontalListIndex == 2) {
             _onBackspace();
           }
         } else {
-          _insertText(allRows[currentFocusedVerticalListIndex]
-              [currentFocusedHorizontalListIndex]);
+          String letter = allRows[currentFocusedVerticalListIndex]
+              [currentFocusedHorizontalListIndex];
+          _insertText(letter);
         }
       }
     });
@@ -280,11 +259,11 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
 
   void _onCapslockHandler() {
     setState(() {
-      isUpperCase ? toLowerCase() : toUpperCase();
+      isUpperCase ? _toLowerCase() : _toUpperCase();
     });
   }
 
-  void toUpperCase() {
+  void _toUpperCase() {
     for (int i = 0; i < firstRow.length; i++) {
       firstRow[i] = firstRow[i].toUpperCase();
     }
@@ -303,7 +282,7 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
     isUpperCase = true;
   }
 
-  void toLowerCase() {
+  void _toLowerCase() {
     for (int i = 0; i < firstRow.length; i++) {
       firstRow[i] = firstRow[i].toLowerCase();
     }
