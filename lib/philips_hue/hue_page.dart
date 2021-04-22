@@ -17,10 +17,12 @@ class HuePage extends StatefulWidget {
 
 class _HuePageState extends PageState<HuePage> {
   bool isLightOn;
+  HueApi api;
 
   @override
   void initState() {
     super.initState();
+    api = new HueApi();
     isLightOn = initLightState();
   }
 
@@ -58,23 +60,21 @@ class _HuePageState extends PageState<HuePage> {
   }
 
   bool initLightState() {
-    HueApi api = new HueApi();
+    if(api.groups != null){
     return api.groups.first.state.allOn;
+    }
+    return false;
   }
 
   void brightnessUp(){
-    HueApi api = new HueApi();
     api.brightnessUp();
   }
 
   void brightnessDown(){
-    HueApi api = new HueApi();
     api.brightnessDown();
   }
 
   void powerOn() {
-    HueApi api = new HueApi();
-
     api.powerOnAll();
 
     setState(() {
@@ -83,8 +83,6 @@ class _HuePageState extends PageState<HuePage> {
   }
 
   void powerOff() {
-    HueApi api = new HueApi();
-
     api.powerOffAll();
 
     setState(() {
@@ -93,8 +91,6 @@ class _HuePageState extends PageState<HuePage> {
   }
 
   void changeScene(String sceneId){
-    HueApi api = new HueApi();
-
     api.changeScene(sceneId);
   }
 

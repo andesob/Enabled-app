@@ -1,12 +1,16 @@
 import 'package:enabled_app/global_data/colors.dart';
 import 'package:enabled_app/home_page/home_page_button.dart';
+import 'package:enabled_app/libraries/hue/main/hue_api.dart';
 import 'package:enabled_app/page_state.dart';
 import 'package:enabled_app/global_data/strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SmartMainPage extends StatefulWidget {
-  SmartMainPage({Key key, this.title}) : super(key: key);
+  SmartMainPage({
+    Key key,
+    this.title,
+  }) : super(key: key);
 
   final String title;
 
@@ -14,31 +18,25 @@ class SmartMainPage extends StatefulWidget {
 }
 
 class SmartMainPageState extends PageState<SmartMainPage> {
-  Color lightPeach = Color(StaticColors.lightPeach);
-  Color darkPeach = Color(StaticColors.apricot);
-  Color appBarColorLight = Color(StaticColors.apricot);
-  Color appBarColorDark = Color(StaticColors.melon);
-  Color backgroundColor = Color(StaticColors.onyx);
-
-  bool darkmode = false;
-
-  List<HomePageButton> smartPageBtnList = [];
+  HueApi api;
+  bool apiSuccess = false;
 
   @override
   void initState() {
-    addDefaultButtons();
+    super.initState();
+    checkApi();
   }
 
-  void _changeDarkmode() {
+  void checkApi() async {
+    api = HueApi();
+    bool setupResult = await api.setup();
     setState(() {
-      darkmode = !darkmode;
+      apiSuccess = setupResult;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    var shortestSide = MediaQuery.of(context).size.shortestSide;
-    bool useMobileLayout = shortestSide < 600;
     double leftRightPadding = MediaQuery.of(context).size.width / 5;
 
     return Container(
@@ -47,22 +45,22 @@ class SmartMainPageState extends PageState<SmartMainPage> {
         children: <Widget>[
           Container(
             padding:
-                EdgeInsets.fromLTRB(leftRightPadding, 0, leftRightPadding, 0),
+                EdgeInsets.fromLTRB(leftRightPadding, 20, leftRightPadding, 0),
             child: GridView.count(
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
-              crossAxisCount: useMobileLayout ? 1 : smartPageBtnList.length,
-              children: smartPageBtnList.cast<Widget>(),
+              crossAxisCount: 1,
+              children: [
+                HomePageButton(
+                  text: Strings.HUE,
+                  enabled: apiSuccess,
+                )
+              ],
             ),
           ),
         ],
       ),
     );
-  }
-
-  void addDefaultButtons() {
-    smartPageBtnList.add(HomePageButton(text: Strings.CHROMECAST));
-    smartPageBtnList.add(HomePageButton(text: Strings.HUE));
   }
 
   @override

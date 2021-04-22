@@ -32,52 +32,77 @@ class HueApi {
 
   HueApi._internal();
 
-  Future<void> findBridge() async {
-    bridgeFinder = BridgeFinder(client);
-
-    List<BridgeFinderResult> bridgeFinderResults =
-    await bridgeFinder.automatic();
-    bridgeFinderResult = bridgeFinderResults.first;
-    bridgeApi = BridgeApi(client, bridgeFinderResult.ip);
-
+  Future<bool> setup() async {
     pref = await SharedPreferences.getInstance();
 
+    BridgeFinderResult bridgeResult = await findBridge();
+    if(bridgeResult == null) return false;
+
+    User foundUser = await _findUser();
+    if (foundUser == null) return false;
+
+    lights = await getLights();
+    scenes = await getScenes();
+    groups = await getGroups();
+    setCurrentGroup(groups.first.name);
+    return true;
+  }
+
+  Future<BridgeFinderResult> findBridge() async {
+    bridgeFinder = BridgeFinder(client);
+
+    List<BridgeFinderResult> bridgeFinderResultList =
+        await bridgeFinder.automatic();
+
+    if (bridgeFinderResultList.isEmpty) {
+      print("No bridges found");
+      return null;
+    }
+
+    bridgeFinderResult = bridgeFinderResultList.first;
+    print("HUE bridge found with IP: " + bridgeFinderResult.ip);
+    bridgeApi = BridgeApi(client, bridgeFinderResult.ip);
+
+    return bridgeFinderResult;
+  }
+
+  Future<User> _findUser() async {
     String username = await pref.get("username");
     if (username != null) {
       if (username.isNotEmpty) {
         user = new User(username);
         bridgeApi.username = username;
-        print("IP: " + bridgeFinderResult.ip);
-        print("USERNAME: " + user.username);
+        print("Found username in prefs\nAdding user with username: " +
+            username);
+        return user;
       }
     }
 
-    if (user != null) {
-      lights = await getLights();
-      scenes = await getScenes();
-      groups = await getGroups();
-      setCurrentGroup(groups.first.name);
-    }
+    return _createUser("p30_pro");
   }
 
-  Future<void> createUser(username) async {
-    if (bridgeApi != null) {
-      final response = await bridgeApi.createUser(username);
-      if (response.keys.first == "success") {
-        final success = response["success"];
-        print(success.toString());
+  Future<User> _createUser(username) async {
+    final response = await bridgeApi.createUser(username);
 
-        user = new User(success["username"]);
-        bridgeApi.username = user.username;
+    if (response.keys.first == "success") {
+      final success = response["success"];
+      print("Successfully created user: " + success.toString());
 
-        await pref.setString("username", user.username);
-      } else if (response.keys.first == "error") {
-        final error = response["error"];
-        print(error.toString());
+      user = new User(success["username"]);
+      bridgeApi.username = user.username;
+
+      await pref.setString("username", user.username);
+      return user;
+    } else if (response.keys.first == "error") {
+      final error = response["error"];
+      if (error["type"] == 101) {
+        print(
+            "Please press the button on your Philips HUE bridge and try again");
+      } else {
+        print("Error creating user: " + error.toString());
       }
-    } else {
-      print("No bridge found");
     }
+    return null;
   }
 
   Future<List<Light>> getLights() async {
@@ -107,11 +132,11 @@ class HueApi {
     return list;
   }
 
-  void powerOnAll(){
+  void powerOnAll() {
     _setPower(true);
   }
 
-  void powerOffAll(){
+  void powerOffAll() {
     _setPower(false);
   }
 
@@ -131,24 +156,24 @@ class HueApi {
     }
   }
 
-  void changeScene(String sceneId){
-    if(bridgeApi != null){
+  void changeScene(String sceneId) {
+    if (bridgeApi != null) {
       bridgeApi.changeScene(sceneId, currentGroup.id);
     }
   }
 
-  void brightnessDown(){
+  void brightnessDown() {
     int brightness = lights.first.state.brightness - 50;
-    if(brightness < 0){
+    if (brightness < 0) {
       brightness = 0;
     }
 
     _setBrightness(brightness);
   }
 
-  void brightnessUp(){
+  void brightnessUp() {
     int brightness = lights.first.state.brightness + 50;
-    if(brightness > 254){
+    if (brightness > 254) {
       brightness = 254;
     }
 
@@ -156,8 +181,8 @@ class HueApi {
   }
 
   Future<void> _setBrightness(int brightness) async {
-    if (bridgeApi != null){
-      for(Light l in lights){
+    if (bridgeApi != null) {
+      for (Light l in lights) {
         LightState state = l.state;
         state.brightness = brightness;
 
