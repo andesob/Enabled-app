@@ -9,12 +9,10 @@ class HueDropdown extends StatefulWidget {
     Key key,
     this.onClick,
     this.isFocused = false,
-    this.isDropdownExpanded = false,
   }) : super(key: key);
 
   final ValueSetter<String> onClick;
   final bool isFocused;
-  final bool isDropdownExpanded;
 
   @override
   _HueDropdownState createState() => _HueDropdownState();
