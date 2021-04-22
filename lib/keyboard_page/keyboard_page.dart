@@ -110,17 +110,15 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
 
   void _onDictItemChosen(String myText) {
     final text = _controller.text;
-    final textSelection = _controller.selection;
-    final newText = text.replaceRange(
-      textSelection.start,
-      textSelection.end,
-      myText,
-    );
-    final myTextLength = myText.length;
+    final textArray = text.split(" ");
+    textArray.last = myText;
+    String newText = "";
+    for (String s in textArray) {
+      newText += s + " ";
+    }
     _controller.text = newText;
-    _controller.selection = textSelection.copyWith(
-      baseOffset: textSelection.start + myTextLength,
-      extentOffset: textSelection.start + myTextLength,
+    _controller.selection = TextSelection.fromPosition(
+      TextPosition(offset: _controller.text.length),
     );
   }
 
