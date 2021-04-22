@@ -1,5 +1,6 @@
 import 'package:enabled_app/global_data/colors.dart';
 import 'package:enabled_app/contacts_page/contact_popup.dart';
+import 'package:enabled_app/global_data/strings.dart';
 import 'package:enabled_app/libraries/hue/main/hue_api.dart';
 import 'package:enabled_app/page_state.dart';
 import 'package:enabled_app/philips_hue/hue_button.dart';
@@ -17,11 +18,15 @@ class HuePage extends StatefulWidget {
 
 class _HuePageState extends PageState<HuePage> {
   bool isLightOn;
+  bool isDropdownExpanded;
   HueApi api;
+  int verticalListIndex;
 
   @override
   void initState() {
     super.initState();
+    isDropdownExpanded = false;
+    verticalListIndex = 0;
     api = new HueApi();
     isLightOn = initLightState();
   }
@@ -33,13 +38,15 @@ class _HuePageState extends PageState<HuePage> {
       children: <Widget>[
         isLightOn
             ? HuePageButton(
-          text: "On",
-          onClick: powerOff,
-        )
+                text: "On",
+                onClick: powerOff,
+                isFocused: verticalListIndex == 0,
+              )
             : HuePageButton(
-          text: "Off",
-          onClick: powerOn,
-        ),
+                text: "Off",
+                onClick: powerOn,
+                isFocused: verticalListIndex == 0,
+              ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -47,30 +54,36 @@ class _HuePageState extends PageState<HuePage> {
             HuePageButton(
               text: "Dim",
               onClick: brightnessDown,
+              isFocused: verticalListIndex == 1,
             ),
             HuePageButton(
               text: "Brighten",
               onClick: brightnessUp,
+              isFocused: verticalListIndex == 2,
             ),
           ],
         ),
-        HueDropdown(onClick: changeScene,),
+        HueDropdown(
+          onClick: changeScene,
+          isFocused: verticalListIndex == 3,
+          isDropdownExpanded: isDropdownExpanded,
+        ),
       ],
     );
   }
 
   bool initLightState() {
-    if(api.groups != null){
-    return api.groups.first.state.allOn;
+    if (api.groups != null) {
+      return api.groups.first.state.allOn;
     }
     return false;
   }
 
-  void brightnessUp(){
+  void brightnessUp() {
     api.brightnessUp();
   }
 
-  void brightnessDown(){
+  void brightnessDown() {
     api.brightnessDown();
   }
 
@@ -90,27 +103,58 @@ class _HuePageState extends PageState<HuePage> {
     });
   }
 
-  void changeScene(String sceneId){
+  void changeScene(String sceneId) {
     api.changeScene(sceneId);
+  }
+
+  void _goUp() {
+    setState(() {
+      verticalListIndex--;
+    });
+  }
+
+  void _goDown() {
+    setState(() {
+      verticalListIndex++;
+    });
   }
 
   @override
   void leftPressed() {
-    // TODO: implement leftPressed
-  }
-
-  @override
-  void pullPressed() {
-    // TODO: implement pullPressed
-  }
-
-  @override
-  void pushPressed() {
-    // TODO: implement pushPressed
+    if (verticalListIndex > 0) _goUp();
   }
 
   @override
   void rightPressed() {
-    // TODO: implement rightPressed
+    if (verticalListIndex < 3) _goDown();
+  }
+
+  @override
+  void pullPressed() {
+    Navigator.pushReplacementNamed(context, Strings.SMART);
+  }
+
+  @override
+  void pushPressed() {
+    setState(() {
+      switch (verticalListIndex) {
+        case 0:
+          if (isLightOn) {
+            api.powerOffAll();
+          } else {
+            api.powerOnAll();
+          }
+          break;
+        case 1:
+          api.brightnessDown();
+          break;
+        case 2:
+          api.brightnessUp();
+          break;
+        case 3:
+          isDropdownExpanded = true;
+          break;
+      }
+    });
   }
 }

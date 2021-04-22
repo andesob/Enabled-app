@@ -22,7 +22,7 @@ class HomePageButton extends StatefulWidget {
 
 class HomePageButtonState extends State<HomePageButton> {
   void pushPressed() {
-    if(widget.enabled) Navigator.pushReplacementNamed(context, widget.text);
+    if (widget.enabled) Navigator.pushReplacementNamed(context, widget.text);
   }
 
   @override
@@ -31,9 +31,11 @@ class HomePageButtonState extends State<HomePageButton> {
       margin: EdgeInsets.all(5),
       decoration: new BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(20)),
-        color: Color(widget.enabled ? (widget.focused
-            ? StaticColors.deepSpaceSparkle
-            : StaticColors.lighterSlateGray) : StaticColors.gray),
+        color: Color(widget.enabled
+            ? (widget.focused
+                ? StaticColors.deepSpaceSparkle
+                : StaticColors.lighterSlateGray)
+            : StaticColors.onyx),
       ),
       child: FlatButton(
         child: new GradientText(

@@ -54,6 +54,7 @@ class SmartMainPageState extends PageState<SmartMainPage> {
                 HomePageButton(
                   text: Strings.HUE,
                   enabled: apiSuccess,
+                  focused: true,
                 )
               ],
             ),
@@ -70,12 +71,12 @@ class SmartMainPageState extends PageState<SmartMainPage> {
 
   @override
   void pullPressed() {
-    // TODO: implement pullPressed
+    Navigator.pushReplacementNamed(context, Strings.HOME);
   }
 
   @override
   void pushPressed() {
-    // TODO: implement pushPressed
+    if(apiSuccess) Navigator.pushReplacementNamed(context, Strings.HUE);
   }
 
   @override

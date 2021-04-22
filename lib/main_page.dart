@@ -35,7 +35,11 @@ class _MainPageState extends State<MainPage> {
     return Container(
       child: WillPopScope(
         onWillPop: () async {
-          if (widget.title != Strings.HOME) {
+          if (widget.title == Strings.HOME) {
+            return false;
+          } else if (widget.title == Strings.HUE) {
+            Navigator.pushReplacementNamed(context, Strings.SMART);
+          } else {
             Navigator.pushReplacementNamed(context, Strings.HOME);
           }
           return false;
