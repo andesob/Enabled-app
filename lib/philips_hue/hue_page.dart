@@ -66,7 +66,6 @@ class _HuePageState extends PageState<HuePage> {
         HueDropdown(
           onClick: changeScene,
           isFocused: verticalListIndex == 3,
-          isDropdownExpanded: isDropdownExpanded,
         ),
       ],
     );
@@ -140,19 +139,16 @@ class _HuePageState extends PageState<HuePage> {
       switch (verticalListIndex) {
         case 0:
           if (isLightOn) {
-            api.powerOffAll();
+            powerOff();
           } else {
-            api.powerOnAll();
+            powerOn();
           }
           break;
         case 1:
-          api.brightnessDown();
+          brightnessDown();
           break;
         case 2:
           api.brightnessUp();
-          break;
-        case 3:
-          isDropdownExpanded = true;
           break;
       }
     });
