@@ -2,29 +2,36 @@ import 'package:enabled_app/global_data/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class ThemeNotifier with ChangeNotifier{
-  final lightTheme = ThemeData(
-  brightness: Brightness.light,
-  backgroundColor: Colors.white,
+class ThemeNotifier with ChangeNotifier {
+  ThemeData _themeData = ThemeData(
+    brightness: Brightness.light,
+    primaryColor: Colors.white,
+    backgroundColor: Colors.white,
+    appBarTheme: AppBarTheme(
+      textTheme: ThemeData.light().textTheme.copyWith(
+        headline6: TextStyle(
+          color: Color(StaticColors.lighterSlateGray),
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    ),
   );
+  ThemeNotifier();
 
-  final darkTheme = ThemeData(
-  backgroundColor: Color(StaticColors.lightPeach),
-  brightness: Brightness.dark,
-  );
+  getTheme() => _themeData;
 
-  static bool _isDark = false;
+  ThemeData lightTheme;
 
-  ThemeData getTheme(){
-    print("new theme set");
-    return _isDark ? darkTheme : lightTheme;
-  }
+  ThemeData darkTheme;
 
-  void switchTheme(){
+  bool isDark = false;
+
+  void switchTheme() {
     print("theme switched");
-    _isDark = !_isDark;
-    print(_isDark);
+    isDark = !isDark;
+    print(isDark);
+    _themeData = isDark ? darkTheme : lightTheme;
     notifyListeners();
   }
 }
-

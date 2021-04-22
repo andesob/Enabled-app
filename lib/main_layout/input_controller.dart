@@ -37,7 +37,6 @@ class ButtonControllerState extends State<ButtonController> {
     sub = stream.listen((value) {
       setState(() {
         Map stream = jsonDecode(value);
-        print(stream);
         if (stream['streamType'] == 'com') {
           mentalCommands(stream['command']);
         } else if (stream['streamType'] == 'fac') {
@@ -89,20 +88,18 @@ class ButtonControllerState extends State<ButtonController> {
           widget.pageKey.currentState?.pullPressed();
         }
         break;
-      case 'wink-left':
+      case 'winkL':
         {
           widget.pageKey.currentState?.leftPressed();
         }
         break;
-      case 'wink-right':
+      case 'winkR':
         {
           widget.pageKey.currentState?.rightPressed();
         }
         break;
       default:
-        {
-          print('Unknown facial command');
-        }
+        {}
         break;
     }
   }
