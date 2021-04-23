@@ -15,6 +15,7 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
+import 'dart:developer' as developer;
 
 //TODO create a solution for the "result" object returned from the alert dialog.
 
@@ -88,15 +89,20 @@ class _CustomPageHome extends PageState<CustomPageHome> {
               child: FlatButton(
                 child: Text("Legg til"),
                 onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return CustomPopup(
-                          items: categoryList,
-                        );
-                      }).catchError((error) {
-                    print(error);
-                  });
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return CustomPopup(
+                            items: categoryList,
+                          );
+                        }).then((value) {
+                      setState(() {
+                        developer.log("Value");
+                      });
+                    }).catchError((error) {
+                      developer.log("Error");
+                      //developer.log(error.toString());
+                    });
                 },
               ),
             ),

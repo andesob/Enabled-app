@@ -3,10 +3,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class KeyboardDictionaryKey extends StatefulWidget {
-  KeyboardDictionaryKey({Key key, this.onDict, this.flex = 1});
+  KeyboardDictionaryKey({
+    Key key,
+    this.onDictPressed,
+    this.flex = 1,
+    this.isFocused = false,
+  }) : super(key: key);
 
-  final VoidCallback onDict;
+  final VoidCallback onDictPressed;
   final int flex;
+  final bool isFocused;
 
   KeyboardDictionaryKeyState createState() => KeyboardDictionaryKeyState();
 }
@@ -14,26 +20,26 @@ class KeyboardDictionaryKey extends StatefulWidget {
 class KeyboardDictionaryKeyState extends State<KeyboardDictionaryKey> {
   @override
   Widget build(BuildContext context) {
-    int flex = widget.flex;
-    VoidCallback onDict = widget.onDict;
-
     return Expanded(
-      flex: flex,
+      flex: widget.flex,
       child: Padding(
         padding: const EdgeInsets.all(1.0),
         child: Material(
-          color: Color(StaticColors.lighterSlateGray),
+          color: Color(widget.isFocused
+              ? StaticColors.black
+              : StaticColors.lighterSlateGray),
           child: InkWell(
             onTap: () {
-              //onDict != null ? onDict.call() : null
-              onDict?.call();
+              //onCapslock != null ? onCapslock.call() : null
+              widget.onDictPressed?.call();
             },
             child: Container(
               child: Center(
-                  child: Icon(
-                    Icons.list,
-                    color: Colors.white,
-                  )),
+                child: Icon(
+                  Icons.list,
+                  color: Colors.white,
+                ),
+              ),
             ),
           ),
         ),
