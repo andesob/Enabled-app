@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
-    addThemes(themeNotifier, context);
+    //addThemes(themeNotifier, context);
     return MaterialApp(
       title: Strings.ENABLED,
       initialRoute: Strings.HOME,
@@ -99,7 +99,7 @@ class MyApp extends StatelessWidget {
       },
     );
   }
-
+/*
   void addThemes(ThemeNotifier notifier, context) {
     notifier.lightTheme = ThemeData(
       brightness: Brightness.light,
@@ -130,5 +130,5 @@ class MyApp extends StatelessWidget {
             ),
       ),
     );
-  }
+  }*/
 }
