@@ -35,7 +35,7 @@ class LightApi{
   Future<void> updateState(String id, LightState state) async {
     String url = '/api/' + _username + '/lights/' + id.toString() + '/state';
     final response = await _bridge.put(url, state.toMap());
-    developer.log("Updated light state: " + response[0]);
+    developer.log("Updated light state: " + response[0].toString());
   }
 
 }
