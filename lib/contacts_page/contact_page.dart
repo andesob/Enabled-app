@@ -31,14 +31,10 @@ class _ContactPageState extends PageState<ContactPage> {
   int lastScrollIndex = 0;
   int lastScrollIndexDown = 0;
   int lastScrollIndexUp = 0;
-  final int maxScrollLength = 3;
 
-  bool firstRun = true;
   final ItemScrollController itemScrollController = ItemScrollController();
   final ItemPositionsListener itemPositionsListener =
       ItemPositionsListener.create();
-
-  bool popupActive = false;
 
   @override
   void initState() {
