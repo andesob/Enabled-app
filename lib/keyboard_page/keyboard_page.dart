@@ -1,3 +1,4 @@
+import 'package:csv/csv.dart';
 import 'package:enabled_app/global_data/colors.dart';
 import 'package:enabled_app/keyboard_page/custom_keyboard.dart';
 import 'package:enabled_app/keyboard_page/custom_dictionary.dart';
@@ -28,6 +29,7 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
   int currentFocusedVerticalListIndex;
   int currentFocusedHorizontalListIndex;
   bool inHorizontalList = false;
+  bool inDictionary = false;
   bool isUpperCase = true;
 
   List<String> firstRow = [" ", "E", "A", "N", "L", "F"];
@@ -38,9 +40,12 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
 
   List<List<String>> allRows;
 
+  List<String> dictionary = [];
+
   @override
   void initState() {
     super.initState();
+    _loadCSV();
     currentFocusedHorizontalListIndex = 0;
     currentFocusedVerticalListIndex = 0;
     allRows = [];
@@ -137,8 +142,9 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
                 currentFocusedHorizontalListIndex:
                     currentFocusedHorizontalListIndex,
                 inHorizontalList: inHorizontalList,
+                inDictionary: inDictionary,
                 onBackspace: _onBackspace,
-                onCapslock: _onCapslockHandler,
+                onDictPressed: _onDictKeyHandler,
                 onSend: _onSendPressed,
                 onTextInput: (myText) {
                   _insertText(myText);
@@ -147,8 +153,12 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
             ),
             Expanded(
               child: CustomDictionary(
+                dictionary: _searchList(getLastWord()),
                 onDictItemChosen: _onDictItemChosen,
                 text: _controller.text,
+                currentFocusedVerticalListIndex:
+                    currentFocusedVerticalListIndex,
+                isFocused: inDictionary,
               ),
               flex: 1,
             )
@@ -175,6 +185,12 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
             currentFocusedHorizontalListIndex = 5;
           }
         }
+      } else if (inDictionary) {
+        if (currentFocusedVerticalListIndex == 0) {
+          currentFocusedVerticalListIndex = 7;
+        } else {
+          currentFocusedVerticalListIndex--;
+        }
       } else {
         if (currentFocusedVerticalListIndex != 0) {
           currentFocusedVerticalListIndex -= 1;
@@ -188,8 +204,13 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
   @override
   void pullPressed() {
     setState(() {
-      if (inHorizontalList) {
-        inHorizontalList = !inHorizontalList;
+      if (inHorizontalList || inDictionary) {
+        if (inDictionary) {
+          currentFocusedVerticalListIndex = 0;
+        }
+        inDictionary = false;
+        inHorizontalList = false;
+        currentFocusedHorizontalListIndex = 0;
         return;
       }
       Navigator.pushReplacementNamed(context, Strings.HOME);
@@ -199,13 +220,16 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
   @override
   void pushPressed() {
     setState(() {
-      if (!inHorizontalList) {
-        inHorizontalList = !inHorizontalList;
+      if (!inHorizontalList && !inDictionary) {
+        inHorizontalList = true;
+      } else if (inDictionary) {
+        String s = _searchList(getLastWord())[currentFocusedVerticalListIndex];
+        _onDictItemChosen(s.toUpperCase());
       } else {
         if (currentFocusedVerticalListIndex == 5) {
           //Caps lock is pressed
           if (currentFocusedHorizontalListIndex == 0) {
-            _onCapslockHandler();
+            _onDictKeyHandler();
           }
           //Send is pressed
           else if (currentFocusedHorizontalListIndex == 1) {
@@ -215,7 +239,7 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
           else if (currentFocusedHorizontalListIndex == 2) {
             _onBackspace();
           }
-        } else {
+        } else if (!inDictionary) {
           String letter = allRows[currentFocusedVerticalListIndex]
               [currentFocusedHorizontalListIndex];
           _insertText(letter);
@@ -233,7 +257,7 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
         if (currentFocusedVerticalListIndex == 5) {
           //Move right if not at the last element in the bottom row
           if (currentFocusedHorizontalListIndex != 2) {
-            currentFocusedHorizontalListIndex += 1;
+            currentFocusedHorizontalListIndex++;
           } else {
             currentFocusedHorizontalListIndex = 0;
           }
@@ -242,14 +266,20 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
         else {
           //Move right if not at last element in the row
           if (currentFocusedHorizontalListIndex != 5) {
-            currentFocusedHorizontalListIndex += 1;
+            currentFocusedHorizontalListIndex++;
           } else {
             currentFocusedHorizontalListIndex = 0;
           }
         }
+      } else if (inDictionary) {
+        if (currentFocusedVerticalListIndex == 7) {
+          currentFocusedVerticalListIndex = 0;
+        } else {
+          currentFocusedVerticalListIndex++;
+        }
       } else {
         if (currentFocusedVerticalListIndex != 5) {
-          currentFocusedVerticalListIndex += 1;
+          currentFocusedVerticalListIndex++;
         } else {
           currentFocusedVerticalListIndex = 0;
         }
@@ -257,10 +287,62 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
     });
   }
 
-  void _onCapslockHandler() {
+  void _onDictKeyHandler() {
     setState(() {
-      isUpperCase ? _toLowerCase() : _toUpperCase();
+      inDictionary = !inDictionary;
+      inHorizontalList = false;
+      currentFocusedHorizontalListIndex = 0;
+      currentFocusedVerticalListIndex = 0;
     });
+  }
+
+  void _loadCSV() async {
+    String _rawData = null;
+    if (TTSController().getCurrentLanguage() == "NO") {
+      _rawData = await rootBundle.loadString("assets/data/words_no.csv");
+    } else if (TTSController().getCurrentLanguage() == "US") {
+      _rawData = await rootBundle.loadString("assets/data/words_en_US.csv");
+    } else {
+      _rawData = await rootBundle.loadString("assets/data/words_no.csv");
+    }
+    List<List<dynamic>> _listData = CsvToListConverter().convert(_rawData);
+    setState(() {
+      dictionary = _listData.map((e) {
+        return e[0].toString();
+      }).toList();
+    });
+  }
+
+  String getLastWord() {
+    if (_controller.text.isNotEmpty) {
+      List<String> words = _controller.text.split(" ");
+      return words.last;
+    } else {
+      return (" ");
+    }
+  }
+
+  List<String> _searchList(String searchKey) {
+    List<String> hitList = [];
+    for (String word in dictionary) {
+      if (word.startsWith(searchKey.toLowerCase())) {
+        hitList.add(word);
+      }
+    }
+
+    if (dictionary.isEmpty || dictionary == null) {
+      return dictionary;
+    }
+
+    if (hitList.isEmpty) {
+      return dictionary.sublist(0, 8);
+    } else {
+      if (hitList.length < 8) {
+        return hitList.sublist(0, hitList.length);
+      } else {
+        return hitList.sublist(0, 8);
+      }
+    }
   }
 
   void _toUpperCase() {

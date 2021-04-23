@@ -1,5 +1,5 @@
 import 'package:enabled_app/keyboard_page/keyboard_backspace_key.dart';
-import 'package:enabled_app/keyboard_page/keyboard_capslock_key.dart';
+import 'package:enabled_app/keyboard_page/keyboard_dictionary_key.dart';
 import 'package:enabled_app/keyboard_page/keyboard_key.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -13,7 +13,7 @@ class KeyboardHorizontalList extends StatefulWidget {
     this.inHorizontalList = false,
     this.onTextInput,
     this.onBackspace,
-    this.onCapslock,
+    this.onDictPressed,
     this.currentFocusedKeyIndex = 0,
     this.onSend,
   }) : super(key: key);
@@ -25,7 +25,7 @@ class KeyboardHorizontalList extends StatefulWidget {
   final int currentFocusedKeyIndex;
   final ValueSetter<String> onTextInput;
   final VoidCallback onBackspace;
-  final VoidCallback onCapslock;
+  final VoidCallback onDictPressed;
   final VoidCallback onSend;
 
   @override
@@ -37,7 +37,7 @@ class _KeyboardHorizontalList extends State<KeyboardHorizontalList> {
 
   void _backSpaceHandler() => widget.onBackspace?.call();
 
-  void _capsLockHandler() => widget.onCapslock?.call();
+  void _dictKeyHandler() => widget.onDictPressed?.call();
 
   void _onSendHandler() => widget.onSend?.call();
 
@@ -81,8 +81,8 @@ class _KeyboardHorizontalList extends State<KeyboardHorizontalList> {
         color: widget.isFocused ? Colors.black : Colors.white,
         child: Row(
           children: [
-            KeyboardCapslockKey(
-              onCapslock: _capsLockHandler,
+            KeyboardDictionaryKey(
+              onDictPressed: _dictKeyHandler,
               isFocused: capsLockKeyFocused(),
             ),
             KeyboardKey(

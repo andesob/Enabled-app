@@ -8,86 +8,42 @@ import 'package:flutter_tts/flutter_tts.dart';
 import '../tts_controller.dart';
 
 class CustomDictionary extends StatefulWidget {
-  CustomDictionary({Key key, this.onDictItemChosen, this.text});
+  CustomDictionary({
+    Key key,
+    this.onDictItemChosen,
+    this.text,
+    this.isFocused = false,
+    this.currentFocusedVerticalListIndex = 0,
+    this.dictionary,
+  });
 
   final ValueSetter<String> onDictItemChosen;
   final String text;
+  final bool isFocused;
+  final int currentFocusedVerticalListIndex;
+  final List<String> dictionary;
 
   CustomDictionaryState createState() => CustomDictionaryState();
 }
 
 class CustomDictionaryState extends State<CustomDictionary> {
   void _onDictChosenHandler(String text) => widget.onDictItemChosen.call(text);
-  List<String> dictionary = [];
-
-  // This function is triggered when the floating button is pressed
-  void _loadCSV() async {
-    String _rawData = null;
-    if(TTSController().getCurrentLanguage() == "NO") {
-      _rawData = await rootBundle.loadString("assets/data/words_no.csv");
-    }
-    else if(TTSController().getCurrentLanguage() == "US"){
-      _rawData = await rootBundle.loadString("assets/data/words_en_US.csv");
-    }
-    else{
-      _rawData = await rootBundle.loadString("assets/data/words_no.csv");
-    }
-    List<List<dynamic>> _listData = CsvToListConverter().convert(_rawData);
-    dictionary = _listData.map((e) {
-      return e[0].toString();
-    }).toList();
-    setState(() {
-      ///      dictionary = _listData.cast<String>();
-    });
-  }
-
-  List<String> _searchList(String searchKey) {
-    List<String> hitList = [];
-    for (String word in dictionary) {
-      if (word.startsWith(searchKey.toLowerCase())) {
-        hitList.add(word);
-      }
-    }
-
-    if(dictionary.isEmpty || dictionary == null){
-      return dictionary;
-    }
-
-    if (hitList.isEmpty) {
-      return dictionary.sublist(0, 8);
-    } else {
-      if (hitList.length < 8) {
-        return hitList.sublist(0, hitList.length);
-      } else {
-        return hitList.sublist(0, 8);
-      }
-    }
-  }
 
   @override
   void initState() {
     super.initState();
-    _loadCSV();
-  }
-
-  String getLastWord() {
-    if (widget.text.isNotEmpty) {
-      List<String> words = widget.text.split(" ");
-      return words.last;
-    } else {
-      return (" ");
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Column(
-        children: _searchList(getLastWord())
-            .map(
-              (text) => DictionaryItem(
+        children: widget.dictionary
+            .asMap().entries.map(
+              (entry) => DictionaryItem(
                 onDictItemChosen: _onDictChosenHandler,
-                text: text,
+                text: entry.value,
+                isFocused: (entry.key == widget.currentFocusedVerticalListIndex) && widget.isFocused,
               ),
             )
             .toList(),
