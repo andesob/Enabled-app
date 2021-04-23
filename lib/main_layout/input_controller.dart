@@ -6,6 +6,7 @@ import 'package:enabled_app/global_data/colors.dart';
 import 'package:enabled_app/page_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'dart:developer' as developer;
 
 class ButtonController extends StatefulWidget {
   final GlobalKey<PageState> pageKey;
@@ -70,7 +71,7 @@ class ButtonControllerState extends State<ButtonController> {
         break;
       default:
         {
-          print('Unknown mental command');
+          developer.log('Unknown mental command');
         }
         break;
     }

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:enabled_app/desktop_connection/network_service.dart';
+import 'dart:developer' as developer;
 
 class SocketSingleton {
   static final SocketSingleton _singleton = SocketSingleton._internal();
@@ -22,13 +23,13 @@ class SocketSingleton {
   }
 
   _startSocket() async {
-    print("start socket called");
+    developer.log("start socket called");
     _localIP = await _getIP();
-    print("Get ip: " + _localIP);
+    developer.log("Get ip: " + _localIP);
     _serverSocket = await HttpServer.bind(_localIP, _port, shared: true);
     _serverSocket.transform(WebSocketTransformer()).listen(_handleClient);
-    print("server ip: " + _serverSocket.address.toString());
-    print("server port: " + _serverSocket.port.toString());
+    developer.log("server ip: " + _serverSocket.address.toString());
+    developer.log("server port: " + _serverSocket.port.toString());
   }
 
   String get command {
@@ -46,14 +47,13 @@ class SocketSingleton {
 
     _clientSocket.listen(
       (data) {
-        //print(data);
         controller.add(data);
       },
       onError: (e) {
         _disconnectClient();
       },
       onDone: () {
-        print("Connection has terminated.");
+        developer.log("Connection has terminated.");
         _disconnectClient();
       },
     );

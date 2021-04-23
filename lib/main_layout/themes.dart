@@ -28,9 +28,7 @@ class ThemeNotifier with ChangeNotifier {
   bool isDark = false;
 
   void switchTheme() {
-    print("theme switched");
     isDark = !isDark;
-    print(isDark);
     _themeData = isDark ? darkTheme : lightTheme;
     notifyListeners();
   }

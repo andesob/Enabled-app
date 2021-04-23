@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:enabled_app/libraries/hue/lights/light.dart';
 import 'package:enabled_app/libraries/hue/lights/light_state.dart';
 import 'package:enabled_app/libraries/hue/main/bridge.dart';
+import 'dart:developer' as developer;
 
 class LightApi{
   Bridge _bridge;
@@ -34,7 +35,7 @@ class LightApi{
   Future<void> updateState(String id, LightState state) async {
     String url = '/api/' + _username + '/lights/' + id.toString() + '/state';
     final response = await _bridge.put(url, state.toMap());
-    print(response[0]);
+    developer.log("Updated light state: " + response[0]);
   }
 
 }
