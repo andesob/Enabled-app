@@ -141,22 +141,7 @@ class _ContactPopupState extends State<ContactPopup> {
             child: Text("Submit"),
             color: Color(StaticColors.lightSlateGray),
             onPressed: () {
-
-              int errors = 0;
-
-              if(firstNameController.text == null || firstNameController.text.isEmpty){
-                errors++;
-              }
-
-              if(surnameController.text == null || surnameController.text.isEmpty){
-                errors++;
-              }
-
-              if(numberController.text == null || numberController.text.isEmpty){
-                errors++;
-              }
-
-              if(errors > 0){
+              if(!validateInput()){
                 return;
               }
 
@@ -167,13 +152,7 @@ class _ContactPopupState extends State<ContactPopup> {
               );
               widget.items.add(cItem);
 
-              List<String> prefList = [];
-              for(ContactItemData cData in widget.items){
-                prefList.add(jsonEncode(cData.toJson()));
-              }
-
-              prefs.setStringList("contacts", prefList);
-
+              updatePrefs();
 
               firstNameController.clear();
               surnameController.clear();
@@ -182,5 +161,32 @@ class _ContactPopupState extends State<ContactPopup> {
             })
       ],
     );
+  }
+
+  void updatePrefs(){
+    List<String> prefList = [];
+    for(ContactItemData cData in widget.items){
+      prefList.add(jsonEncode(cData.toJson()));
+    }
+
+    prefs.setStringList("contacts", prefList);
+  }
+
+  bool validateInput(){
+    int errors = 0;
+
+    if(firstNameController.text == null || firstNameController.text.isEmpty){
+      errors++;
+    }
+
+    if(surnameController.text == null || surnameController.text.isEmpty){
+      errors++;
+    }
+
+    if(numberController.text == null || numberController.text.isEmpty){
+      errors++;
+    }
+
+    return errors == 0;
   }
 }

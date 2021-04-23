@@ -11,9 +11,9 @@ import 'package:enabled_app/page_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
-import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:developer' as developer;
 
 class ContactPage extends StatefulWidget {
   ContactPage({Key key, this.title}) : super(key: key);
@@ -32,14 +32,10 @@ class _ContactPageState extends PageState<ContactPage> {
   int lastScrollIndex = 0;
   int lastScrollIndexDown = 0;
   int lastScrollIndexUp = 0;
-  final int maxScrollLength = 3;
 
-  bool firstRun = true;
   final ItemScrollController itemScrollController = ItemScrollController();
   final ItemPositionsListener itemPositionsListener =
       ItemPositionsListener.create();
-
-  bool popupActive = false;
 
   @override
   void initState() {
@@ -51,16 +47,12 @@ class _ContactPageState extends PageState<ContactPage> {
     prefs = await SharedPreferences.getInstance();
     setState(() {
       List<String> cDataList = prefs.getStringList('contacts');
-      if(cDataList == null) return;
+      if (cDataList == null) return;
       for (String s in cDataList) {
         ContactItemData cData = ContactItemData.fromJson(jsonDecode(s));
         items.add(cData);
       }
     });
-  }
-
-  setPopup(bool active) {
-    popupActive = active;
   }
 
   ///Scrolls up to the previous contact on the list.
@@ -93,10 +85,6 @@ class _ContactPageState extends PageState<ContactPage> {
     return false;
   }
 
-  void _goBack() {
-    Navigator.pushReplacementNamed(context, Strings.HOME);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -125,12 +113,10 @@ class _ContactPageState extends PageState<ContactPage> {
               padding: EdgeInsets.all(8),
               itemCount: items.length,
               itemBuilder: (context, index) {
-                final itemData = items[index];
                 final ContactItem item = new ContactItem(
-                  firstname: itemData.getFirstname,
-                  lastname: itemData.getLastname,
-                  number: itemData.getNumber,
+                  cData: items[index],
                   isFocused: index == focusIndex,
+                  onDelete: deleteItem,
                 );
                 return item;
               },
@@ -143,18 +129,41 @@ class _ContactPageState extends PageState<ContactPage> {
     );
   }
 
+  void deleteItem(String id) {
+    setState(() {
+      List<ContactItemData> removeList = [];
+      for (ContactItemData cData in items) {
+        if (cData.contactId == id) {
+          removeList.add(cData);
+        }
+      }
+
+      int numberRemoved = 0;
+      for(ContactItemData cData in removeList){
+        numberRemoved++;
+        items.remove(cData);
+      }
+
+      updatePrefs();
+
+      developer.log("Removed " + numberRemoved.toString() + " contact(s) from contact list");
+    });
+  }
+
+  void updatePrefs(){
+    List<String> prefList = [];
+    for(ContactItemData cData in items){
+      prefList.add(jsonEncode(cData.toJson()));
+    }
+
+    prefs.setStringList("contacts", prefList);
+  }
+
   @override
   void leftPressed() {
     setState(() {
       if (focusIndex > 0) {
         goUp();
-//      removeHighlight();
-//      focusIndex--;
-//      addHighlight();
-//      if (canScrollUp()) {
-//        itemScrollController.scrollTo(
-//            index: focusIndex, duration: Duration(seconds: 1));
-
       }
     });
   }
@@ -191,28 +200,4 @@ class _ContactPageState extends PageState<ContactPage> {
       _scrollDown();
     }
   }
-
-  /// TODO
-  ///  floatingActionButton: FloatingActionButton(
-//           backgroundColor: Color(StaticColors.lighterSlateGray),
-//           onPressed: () {
-//             showDialog(
-//                 context: context,
-//                 builder: (BuildContext context) {
-//                   return ContactPopup(items: items);
-//                 });
-//           },
-//           child: Icon(
-//             Icons.add,
-//             color: Color(StaticColors.white),
-//           ),
-//         ),
-  ///
-  ///
-  ///
-  ///
-  ///
-  ///
-  ///
-  ///
 }
