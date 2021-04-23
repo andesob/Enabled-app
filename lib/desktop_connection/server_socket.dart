@@ -70,4 +70,8 @@ class SocketSingleton {
   Stream getStream() {
     return controller.stream;
   }
+
+  String getLocalIP(){
+    return _localIP;
+  }
 }
