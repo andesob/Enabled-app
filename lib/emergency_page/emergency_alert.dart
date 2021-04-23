@@ -1,16 +1,17 @@
 import 'package:enabled_app/emergency_page/emergency_popup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class EmergencyAlert extends StatefulWidget{
-
+class EmergencyAlert extends StatefulWidget {
   EmergencyAlert({Key key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _EmergencyAlertState();
 }
 
-class _EmergencyAlertState extends State<EmergencyAlert>{
+class _EmergencyAlertState extends State<EmergencyAlert> {
+
   @override
   Widget build(BuildContext context) {
     /// The alert to trigger if no Emergency Contact was set
@@ -37,12 +38,11 @@ class _EmergencyAlertState extends State<EmergencyAlert>{
         ),
         TextButton(
           child: Text('Later'),
-          onPressed: (){
+          onPressed: () {
             Navigator.of(context).pop();
           },
         ),
       ],
     );
   }
-
 }
