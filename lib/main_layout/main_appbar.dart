@@ -1,3 +1,4 @@
+import 'package:enabled_app/desktop_connection/ip_popup.dart';
 import 'package:enabled_app/global_data/colors.dart';
 import 'package:enabled_app/emergency_page/emergency_popup.dart';
 import 'package:enabled_app/main_layout/themes.dart';
@@ -38,8 +39,8 @@ class MyAppBarState extends State<MyAppBar> {
           itemBuilder: (BuildContext bc) => [
             PopupMenuItem(child: Text("Dark Mode"), value: 0),
             PopupMenuItem(child: Text("Change Emergency Contact"), value: 1),
-            PopupMenuItem(
-                child: Text("Change text-to-speech language"), value: 2),
+            PopupMenuItem(child: Text("Change text-to-speech language"), value: 2),
+            PopupMenuItem(child: Text("Show Mobile IP address"), value: 3),
           ],
           onSelected: (selected) {
             if (selected == 0) {
@@ -56,6 +57,13 @@ class MyAppBarState extends State<MyAppBar> {
             }
             if (selected == 2) {
               TTSController().changeLanguage();
+            }
+            if(selected == 3){
+              showDialog(
+                context: context,
+                builder: (BuildContext context){
+                  return IpPopup();
+                });
             }
           },
         ),
@@ -79,8 +87,7 @@ class MyAppBarState extends State<MyAppBar> {
                 : [
                     Color(StaticColors.lightPeach),
                     Color(StaticColors.darkPeach)
-                  ]
-            ),
+                  ]),
         actions: widget.hasDropDown ? createDropDown() : null,
       ),
     );
