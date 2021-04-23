@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:enabled_app/contacts_page//contacts.dart';
+import 'package:enabled_app/contacts_page/contact_page.dart';
 import 'package:enabled_app/desktop_connection/server_socket.dart';
 import 'package:enabled_app/home_page/home_page.dart';
 import 'package:enabled_app/keyboard_page/keyboard_page.dart';
@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
             hasDropDown: false,
             pageKey: PageGlobalKeys.needsPageKey),
         Strings.CONTACTS: (context) => MainPage(
-              pageContent: contacts(
+              pageContent: ContactPage(
                 key: PageGlobalKeys.contactsPageKey,
               ),
               title: Strings.CONTACTS,
