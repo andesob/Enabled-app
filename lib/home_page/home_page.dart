@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'home_page_button.dart';
 import '../global_data/strings.dart';
 
@@ -21,6 +22,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class MyHomePageState extends PageState<MyHomePage> {
+  SharedPreferences prefs;
   int horizontalBtns;
   int verticalBtns;
 
@@ -37,6 +39,18 @@ class MyHomePageState extends PageState<MyHomePage> {
     Strings.EMERGENCY,
   ];
   var list;
+
+  @override
+  void initState() {
+    super.initState();
+    initPrefs();
+  }
+
+  Future<void> initPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+    String contact = prefs.getString("emergency");
+    StaticEmergencyContact.emergencyContact = contact;
+  }
 
   void setGridSize(useMobileLayout) {
     setState(() {
@@ -85,7 +99,7 @@ class MyHomePageState extends PageState<MyHomePage> {
 
   _launchURL() async {
     String number = StaticEmergencyContact.emergencyContact;
-    if (number != null) {
+    if (number != null && number.isNotEmpty) {
       bool res = await FlutterPhoneDirectCaller.callNumber(number);
     } else {
       showEmergencyContactAlert();
