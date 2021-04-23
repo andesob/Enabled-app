@@ -11,7 +11,6 @@ import 'package:enabled_app/page_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
-import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -59,10 +58,6 @@ class _ContactPageState extends PageState<ContactPage> {
     });
   }
 
-  setPopup(bool active) {
-    popupActive = active;
-  }
-
   ///Scrolls up to the previous contact on the list.
   void _scrollDown() {
     lastScrollIndexDown = focusIndex;
@@ -91,10 +86,6 @@ class _ContactPageState extends PageState<ContactPage> {
       return true;
     }
     return false;
-  }
-
-  void _goBack() {
-    Navigator.pushReplacementNamed(context, Strings.HOME);
   }
 
   @override
@@ -148,13 +139,6 @@ class _ContactPageState extends PageState<ContactPage> {
     setState(() {
       if (focusIndex > 0) {
         goUp();
-//      removeHighlight();
-//      focusIndex--;
-//      addHighlight();
-//      if (canScrollUp()) {
-//        itemScrollController.scrollTo(
-//            index: focusIndex, duration: Duration(seconds: 1));
-
       }
     });
   }
@@ -191,28 +175,4 @@ class _ContactPageState extends PageState<ContactPage> {
       _scrollDown();
     }
   }
-
-  /// TODO
-  ///  floatingActionButton: FloatingActionButton(
-//           backgroundColor: Color(StaticColors.lighterSlateGray),
-//           onPressed: () {
-//             showDialog(
-//                 context: context,
-//                 builder: (BuildContext context) {
-//                   return ContactPopup(items: items);
-//                 });
-//           },
-//           child: Icon(
-//             Icons.add,
-//             color: Color(StaticColors.white),
-//           ),
-//         ),
-  ///
-  ///
-  ///
-  ///
-  ///
-  ///
-  ///
-  ///
 }
