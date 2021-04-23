@@ -54,6 +54,7 @@ class _CustomPageHome extends PageState<CustomPageHome> {
     prefs = await SharedPreferences.getInstance();
     setState(() {
       List<String> categories = prefs.getStringList('categories');
+      if(categories == null) return;
       for (String s in categories) {
         CustomCategory category = CustomCategory.fromJson(jsonDecode(s));
         categoryList.add(category);

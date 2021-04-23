@@ -5,59 +5,57 @@ import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
 class ContactItem extends StatefulWidget {
   final String firstname;
-  final String surname;
+  final String lastname;
   final String number;
-  int cIndex;
-  _ContactItem state;
-  ContactItem({Key key, this.firstname, this.surname, this.number}) : super(key: key);
+  final bool isFocused;
+
+  ContactItem({
+    Key key,
+    this.firstname,
+    this.lastname,
+    this.number,
+    this.isFocused = false,
+  }) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() {
-    state = _ContactItem();
-    return state;
-  }
+  _ContactItem createState() => _ContactItem();
 }
 
-class _ContactItem extends State<ContactItem>{
-  /// The current highlight of font in the contact item, where true is highlighted.
-  bool highlightFont;
-
-  @override
-  void initState() {
-    super.initState();
-    if(widget.cIndex == 0){
-      highlightFont = true;
-    } else {
-      highlightFont = false;
-    }
-  }
-
-  /// Changes the highlighting of the item
-  setHighlightState(bool highlightState){
-    setState(() {
-      highlightFont = highlightState;
-    });
-  }
+class _ContactItem extends State<ContactItem> {
 
   @override
   Widget build(BuildContext context) {
     String firstname = widget.firstname;
-    String surname = widget.surname;
+    String surname = widget.lastname;
     String number = widget.number;
 
     return Container(
-      height: ((MediaQuery.of(context).size.height - kBottomNavigationBarHeight)* 0.14),
+      height:
+          ((MediaQuery.of(context).size.height - kBottomNavigationBarHeight) *
+              0.14),
       child: ListTile(
         onTap: () => _launchURL(number),
         leading: CircleAvatar(
-          backgroundColor: highlightFont ? Color(StaticColors.charcoal): Color(StaticColors.lighterSlateGray),
+          backgroundColor: widget.isFocused
+              ? Color(StaticColors.charcoal)
+              : Color(StaticColors.lighterSlateGray),
           child: Text(
             firstname[0],
             style: TextStyle(color: Color(StaticColors.white)),
           ),
         ),
-        title: Text(firstname + " " + surname, style: highlightFont ? TextStyle(fontWeight: FontWeight.bold): TextStyle(fontWeight: FontWeight.normal),),
-        subtitle: Text(number, style: highlightFont ? TextStyle(fontWeight: FontWeight.bold): TextStyle(fontWeight: FontWeight.normal),),
+        title: Text(
+          firstname + " " + surname,
+          style: widget.isFocused
+              ? TextStyle(fontWeight: FontWeight.bold)
+              : TextStyle(fontWeight: FontWeight.normal),
+        ),
+        subtitle: Text(
+          number,
+          style: widget.isFocused
+              ? TextStyle(fontWeight: FontWeight.bold)
+              : TextStyle(fontWeight: FontWeight.normal),
+        ),
       ),
     );
   }
@@ -65,5 +63,4 @@ class _ContactItem extends State<ContactItem>{
   _launchURL(number) async {
     bool res = await FlutterPhoneDirectCaller.callNumber(number);
   }
-
 }

@@ -1,19 +1,28 @@
+import 'dart:convert';
+
 import 'package:enabled_app/global_data/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'contact_item.dart';
+import 'contact_item_data.dart';
 
 class ContactPopup extends StatefulWidget {
-  List<ContactItem> items;
+  final List<ContactItemData> items;
 
-  ContactPopup({Key key, this.items}) : super(key: key);
+  ContactPopup({
+    Key key,
+    this.items,
+  }) : super(key: key);
 
   @override
   _ContactPopupState createState() => _ContactPopupState();
 }
 
 class _ContactPopupState extends State<ContactPopup> {
+  SharedPreferences prefs;
+
   final firstNameController = TextEditingController();
   final surnameController = TextEditingController();
   final numberController = TextEditingController();
@@ -33,6 +42,8 @@ class _ContactPopupState extends State<ContactPopup> {
   @override
   void initState() {
     super.initState();
+    initPrefs();
+
     firstFocusNode = new FocusNode();
     lastFocusNode = new FocusNode();
     numberFocusNode = new FocusNode();
@@ -40,6 +51,10 @@ class _ContactPopupState extends State<ContactPopup> {
     firstFocusNode.addListener(_onOnFocusNodeEvent);
     lastFocusNode.addListener(_onOnFocusNodeEvent);
     numberFocusNode.addListener(_onOnFocusNodeEvent);
+  }
+
+  initPrefs() async {
+    prefs = await SharedPreferences.getInstance();
   }
 
   _onOnFocusNodeEvent() {
@@ -126,13 +141,40 @@ class _ContactPopupState extends State<ContactPopup> {
             child: Text("Submit"),
             color: Color(StaticColors.lightSlateGray),
             onPressed: () {
-              ContactItem cItem = ContactItem(
-                  firstname: firstNameController.text,
-                  surname: surnameController.text,
-                  number: numberController.text);
+
+              int errors = 0;
+
+              if(firstNameController.text == null || firstNameController.text.isEmpty){
+                errors++;
+              }
+
+              if(surnameController.text == null || surnameController.text.isEmpty){
+                errors++;
+              }
+
+              if(numberController.text == null || numberController.text.isEmpty){
+                errors++;
+              }
+
+              if(errors > 0){
+                return;
+              }
+
+              ContactItemData cItem = ContactItemData(
+                firstName: firstNameController.text,
+                lastName: surnameController.text,
+                number: numberController.text,
+              );
               widget.items.add(cItem);
-              int cIndex = widget.items.indexOf(cItem);
-              cItem.cIndex = cIndex;
+
+              List<String> prefList = [];
+              for(ContactItemData cData in widget.items){
+                prefList.add(jsonEncode(cData.toJson()));
+              }
+
+              prefs.setStringList("contacts", prefList);
+
+
               firstNameController.clear();
               surnameController.clear();
               numberController.clear();

@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:enabled_app/contacts_page/contact_item.dart';
+import 'package:enabled_app/contacts_page/contact_item_data.dart';
 import 'package:enabled_app/contacts_page/contact_popup.dart';
 import 'package:enabled_app/global_data/colors.dart';
 import 'package:enabled_app/global_data/strings.dart';
@@ -10,20 +13,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class contacts extends StatefulWidget {
-  contacts({Key key, this.title}) : super(key: key);
+class ContactPage extends StatefulWidget {
+  ContactPage({Key key, this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _contactState createState() => _contactState();
+  _ContactPageState createState() => _ContactPageState();
 }
 
-class _contactState extends PageState<contacts> {
-  List<ContactItem> items = [];
+class _ContactPageState extends PageState<ContactPage> {
+  SharedPreferences prefs;
+
+  List<ContactItemData> items = [];
   int focusIndex = 0;
-  int lastScollIndex = 0;
+  int lastScrollIndex = 0;
   int lastScrollIndexDown = 0;
   int lastScrollIndexUp = 0;
   final int maxScrollLength = 3;
@@ -38,16 +44,19 @@ class _contactState extends PageState<contacts> {
   @override
   void initState() {
     super.initState();
-    for (var i = 0; i < 20; i++) {
-      ContactItem cItem = ContactItem(
-        firstname: "Trym",
-        surname: "Jørgensen",
-        number: "95945742",
-      );
-      items.add(cItem);
-      int cIndex = items.indexOf(cItem);
-      cItem.cIndex = cIndex;
-    }
+    initPrefs();
+  }
+
+  initPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+    setState(() {
+      List<String> cDataList = prefs.getStringList('contacts');
+      if(cDataList == null) return;
+      for (String s in cDataList) {
+        ContactItemData cData = ContactItemData.fromJson(jsonDecode(s));
+        items.add(cData);
+      }
+    });
   }
 
   setPopup(bool active) {
@@ -57,7 +66,7 @@ class _contactState extends PageState<contacts> {
   ///Scrolls up to the previous contact on the list.
   void _scrollDown() {
     lastScrollIndexDown = focusIndex;
-    lastScollIndex = focusIndex;
+    lastScrollIndex = focusIndex;
     itemScrollController.scrollTo(
         index: focusIndex, duration: Duration(seconds: 1), alignment: 0.8572);
   }
@@ -65,7 +74,7 @@ class _contactState extends PageState<contacts> {
   ///Scrolls down to the next contact on the list.
   void _scrollUp() {
     lastScrollIndexUp = focusIndex;
-    lastScollIndex = focusIndex;
+    lastScrollIndex = focusIndex;
     itemScrollController.scrollTo(
         index: focusIndex, duration: Duration(seconds: 1));
   }
@@ -78,24 +87,10 @@ class _contactState extends PageState<contacts> {
   }
 
   bool _canScrollDown() {
-    if (focusIndex > lastScrollIndexUp + 5 && focusIndex > lastScollIndex) {
+    if (focusIndex > lastScrollIndexUp + 5 && focusIndex > lastScrollIndex) {
       return true;
     }
     return false;
-  }
-
-  ///Adds bold font to the item in focus.
-  addHighlight() {
-    setState(() {
-      items[focusIndex].state.setHighlightState(true);
-    });
-  }
-
-  ///Removes bold font to the item not in focus any more.
-  removeHighlight() {
-    setState(() {
-      items[focusIndex].state.setHighlightState(false);
-    });
   }
 
   void _goBack() {
@@ -118,7 +113,9 @@ class _contactState extends PageState<contacts> {
                       context: context,
                       builder: (BuildContext context) {
                         return ContactPopup(items: items);
-                      });
+                      }).then((value) {
+                    setState(() {});
+                  });
                 },
               ),
             ),
@@ -128,7 +125,13 @@ class _contactState extends PageState<contacts> {
               padding: EdgeInsets.all(8),
               itemCount: items.length,
               itemBuilder: (context, index) {
-                final ContactItem item = items[index];
+                final itemData = items[index];
+                final ContactItem item = new ContactItem(
+                  firstname: itemData.getFirstname,
+                  lastname: itemData.getLastname,
+                  number: itemData.getNumber,
+                  isFocused: index == focusIndex,
+                );
                 return item;
               },
               itemScrollController: itemScrollController,
@@ -157,9 +160,7 @@ class _contactState extends PageState<contacts> {
   }
 
   void goUp() {
-    removeHighlight();
     focusIndex--;
-    addHighlight();
     if (_canScrollUp()) {
       _scrollUp();
     }
@@ -185,9 +186,7 @@ class _contactState extends PageState<contacts> {
   }
 
   void goDown() {
-    removeHighlight();
     focusIndex++;
-    addHighlight();
     if (_canScrollDown()) {
       _scrollDown();
     }
