@@ -141,7 +141,7 @@ class _ContactPopupState extends State<ContactPopup> {
             child: Text("Submit"),
             color: Color(StaticColors.lightSlateGray),
             onPressed: () {
-              if(!validateInput()){
+              if (!validateInput()) {
                 return;
               }
 
@@ -163,27 +163,27 @@ class _ContactPopupState extends State<ContactPopup> {
     );
   }
 
-  void updatePrefs(){
+  void updatePrefs() {
     List<String> prefList = [];
-    for(ContactItemData cData in widget.items){
+    for (ContactItemData cData in widget.items) {
       prefList.add(jsonEncode(cData.toJson()));
     }
 
     prefs.setStringList("contacts", prefList);
   }
 
-  bool validateInput(){
+  bool validateInput() {
     int errors = 0;
 
-    if(firstNameController.text == null || firstNameController.text.isEmpty){
+    if (firstNameController.text == null || firstNameController.text.isEmpty) {
       errors++;
     }
 
-    if(surnameController.text == null || surnameController.text.isEmpty){
+    if (surnameController.text == null || surnameController.text.isEmpty) {
       errors++;
     }
 
-    if(numberController.text == null || numberController.text.isEmpty){
+    if (numberController.text == null || numberController.text.isEmpty) {
       errors++;
     }
 

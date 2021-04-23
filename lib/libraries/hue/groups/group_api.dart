@@ -34,6 +34,6 @@ class GroupApi {
   Future<void> changeScene(String sceneId, String groupId) async {
     String url = '/api/' + _username + '/groups/' + groupId + '/action';
     final response = await _bridge.put(url, {'scene': sceneId});
-    developer.log("Scene changed: " + response[0]);
+    developer.log("Scene changed: " + response[0].toString());
   }
 }
