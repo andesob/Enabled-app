@@ -21,6 +21,9 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  philips_hue_flutter_library:
+    git:
+      url: https://github.com/andesob/philips-hue-flutter-library.git
   gradient_app_bar:
     git:
       url: https://github.com/TinyProgrammers/GradientAppBar.git
@@ -30,7 +33,6 @@ dependencies:
   url_launcher: ^5.7.10
   flutter_phone_direct_caller: ^1.0.1
   scrollable_positioned_list: ^0.1.9
-  hue_dart: ^0.2.1
   wifi: ^0.1.5
   http: ^0.12.2
   shared_preferences: ^0.5.12+4

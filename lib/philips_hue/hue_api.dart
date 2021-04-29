@@ -1,12 +1,12 @@
-import 'package:enabled_app/libraries/hue/groups/group.dart';
-import 'package:enabled_app/libraries/hue/lights/light.dart';
-import 'package:enabled_app/libraries/hue/lights/light_state.dart';
-import 'package:enabled_app/libraries/hue/main/bridge_finder_result.dart';
-import 'package:enabled_app/libraries/hue/main/bridge_api.dart';
-import 'package:enabled_app/libraries/hue/main/bridge_finder.dart';
-import 'package:enabled_app/libraries/hue/main/user.dart';
-import 'package:enabled_app/libraries/hue/scenes/scene.dart';
 import 'package:http/http.dart';
+import 'package:philips_hue_flutter_library/hue/groups/group.dart';
+import 'package:philips_hue_flutter_library/hue/lights/light.dart';
+import 'package:philips_hue_flutter_library/hue/lights/light_state.dart';
+import 'package:philips_hue_flutter_library/hue/main/bridge_api.dart';
+import 'package:philips_hue_flutter_library/hue/main/bridge_finder.dart';
+import 'package:philips_hue_flutter_library/hue/main/bridge_finder_result.dart';
+import 'package:philips_hue_flutter_library/hue/main/user.dart';
+import 'package:philips_hue_flutter_library/hue/scenes/scene.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:developer' as developer;
 
