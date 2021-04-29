@@ -1,7 +1,8 @@
 import 'package:enabled_app/global_data/colors.dart';
-import 'package:enabled_app/libraries/hue/main/hue_api.dart';
+import 'file:///E:/Dataingenior/Bachelor/EEG/enabled_app/lib/philips_hue/hue_api.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_text/gradient_text.dart';
+import 'package:http/http.dart';
 
 // TODO Change the flatButton to raisedButton??
 class HueDropdown extends StatefulWidget {
@@ -21,17 +22,16 @@ class HueDropdown extends StatefulWidget {
 class _HueDropdownState extends State<HueDropdown> {
   String text;
   int dropdownValue = 1;
-  HueApi api = new HueApi();
+  HueApi api;
 
   @override
   void initState() {
     super.initState();
-    api = new HueApi();
+    api = new HueApi(new Client());
   }
 
   @override
   Widget build(BuildContext context) {
-    HueApi api = new HueApi();
 
     return Container(
       color: Color(widget.isFocused

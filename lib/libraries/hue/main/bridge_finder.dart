@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:enabled_app/libraries/hue/main/BridgeFinderResult.dart';
+import 'package:enabled_app/libraries/hue/main/bridge_finder_result.dart';
 import 'package:http/http.dart';
 
 class BridgeFinder{

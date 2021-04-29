@@ -42,8 +42,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
-    //addThemes(themeNotifier, context);
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: Strings.ENABLED,
       initialRoute: Strings.HOME,
       theme: themeNotifier.getTheme(),
@@ -99,36 +99,4 @@ class MyApp extends StatelessWidget {
       },
     );
   }
-/*
-  void addThemes(ThemeNotifier notifier, context) {
-    notifier.lightTheme = ThemeData(
-      brightness: Brightness.light,
-      primaryColor: Colors.white,
-      backgroundColor: Colors.white,
-      appBarTheme: AppBarTheme(
-        textTheme: ThemeData.light().textTheme.copyWith(
-          headline6: TextStyle(
-            color: Color(StaticColors.lighterSlateGray),
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    );
-
-    notifier.darkTheme = ThemeData(
-      primaryColor: Color(StaticColors.lightGray),
-      backgroundColor: Color(StaticColors.lightPeach),
-      brightness: Brightness.dark,
-      appBarTheme: AppBarTheme(
-        textTheme: ThemeData.dark().textTheme.copyWith(
-              headline6: TextStyle(
-                color: Color(StaticColors.lightPeach),
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-      ),
-    );
-  }*/
 }

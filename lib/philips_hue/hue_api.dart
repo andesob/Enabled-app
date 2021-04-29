@@ -1,7 +1,7 @@
 import 'package:enabled_app/libraries/hue/groups/group.dart';
 import 'package:enabled_app/libraries/hue/lights/light.dart';
 import 'package:enabled_app/libraries/hue/lights/light_state.dart';
-import 'package:enabled_app/libraries/hue/main/BridgeFinderResult.dart';
+import 'package:enabled_app/libraries/hue/main/bridge_finder_result.dart';
 import 'package:enabled_app/libraries/hue/main/bridge_api.dart';
 import 'package:enabled_app/libraries/hue/main/bridge_finder.dart';
 import 'package:enabled_app/libraries/hue/main/user.dart';
@@ -12,7 +12,7 @@ import 'dart:developer' as developer;
 
 class HueApi {
   static final HueApi _api = HueApi._internal();
-  final client = Client();
+  Client _client;
 
   BridgeFinder bridgeFinder;
   BridgeFinderResult bridgeFinderResult;
@@ -27,7 +27,8 @@ class HueApi {
 
   SharedPreferences pref;
 
-  factory HueApi() {
+  factory HueApi(Client client) {
+    _api._client = client;
     return _api;
   }
 
@@ -50,7 +51,7 @@ class HueApi {
   }
 
   Future<BridgeFinderResult> findBridge() async {
-    bridgeFinder = BridgeFinder(client);
+    bridgeFinder = BridgeFinder(_client);
 
     List<BridgeFinderResult> bridgeFinderResultList =
         await bridgeFinder.automatic();
@@ -62,7 +63,7 @@ class HueApi {
 
     bridgeFinderResult = bridgeFinderResultList.first;
     developer.log("HUE bridge found with IP: " + bridgeFinderResult.ip);
-    bridgeApi = BridgeApi(client, bridgeFinderResult.ip);
+    bridgeApi = BridgeApi(_client, bridgeFinderResult.ip);
 
     return bridgeFinderResult;
   }
