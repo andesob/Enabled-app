@@ -1,8 +1,15 @@
+import 'package:enabled_app/global_data/strings.dart';
 import 'package:enabled_app/needs/needs_category.dart';
-import 'package:enabled_app/needs/needs_vertical_list.dart';
+import 'package:enabled_app/needs/needs_data.dart';
+import 'package:enabled_app/needs/needs_horizontal_list.dart';
+import 'package:enabled_app/needs/needs_page_button.dart';
 import 'package:enabled_app/page_state.dart';
+import 'package:enabled_app/tts_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+
+import 'needs_object.dart';
 
 class NeedsPage extends StatefulWidget {
   NeedsPage({Key key, this.title}) : super(key: key);
@@ -14,180 +21,252 @@ class NeedsPage extends StatefulWidget {
 }
 
 class _NeedsPageState extends PageState<NeedsPage> {
+  FlutterTts flutterTts = TTSController().flutterTts;
+
   List<NeedsCategory> categoryList = [];
-  List<NeedsVerticalList> verticalList = [];
+  List<NeedsObject> horizontalList = [];
 
-  int verticalListIndex = 0;
-  int lastScrollIndexDown = 0;
-  int lastScrollIndexUp = 0;
-  int lastScrollIndex = 0;
+  bool inHorizontalList = false;
+  int currentFocusedVerticalListIndex;
+  int currentFocusedHorizontalListIndex;
 
-  ItemScrollController childController;
-  NeedsVerticalList focusedList;
+  int lastScrollIndexLeft = 0;
+  int lastScrollIndexRight = 0;
+  int lastHorizontalScrollIndex = 0;
 
-  ItemScrollController itemScrollController;
-  ItemPositionsListener itemPositionsListener;
-
-  bool inChildLevel = false;
+  ItemScrollController childScrollController;
 
   void initState() {
     super.initState();
 
-    List<String> testObjects = ['1', '2', '3', '4', '5'];
-    NeedsCategory needsCategory = new NeedsCategory();
-    needsCategory.categoryName = 'Sundeersot123';
-    needsCategory.categoryObjects = testObjects;
+    currentFocusedVerticalListIndex = 0;
+    currentFocusedHorizontalListIndex = 0;
 
-    for (var i = 0; i < 5; i++) {
-      categoryList.add(needsCategory);
-    }
-    for (var item in categoryList) {
-      NeedsVerticalList list = new NeedsVerticalList(
-        categoryTitle: item.categoryName,
-        buttonList: item.allButtons(),
-      );
-      verticalList.add(list);
-      focusedList = verticalList[0];
-      focusedList.isFocused = true;
-    }
+    NeedsCategory foodDrinkCategory =
+        NeedsCategory(Strings.FOOD_DRINK, NeedsData.FOOD_DRINK_OBJECTS);
+    NeedsCategory hygieneCategory =
+        NeedsCategory(Strings.HYGIENE, NeedsData.HYGIENE_OBJECTS);
+    NeedsCategory emotionsCategory =
+        NeedsCategory(Strings.EMOTIONS, NeedsData.EMOTION_OBJECTS);
+    NeedsCategory roomCategory =
+        NeedsCategory(Strings.ROOMS, NeedsData.ROOM_OBJECTS);
+
+    categoryList.add(foodDrinkCategory);
+    categoryList.add(hygieneCategory);
+    categoryList.add(emotionsCategory);
+    categoryList.add(roomCategory);
   }
-
-  /// Scrolls the list down to the selected index.
-  void scrollDown() {
-    itemScrollController.scrollTo(
-        index: verticalListIndex,
-        duration: Duration(
-          seconds: 1,
-        ),
-        alignment: 0.75,
-        curve: Curves.ease);
-  }
-
-  /// Scrolls the list up to the selected index.
-  void scrollUp() {
-    itemScrollController.scrollTo(
-        index: verticalListIndex,
-        duration: Duration(
-          seconds: 1,
-        ),
-        alignment: 0,
-        curve: Curves.ease);
-  }
-
-  ///Scrolls one of the child list right.
-  void scrollRight() {
-    verticalList[verticalListIndex].state.scrollRight();
-  }
-
-  /// Scrolls one of the child list left.
-  void scrollLeft() {
-    verticalList[verticalListIndex].state.scrollLeft();
-  }
-
-  /// Sets the focus around the selected list.
-  void setListFocus() {
-    if (focusedList == null) {
-      focusedList = verticalList[0];
-      focusedList.state.setFocus();
-    } else {
-      focusedList.state.removeFocus();
-      focusedList = verticalList[verticalListIndex];
-      focusedList.state.setFocus();
-    }
-  }
-
-
-  /// Checks if the list can scroll down or not.
-  /// Returns a true if it can scroll and a false if it can't.
-  bool canScrollDown() {
-    bool canScroll = false;
-    if (verticalListIndex < verticalList.length && verticalListIndex > 3) {
-      if (verticalListIndex > lastScrollIndexUp + 3 &&
-          verticalListIndex > lastScrollIndex) {
-        canScroll = true;
-      }
-    }
-    return canScroll;
-  }
-
-  /// Checks if the list can scroll up or not.
-  /// Returns a true if it can scroll and a false if it can't.
-  bool canScrollUp() {
-    bool canScroll = false;
-    if (verticalListIndex < verticalList.length - 4) {
-      if (lastScrollIndexDown != 0 &&
-          verticalListIndex < lastScrollIndexDown - 3) {
-        canScroll = true;
-      }
-    }
-    return canScroll;
-  }
-
 
   @override
   Widget build(BuildContext context) {
-    itemScrollController = ItemScrollController();
-
-    itemPositionsListener = ItemPositionsListener.create();
-
     return Container(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          SizedBox(height: 20,),
+          SizedBox(
+            height: 20,
+          ),
           Expanded(
             child: ScrollablePositionedList.builder(
-                initialScrollIndex: 0,
-                itemScrollController: itemScrollController,
-                itemPositionsListener: itemPositionsListener,
-                itemCount: verticalList.length,
-                scrollDirection: Axis.vertical,
-                itemBuilder: (context, index) => verticalList[index]),
+              initialScrollIndex: 0,
+              itemCount: categoryList.length,
+              scrollDirection: Axis.vertical,
+              itemBuilder: (context, index) {
+                return new NeedsHorizontalList(
+                  categoryTitle: categoryList[index].name,
+                  buttonList: _createButtons(index),
+                  isFocused: index == currentFocusedVerticalListIndex,
+                  setScrollController: _setChildScrollController,
+                );
+              },
+            ),
           ),
         ],
       ),
     );
   }
 
-  @override
-  void leftPressed() {
-    if (!inChildLevel && verticalListIndex > 0) {
-      verticalListIndex--;
-      if (canScrollUp()) {
-        lastScrollIndexUp = verticalListIndex;
-        lastScrollIndex = verticalListIndex;
-        scrollUp();
-      }
-      setListFocus();
-    } else if (inChildLevel) {
-      scrollLeft();
+  List<NeedsPageButton> _createButtons(index) {
+    List<NeedsPageButton> buttonList = [];
+    List<NeedsObject> objects = categoryList[index].objects;
+    for (int i = 0; i < objects.length; i++) {
+      NeedsPageButton button = new NeedsPageButton(
+        text: objects[i].text,
+        icon: objects[i].icon,
+        isFocused: inHorizontalList &&
+            i == currentFocusedHorizontalListIndex &&
+            index == currentFocusedVerticalListIndex,
+      );
+      buttonList.add(button);
+    }
+
+    return buttonList;
+  }
+
+  ///Scrolls one of the child list right.
+  void _goRight() {
+    currentFocusedHorizontalListIndex++;
+    if (_canScrollRight()) {
+      _scrollRight();
     }
   }
 
-  @override
-  void pullPressed() {
-    inChildLevel = false;
-    verticalList[verticalListIndex].state.removeButtonFocus();
+  // Scrolls one of the child list left.
+  void _goLeft() {
+    currentFocusedHorizontalListIndex--;
+    if (_canScrollLeft()) {
+      _scrollLeft();
+    }
   }
 
-  @override
-  void pushPressed() {
-    verticalList[verticalListIndex].state.setButtonFocus();
-    inChildLevel = true;
+  void _goIntoList() {
+    horizontalList = categoryList[currentFocusedVerticalListIndex].objects;
+    inHorizontalList = true;
+  }
+
+  void _goOutOfList() {
+    currentFocusedHorizontalListIndex = 0;
+    lastScrollIndexRight = 0;
+    lastScrollIndexLeft = 0;
+    lastHorizontalScrollIndex = 0;
+    inHorizontalList = false;
+    _scrollToStart();
+  }
+
+  bool _canScrollRight() {
+    //If rightmost button on screen is focused
+    if (currentFocusedHorizontalListIndex > lastScrollIndexLeft + 3 &&
+        currentFocusedHorizontalListIndex > lastHorizontalScrollIndex) {
+      return true;
+    }
+    return false;
+  }
+
+  bool _canScrollLeft() {
+    //If leftmost button on screen is focused
+    if (lastScrollIndexRight != 0 &&
+        currentFocusedHorizontalListIndex < lastScrollIndexRight - 3) {
+      return true;
+    }
+    return false;
+  }
+
+  void _scrollLeft() {
+    lastScrollIndexLeft = currentFocusedHorizontalListIndex;
+    lastHorizontalScrollIndex = currentFocusedHorizontalListIndex;
+
+    childScrollController.scrollTo(
+      index: currentFocusedHorizontalListIndex,
+      duration: Duration(
+        seconds: 1,
+      ),
+      curve: Curves.ease,
+    );
+  }
+
+  void _scrollRight() {
+    lastScrollIndexRight = currentFocusedHorizontalListIndex;
+    lastHorizontalScrollIndex = currentFocusedHorizontalListIndex;
+
+    childScrollController.scrollTo(
+      index: currentFocusedHorizontalListIndex,
+      duration: Duration(
+        seconds: 1,
+      ),
+      alignment: 0.75,
+      curve: Curves.ease,
+    );
+  }
+
+  void _scrollToStart() {
+    childScrollController.scrollTo(
+      index: 0,
+      duration: Duration(
+        seconds: 1,
+      ),
+      curve: Curves.ease,
+    );
+  }
+
+  void _setChildScrollController(ItemScrollController controller) {
+    childScrollController = controller;
   }
 
   @override
   void rightPressed() {
-    if (!inChildLevel && verticalListIndex < verticalList.length - 1) {
-      verticalListIndex++;
-      if (canScrollDown()) {
-        lastScrollIndexDown = verticalListIndex;
-        lastScrollIndex = verticalListIndex;
-        scrollDown();
+    setState(() {
+      if (inHorizontalList) {
+        //If not at end of horizontal list
+        if (checkIfAtHorizontalListEnd()) {
+          _goRight();
+        }
+        return;
       }
-      setListFocus();
-    } else if (inChildLevel) {
-      scrollRight();
-    }
+
+      //If not at end of vertical list
+      if (checkIfAtVerticalListEnd()) {
+        currentFocusedVerticalListIndex++;
+        return;
+      }
+    });
+  }
+
+  @override
+  void leftPressed() {
+    setState(() {
+      if (inHorizontalList) {
+        if (checkIfAtHorizontalListStart()) {
+          _goLeft();
+        }
+        return;
+      }
+
+      if (checkIfAtVerticalListStart()) {
+        currentFocusedVerticalListIndex--;
+        return;
+      }
+    });
+  }
+
+  @override
+  void pullPressed() {
+    setState(() {
+      if (inHorizontalList) {
+        _goOutOfList();
+      } else {
+        Navigator.pushReplacementNamed(context, Strings.HOME);
+      }
+    });
+  }
+
+  @override
+  void pushPressed() {
+    setState(() {
+      if (inHorizontalList) {
+        _sayButtonText();
+      } else {
+        _goIntoList();
+      }
+    });
+  }
+
+  void _sayButtonText() {
+    flutterTts.speak(horizontalList[currentFocusedHorizontalListIndex].text);
+  }
+
+  bool checkIfAtHorizontalListStart() {
+    return currentFocusedHorizontalListIndex > 0;
+  }
+
+  bool checkIfAtHorizontalListEnd() {
+    return currentFocusedHorizontalListIndex < horizontalList.length - 1;
+  }
+
+  bool checkIfAtVerticalListStart() {
+    return currentFocusedVerticalListIndex > 0;
+  }
+
+  bool checkIfAtVerticalListEnd() {
+    return currentFocusedVerticalListIndex < categoryList.length - 1;
   }
 }

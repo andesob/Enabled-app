@@ -179,18 +179,21 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/integration_test/integration_test.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/shared_preferences/shared_preferences.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/url_launcher/url_launcher.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/wifi/wifi.framework"
 fi
 if [[ "$CONFIGURATION" == "Profile" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/flutter_phone_direct_caller/flutter_phone_direct_caller.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/integration_test/integration_test.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/shared_preferences/shared_preferences.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/url_launcher/url_launcher.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/wifi/wifi.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/flutter_phone_direct_caller/flutter_phone_direct_caller.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/integration_test/integration_test.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/shared_preferences/shared_preferences.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/url_launcher/url_launcher.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/wifi/wifi.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
   wait

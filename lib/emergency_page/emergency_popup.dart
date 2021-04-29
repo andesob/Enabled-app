@@ -2,6 +2,7 @@ import 'package:enabled_app/global_data/colors.dart';
 import 'package:enabled_app/emergency_page/emergency_contact.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class EmergencyPopup extends StatefulWidget {
 
@@ -12,6 +13,7 @@ class EmergencyPopup extends StatefulWidget {
 }
 
 class _EmergencyPopupState extends State<EmergencyPopup> {
+  SharedPreferences prefs;
   final emergencyNumberController = TextEditingController();
 
   FocusNode emergencyFocusNode;
@@ -25,9 +27,14 @@ class _EmergencyPopupState extends State<EmergencyPopup> {
   @override
   void initState() {
     super.initState();
+    initPrefs();
     emergencyFocusNode = new FocusNode();
 
     emergencyFocusNode.addListener(_onOnFocusNodeEvent);
+  }
+
+  Future<void> initPrefs() async {
+    prefs = await SharedPreferences.getInstance();
   }
 
   _onOnFocusNodeEvent() {
@@ -79,6 +86,7 @@ class _EmergencyPopupState extends State<EmergencyPopup> {
             color: Color(StaticColors.lightSlateGray),
             onPressed: () {
               StaticEmergencyContact.emergencyContact = emergencyNumberController.text;
+              prefs.setString("emergency", StaticEmergencyContact.emergencyContact);
               emergencyNumberController.clear();
               Navigator.pop(context);
             })

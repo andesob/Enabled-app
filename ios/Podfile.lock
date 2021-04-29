@@ -2,38 +2,50 @@ PODS:
   - Flutter (1.0.0)
   - flutter_phone_direct_caller (0.0.1):
     - Flutter
+  - flutter_tts (0.0.1):
+    - Flutter
   - integration_test (0.0.1):
     - Flutter
   - shared_preferences (0.0.1):
     - Flutter
   - url_launcher (0.0.1):
     - Flutter
+  - wifi (0.0.1):
+    - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_phone_direct_caller (from `.symlinks/plugins/flutter_phone_direct_caller/ios`)
+  - flutter_tts (from `.symlinks/plugins/flutter_tts/ios`)
   - integration_test (from `.symlinks/plugins/integration_test/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
+  - wifi (from `.symlinks/plugins/wifi/ios`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
   flutter_phone_direct_caller:
     :path: ".symlinks/plugins/flutter_phone_direct_caller/ios"
+  flutter_tts:
+    :path: ".symlinks/plugins/flutter_tts/ios"
   integration_test:
     :path: ".symlinks/plugins/integration_test/ios"
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
   url_launcher:
     :path: ".symlinks/plugins/url_launcher/ios"
+  wifi:
+    :path: ".symlinks/plugins/wifi/ios"
 
 SPEC CHECKSUMS:
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   flutter_phone_direct_caller: bd2ffd297f371a8a6c7bfbba0196964ffe3c4358
+  flutter_tts: 0f492aab6accf87059b72354fcb4ba934304771d
   integration_test: 5ed24a436eb7ec17b6a13046e9bf7ca4a404e59e
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
+  wifi: d7d77c94109e36c4175d845f0a5964eadba71060
 
 PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
 

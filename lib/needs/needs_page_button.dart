@@ -1,90 +1,81 @@
 import 'dart:ui';
 
 import 'package:enabled_app/global_data/colors.dart';
+import 'package:enabled_app/tts_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:gradient_text/gradient_text.dart';
+import 'package:http/http.dart';
 
 class NeedsPageButton extends StatefulWidget {
-  NeedsPageButton({Key key, this.text}) : super(key: key);
+  NeedsPageButton({
+    Key key,
+    this.text,
+    this.icon,
+    this.isFocused = false,
+  }) : super(key: key);
   final String text;
-  bool isFocused = false;
-  _NeedsPageButton state;
+  final IconData icon;
+  final bool isFocused;
 
   @override
-  _NeedsPageButton createState() {
-    state = _NeedsPageButton();
-    return state;
-  }
-
-//TODO
-//var picture;
+  _NeedsPageButton createState() => _NeedsPageButton();
 }
 
-class _NeedsPageButton extends State<NeedsPageButton>{
-  String text;
-
-  @override
-  void initState(){
-    super.initState();
-    text = widget.text;
-  }
-
-  /// Sets the focus the button to true
-  void setFocus() {
-    if (this.mounted) {
-      setState(() {
-        widget.isFocused = true;
-      });
-    } else {
-      print("not mounted");
-    }
-  }
-
-  /// Removes the focus of the button.
-  void removeFocus() {
-    setState(() {
-      widget.isFocused = false;
-    });
-  }
+class _NeedsPageButton extends State<NeedsPageButton> {
+  FlutterTts flutterTts = TTSController().flutterTts;
 
   @override
   Widget build(BuildContext context) {
+    var shortestSide = MediaQuery.of(context).size.shortestSide;
+    bool isMobile = shortestSide < 600;
     const Color lightPeach = Color(0xffffecd2);
     const Color darkPeach = Color(0xfffcb7a0);
 
     return Container(
-        margin: EdgeInsets.all(10),
-        child: new Column(
+      margin: EdgeInsets.all(5),
+      child: new RaisedButton(
+        highlightColor: Color(StaticColors.deepSpaceSparkle),
+        color: widget.isFocused
+            ? Color(StaticColors.deepSpaceSparkle)
+            : Color(StaticColors.lighterSlateGray),
+        elevation: widget.isFocused ? 10 : 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+          side: BorderSide(
+            color: Colors.transparent,
+          ),
+        ),
+        padding: const EdgeInsets.all(0.0),
+        textColor: Colors.white,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Flexible(
-              child: new Center(
-                child: new RaisedButton(
-                  highlightColor: Color(StaticColors.deepSpaceSparkle),
-                  color: widget.isFocused
-                      ? Color(StaticColors.deepSpaceSparkle)
-                      : Color(StaticColors.lighterSlateGray),
-                  elevation: widget.isFocused ? 10 : 0,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                      side: BorderSide(
-                          color: widget.isFocused ? Colors.black : Colors.black12)),
-                  textColor: Colors.white,
-                  padding: const EdgeInsets.all(0.0),
-                  child: new GradientText(
-                    widget.text,
-                    style: TextStyle(color: Color(StaticColors.white)),
-                    gradient: new LinearGradient(
-                      colors: [lightPeach, darkPeach],
-                      begin: FractionalOffset.centerLeft,
-                      end: FractionalOffset.centerRight,
-                    ),
-                  ),
-                  onPressed: () {},
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  widget.icon,
+                  size: isMobile ? 20 : 50,
                 ),
-              ),
+                GradientText(
+                  widget.text,
+                  style: TextStyle(fontSize: isMobile ? 10 : 20),
+                  gradient: new LinearGradient(
+                    colors: [lightPeach, darkPeach],
+                    begin: FractionalOffset.centerLeft,
+                    end: FractionalOffset.centerRight,
+                  ),
+                ),
+              ],
             ),
           ],
-        ));
+        ),
+        onPressed: () {
+          flutterTts.speak(widget.text);
+        },
+      ),
+    );
   }
 }

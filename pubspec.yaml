@@ -21,6 +21,9 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  philips_hue_flutter_library:
+    git:
+      url: https://github.com/andesob/philips-hue-flutter-library.git
   gradient_app_bar:
     git:
       url: https://github.com/TinyProgrammers/GradientAppBar.git
@@ -30,11 +33,14 @@ dependencies:
   url_launcher: ^5.7.10
   flutter_phone_direct_caller: ^1.0.1
   scrollable_positioned_list: ^0.1.9
-  hue_dart: ^0.2.1
+  wifi: ^0.1.5
   http: ^0.12.2
   shared_preferences: ^0.5.12+4
   provider: ^3.1.0+1
   csv: ^4.1.0
+  flutter_tts: ^3.0.0
+  uuid: ^2.2.2
+
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -42,6 +48,8 @@ dependencies:
   cupertino_icons: ^1.0.1
 
 dev_dependencies:
+  test: ^1.15.7
+  mockito: ^4.1.4
   flutter_test:
     sdk: flutter
   integration_test:
@@ -65,8 +73,13 @@ flutter:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
   assets:
-      - assets/images/
-      - assets/data/
+    - assets/images/
+    - assets/data/
+
+  fonts:
+    - family: CustomIcons
+      fonts:
+        - asset: assets/fonts/CustomIcons.ttf
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

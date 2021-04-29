@@ -1,67 +1,59 @@
 import 'package:enabled_app/global_data/colors.dart';
-import 'package:enabled_app/libraries/hue/main/hue_api.dart';
+import 'file:///E:/Dataingenior/Bachelor/EEG/enabled_app/lib/philips_hue/hue_api.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_text/gradient_text.dart';
+import 'package:http/http.dart';
 
 // TODO Change the flatButton to raisedButton??
 class HueDropdown extends StatefulWidget {
-  HueDropdown({Key key, this.onClick}) : super(key: key);
+  HueDropdown({
+    Key key,
+    this.onClick,
+    this.isFocused = false,
+  }) : super(key: key);
 
   final ValueSetter<String> onClick;
-  bool isFocused = false;
-  _HueDropdown state;
+  final bool isFocused;
 
   @override
-  _HueDropdown createState() {
-    state = _HueDropdown();
-    return state;
-  }
+  _HueDropdownState createState() => _HueDropdownState();
 }
 
-class _HueDropdown extends State<HueDropdown> {
+class _HueDropdownState extends State<HueDropdown> {
   String text;
   int dropdownValue = 1;
+  HueApi api;
 
-  /// Sets the focus the button to true
-  void setFocus() {
-    if (this.mounted) {
-      setState(() {
-        widget.isFocused = true;
-      });
-    } else {
-      print("not mounted");
-    }
+  @override
+  void initState() {
+    super.initState();
+    api = new HueApi(new Client());
   }
-
-  /// Removes the focus of the button.
-  void removeFocus() {
-    setState(() {
-      widget.isFocused = false;
-    });
-  }
-
-  void changeValue() {}
 
   @override
   Widget build(BuildContext context) {
-    Color lightPeach = Color(StaticColors.lightPeach);
-    Color darkPeach = Color(StaticColors.darkPeach);
-    HueApi api = new HueApi();
 
     return Container(
-        padding: EdgeInsets.all(10),
-        width: MediaQuery.of(context).size.width * (0.7),
-        height: MediaQuery.of(context).size.width * (0.35),
+      color: Color(widget.isFocused
+          ? StaticColors.deepSpaceSparkle
+          : StaticColors.lighterSlateGray),
+      padding: EdgeInsets.all(10),
+      child: DropdownButtonHideUnderline(
         child: DropdownButton<int>(
+          isDense: true,
+          dropdownColor: Color(StaticColors.lighterSlateGray),
           value: dropdownValue,
           icon: Align(
-            child: Icon(Icons.arrow_drop_down),
+            child: Icon(
+              Icons.arrow_drop_down,
+              color: Color(StaticColors.apricot),
+            ),
             alignment: Alignment.centerRight,
           ),
           iconSize: 24,
-          style: TextStyle(color: Color(StaticColors.charcoal)),
-          underline: Container(
-            color: Color(StaticColors.charcoal),
+          style: TextStyle(
+            color: Color(StaticColors.apricot),
+            fontWeight: FontWeight.bold,
           ),
           onChanged: (int newValue) {
             setState(() {
@@ -72,11 +64,15 @@ class _HueDropdown extends State<HueDropdown> {
             api.scenes.length,
             (int index) => new DropdownMenuItem<int>(
                 value: index,
-                child: new Text(api.scenes[index].name),
+                child: new Text(
+                  api.scenes[index].name,
+                ),
                 onTap: () {
                   widget.onClick?.call(api.scenes[index].id);
                 }),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

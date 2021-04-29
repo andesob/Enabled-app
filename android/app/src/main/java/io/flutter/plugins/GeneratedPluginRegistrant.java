@@ -16,8 +16,10 @@ public final class GeneratedPluginRegistrant {
   public static void registerWith(@NonNull FlutterEngine flutterEngine) {
     ShimPluginRegistry shimPluginRegistry = new ShimPluginRegistry(flutterEngine);
       com.yanisalfian.flutterphonedirectcaller.FlutterPhoneDirectCallerPlugin.registerWith(shimPluginRegistry.registrarFor("com.yanisalfian.flutterphonedirectcaller.FlutterPhoneDirectCallerPlugin"));
+    flutterEngine.getPlugins().add(new com.tundralabs.fluttertts.FlutterTtsPlugin());
     flutterEngine.getPlugins().add(new dev.flutter.plugins.integration_test.IntegrationTestPlugin());
     flutterEngine.getPlugins().add(new io.flutter.plugins.sharedpreferences.SharedPreferencesPlugin());
     flutterEngine.getPlugins().add(new io.flutter.plugins.urllauncher.UrlLauncherPlugin());
+      com.ly.wifi.WifiPlugin.registerWith(shimPluginRegistry.registrarFor("com.ly.wifi.WifiPlugin"));
   }
 }

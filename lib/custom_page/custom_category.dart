@@ -1,27 +1,32 @@
-import 'package:enabled_app/custom_page/vertical_list_buttons.dart';
-
-import 'custom_page_button.dart';
+import 'package:uuid/uuid.dart';
 
 class CustomCategory {
-  String categoryName;
-  List<String> categoryObjects;
+  final String categoryName;
+  final List<String> categoryObjects;
+  String _categoryId = Uuid().v4();
 
   CustomCategory({this.categoryName, this.categoryObjects});
+
+  CustomCategory.fromJson(Map<String, dynamic> json)
+      : categoryName = json['categoryName'],
+        categoryObjects = json['categoryObjects'].cast<String>(),
+        _categoryId = json['categoryId'];
+
+  Map<String, dynamic> toJson(){
+    return {
+      'categoryName': this.categoryName,
+      'categoryObjects': this.categoryObjects,
+      'categoryId': this._categoryId
+    };
+  }
 
   String get name {
     return this.categoryName;
   }
 
-  List<String> get allObjects {
+  List<String> get objects {
     return this.categoryObjects;
   }
 
-  List<CustomPageButton> allButtons() {
-    List<CustomPageButton> buttonList = [];
-    for (var i = 0; i < categoryObjects.length; i++) {
-      CustomPageButton button = new CustomPageButton(text: categoryObjects[i]);
-      buttonList.add(button);
-    }
-    return buttonList;
-  }
+  String get categoryId => _categoryId;
 }

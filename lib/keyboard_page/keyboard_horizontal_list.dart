@@ -1,12 +1,8 @@
-import 'package:enabled_app/custom_page/custom_page_button.dart';
-import 'package:enabled_app/keyboard_page/custom_dictionary.dart';
-import 'package:enabled_app/keyboard_page/custom_keyboard.dart';
 import 'package:enabled_app/keyboard_page/keyboard_backspace_key.dart';
-import 'package:enabled_app/keyboard_page/keyboard_capslock_key.dart';
+import 'package:enabled_app/keyboard_page/keyboard_dictionary_key.dart';
 import 'package:enabled_app/keyboard_page/keyboard_key.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class KeyboardHorizontalList extends StatefulWidget {
   KeyboardHorizontalList({
@@ -17,8 +13,9 @@ class KeyboardHorizontalList extends StatefulWidget {
     this.inHorizontalList = false,
     this.onTextInput,
     this.onBackspace,
-    this.onCapslock,
+    this.onDictPressed,
     this.currentFocusedKeyIndex = 0,
+    this.onSend,
   }) : super(key: key);
 
   final List<String> keyStringList;
@@ -28,18 +25,21 @@ class KeyboardHorizontalList extends StatefulWidget {
   final int currentFocusedKeyIndex;
   final ValueSetter<String> onTextInput;
   final VoidCallback onBackspace;
-  final VoidCallback onCapslock;
+  final VoidCallback onDictPressed;
+  final VoidCallback onSend;
 
   @override
   _KeyboardHorizontalList createState() => _KeyboardHorizontalList();
 }
 
 class _KeyboardHorizontalList extends State<KeyboardHorizontalList> {
-  void _textInputHandler(String text) => widget.onTextInput.call(text);
+  void _textInputHandler(String text) => widget.onTextInput?.call(text);
 
-  void _backSpaceHandler() => widget.onBackspace.call();
+  void _backSpaceHandler() => widget.onBackspace?.call();
 
-  void _capsLockHandler() => widget.onCapslock.call();
+  void _dictKeyHandler() => widget.onDictPressed?.call();
+
+  void _onSendHandler() => widget.onSend?.call();
 
   @override
   Widget build(BuildContext context) {
@@ -81,16 +81,20 @@ class _KeyboardHorizontalList extends State<KeyboardHorizontalList> {
         color: widget.isFocused ? Colors.black : Colors.white,
         child: Row(
           children: [
-            KeyboardCapslockKey(
-              onCapslock: _capsLockHandler,
+            KeyboardDictionaryKey(
+              onDictPressed: _dictKeyHandler,
               isFocused: capsLockKeyFocused(),
             ),
             KeyboardKey(
               text: "Send",
               isFocused: sendKeyFocused(),
+              onPressed: _onSendHandler,
             ),
             KeyboardBackspaceKey(
-              icon: Icon(Icons.backspace),
+              icon: Icon(
+                Icons.backspace,
+                color: Colors.white,
+              ),
               onBackspace: _backSpaceHandler,
               isFocused: backSpaceKeyFocused(),
             ),

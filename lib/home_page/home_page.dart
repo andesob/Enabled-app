@@ -3,42 +3,54 @@ import 'package:enabled_app/emergency_page/emergency_alert.dart';
 import 'package:enabled_app/emergency_page/emergency_button.dart';
 import 'package:enabled_app/emergency_page/emergency_contact.dart';
 import 'package:enabled_app/emergency_page/emergency_popup.dart';
-import 'package:enabled_app/main_layout/button_controller.dart';
+import 'package:enabled_app/main_layout/input_controller.dart';
 import 'package:enabled_app/main_layout/main_appbar.dart';
 import 'package:enabled_app/page_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'home_page_button.dart';
 import '../global_data/strings.dart';
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
+  MyHomePage({Key key}) : super(key: key);
 
   @override
   MyHomePageState createState() => MyHomePageState();
 }
 
 class MyHomePageState extends PageState<MyHomePage> {
+  SharedPreferences prefs;
   int horizontalBtns;
   int verticalBtns;
 
   List<int> currPos = [0, 0];
-  String currBtnString = Strings.needs;
+  String currBtnString = Strings.NEEDS;
 
   List<HomePageButton> mainPageBtnList = [];
   List<String> btnTextList = [
-    Strings.needs,
-    Strings.custom,
-    Strings.keyboard,
-    Strings.contacts,
-    Strings.smart,
-    Strings.emergency,
+    Strings.NEEDS,
+    Strings.CUSTOM,
+    Strings.KEYBOARD,
+    Strings.CONTACTS,
+    Strings.SMART,
+    Strings.EMERGENCY,
   ];
   var list;
+
+  @override
+  void initState() {
+    super.initState();
+    initPrefs();
+  }
+
+  Future<void> initPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+    String contact = prefs.getString("emergency");
+    StaticEmergencyContact.emergencyContact = contact;
+  }
 
   void setGridSize(useMobileLayout) {
     setState(() {
@@ -66,8 +78,7 @@ class MyHomePageState extends PageState<MyHomePage> {
   }
 
   @override
-  void pullPressed() {
-  }
+  void pullPressed() {}
 
   @override
   void rightPressed() {
@@ -79,24 +90,23 @@ class MyHomePageState extends PageState<MyHomePage> {
 
   @override
   void pushPressed() {
-    if(currBtnString == Strings.emergency){
+    if (currBtnString == Strings.EMERGENCY) {
       _launchURL();
       return;
     }
-    Navigator.pushNamed(context, currBtnString);
+    Navigator.pushReplacementNamed(context, currBtnString);
   }
 
   _launchURL() async {
     String number = StaticEmergencyContact.emergencyContact;
-    if(number != null) {
+    if (number != null && number.isNotEmpty) {
       bool res = await FlutterPhoneDirectCaller.callNumber(number);
-    }
-    else{
+    } else {
       showEmergencyContactAlert();
     }
   }
 
-  showEmergencyContactAlert(){
+  showEmergencyContactAlert() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -139,7 +149,7 @@ class MyHomePageState extends PageState<MyHomePage> {
             physics: NeverScrollableScrollPhysics(),
             crossAxisCount: useMobileLayout ? 2 : 3,
             children: btnTextList.map((string) {
-              if (string == Strings.emergency) {
+              if (string == Strings.EMERGENCY) {
                 return EmergencyButton(
                   text: string,
                   focused: currBtnString == string,

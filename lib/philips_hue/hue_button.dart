@@ -4,46 +4,23 @@ import 'package:gradient_text/gradient_text.dart';
 
 // TODO Change the flatButton to raisedButton??
 class HuePageButton extends StatefulWidget {
-  HuePageButton({Key key, this.text, this.onClick}) : super(key: key);
+  HuePageButton({Key key, this.text, this.onClick, this.isFocused = false}) : super(key: key);
 
   final String text;
   final VoidCallback onClick;
-  bool isFocused = false;
-  _HuePageButton state;
+  final bool isFocused;
 
   @override
-  _HuePageButton createState() {
-    state = _HuePageButton();
-    return state;
-  }
+  _HuePageButtonState createState() => _HuePageButtonState();
 }
 
-class _HuePageButton extends State<HuePageButton> {
+class _HuePageButtonState extends State<HuePageButton> {
   String text;
 
   @override
   void initState() {
     super.initState();
-    //setFocus();
     text = widget.text;
-  }
-
-  /// Sets the focus the button to true
-  void setFocus() {
-    if (this.mounted) {
-      setState(() {
-        widget.isFocused = true;
-      });
-    } else {
-      print("not mounted");
-    }
-  }
-
-  /// Removes the focus of the button.
-  void removeFocus() {
-    setState(() {
-      widget.isFocused = false;
-    });
   }
 
   @override

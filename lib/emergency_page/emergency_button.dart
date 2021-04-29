@@ -1,13 +1,7 @@
 import 'dart:ui';
 
 import 'package:enabled_app/global_data/colors.dart';
-import 'package:enabled_app/emergency_page/emergency_alert.dart';
-
-import 'package:enabled_app/emergency_page/emergency_contact.dart';
-import 'package:enabled_app/emergency_page/emergency_popup.dart';
-import 'package:enabled_app/home_page/home_page_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:gradient_text/gradient_text.dart';
 
 class EmergencyButton extends StatefulWidget {
@@ -40,6 +34,7 @@ class EmergencyButtonState extends State<EmergencyButton> {
       child: FlatButton(
         child: new GradientText(
           widget.text,
+          style: TextStyle(fontSize: 20),
           gradient: new LinearGradient(
             colors: [
               Color(StaticColors.lightPeach),
