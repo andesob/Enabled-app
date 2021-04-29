@@ -1,10 +1,11 @@
 import 'package:enabled_app/global_data/colors.dart';
 import 'package:enabled_app/home_page/home_page_button.dart';
-import 'package:enabled_app/libraries/hue/main/hue_api.dart';
+import 'file:///E:/Dataingenior/Bachelor/EEG/enabled_app/lib/philips_hue/hue_api.dart';
 import 'package:enabled_app/page_state.dart';
 import 'package:enabled_app/global_data/strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 
 class SmartMainPage extends StatefulWidget {
   SmartMainPage({
@@ -28,7 +29,7 @@ class SmartMainPageState extends PageState<SmartMainPage> {
   }
 
   void checkApi() async {
-    api = HueApi();
+    api = HueApi(new Client());
     bool setupResult = await api.setup();
     setState(() {
       apiSuccess = setupResult;

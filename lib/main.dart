@@ -1,24 +1,16 @@
-import 'dart:async';
-
 import 'package:enabled_app/contacts_page/contact_page.dart';
 import 'package:enabled_app/desktop_connection/server_socket.dart';
 import 'package:enabled_app/home_page/home_page.dart';
 import 'package:enabled_app/keyboard_page/keyboard_page.dart';
-import 'package:enabled_app/libraries/hue/main/bridge.dart';
-import 'package:enabled_app/libraries/hue/main/bridge_api.dart';
 import 'package:enabled_app/main_page.dart';
 import 'package:enabled_app/main_layout/themes.dart';
 import 'package:enabled_app/needs/needs.dart';
 import 'package:enabled_app/page_global_keys.dart';
-import 'package:enabled_app/page_state.dart';
 import 'package:enabled_app/philips_hue/hue_page.dart';
 import 'package:enabled_app/smart/smart_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:http/http.dart';
-import 'libraries/hue/lights/light.dart';
 import 'package:provider/provider.dart';
-import 'global_data/colors.dart';
 import 'global_data/strings.dart';
 import 'package:enabled_app/custom_page/custom_page.dart';
 
@@ -42,8 +34,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
-    //addThemes(themeNotifier, context);
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: Strings.ENABLED,
       initialRoute: Strings.HOME,
       theme: themeNotifier.getTheme(),
@@ -99,36 +91,4 @@ class MyApp extends StatelessWidget {
       },
     );
   }
-/*
-  void addThemes(ThemeNotifier notifier, context) {
-    notifier.lightTheme = ThemeData(
-      brightness: Brightness.light,
-      primaryColor: Colors.white,
-      backgroundColor: Colors.white,
-      appBarTheme: AppBarTheme(
-        textTheme: ThemeData.light().textTheme.copyWith(
-          headline6: TextStyle(
-            color: Color(StaticColors.lighterSlateGray),
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    );
-
-    notifier.darkTheme = ThemeData(
-      primaryColor: Color(StaticColors.lightGray),
-      backgroundColor: Color(StaticColors.lightPeach),
-      brightness: Brightness.dark,
-      appBarTheme: AppBarTheme(
-        textTheme: ThemeData.dark().textTheme.copyWith(
-              headline6: TextStyle(
-                color: Color(StaticColors.lightPeach),
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-      ),
-    );
-  }*/
 }

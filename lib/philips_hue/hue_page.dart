@@ -1,13 +1,14 @@
 import 'package:enabled_app/global_data/colors.dart';
 import 'package:enabled_app/contacts_page/contact_popup.dart';
 import 'package:enabled_app/global_data/strings.dart';
-import 'package:enabled_app/libraries/hue/main/hue_api.dart';
+import 'file:///E:/Dataingenior/Bachelor/EEG/enabled_app/lib/philips_hue/hue_api.dart';
 import 'package:enabled_app/page_state.dart';
 import 'package:enabled_app/philips_hue/hue_button.dart';
 import 'package:enabled_app/philips_hue/hue_dropdown.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
+import 'package:http/http.dart';
 
 class HuePage extends StatefulWidget {
   HuePage({Key key}) : super(key: key);
@@ -27,7 +28,7 @@ class _HuePageState extends PageState<HuePage> {
     super.initState();
     isDropdownExpanded = false;
     verticalListIndex = 0;
-    api = new HueApi();
+    api = new HueApi(new Client());
     isLightOn = initLightState();
   }
 
