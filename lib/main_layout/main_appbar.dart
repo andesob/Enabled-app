@@ -27,25 +27,58 @@ class MyAppBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class MyAppBarState extends State<MyAppBar> {
+  ThemeNotifier themeNotifier;
+  bool isDark;
+
   createDropDown() {
-    final themeNotifier = Provider.of<ThemeNotifier>(context);
     return <Widget>[
       Material(
         type: MaterialType.transparency,
         child: PopupMenuButton(
           icon: Icon(
-            Icons.accessible_forward,
+            Icons.list,
           ),
           itemBuilder: (BuildContext bc) => [
-            PopupMenuItem(child: Text("Dark Mode"), value: 0),
-            PopupMenuItem(child: Text("Change Emergency Contact"), value: 1),
-            PopupMenuItem(child: Text("Change text-to-speech language"), value: 2),
-            PopupMenuItem(child: Text("Show Mobile IP address"), value: 3),
+            PopupMenuItem(
+              child: StatefulBuilder(
+                builder: (BuildContext context, StateSetter setState) {
+                  return Row(
+                    children: [
+                      Text("Dark Mode"),
+                      Switch(
+                        value: isDark,
+                        onChanged: (value) {
+                          setState(() {
+                            themeNotifier.switchTheme();
+                            isDark = value;
+                            print("Value: " + value.toString());
+                            print("Is dark?: " + isDark.toString());
+                          });
+                        },
+                      ),
+                    ],
+                  );
+                }
+              ),
+              value: 0,
+            ),
+            PopupMenuItem(
+              child: Text("Change Emergency Contact"),
+              value: 1,
+            ),
+            PopupMenuItem(
+              child: Text("Change text-to-speech language"),
+              value: 2,
+            ),
+            PopupMenuItem(
+              child: Text("Show Mobile IP address"),
+              value: 3,
+            ),
           ],
           onSelected: (selected) {
             if (selected == 0) {
               setState(() {
-                themeNotifier.switchTheme();
+                //themeNotifier.switchTheme();
               });
             }
             if (selected == 1) {
@@ -58,12 +91,12 @@ class MyAppBarState extends State<MyAppBar> {
             if (selected == 2) {
               TTSController().changeLanguage();
             }
-            if(selected == 3){
+            if (selected == 3) {
               showDialog(
-                context: context,
-                builder: (BuildContext context){
-                  return IpPopup();
-                });
+                  context: context,
+                  builder: (BuildContext context) {
+                    return IpPopup();
+                  });
             }
           },
         ),
@@ -73,7 +106,8 @@ class MyAppBarState extends State<MyAppBar> {
 
   @override
   Widget build(BuildContext context) {
-    final themeNotifier = Provider.of<ThemeNotifier>(context);
+    themeNotifier = Provider.of<ThemeNotifier>(context);
+    isDark = themeNotifier.isDark;
     var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
     return PreferredSize(
       preferredSize: Size.fromHeight(isPortrait ? 50 : 30),
@@ -82,7 +116,7 @@ class MyAppBarState extends State<MyAppBar> {
           widget.title,
         ),
         gradient: LinearGradient(
-            colors: themeNotifier.isDark
+            colors: isDark
                 ? [Colors.transparent, Colors.transparent]
                 : [
                     Color(StaticColors.lightPeach),
