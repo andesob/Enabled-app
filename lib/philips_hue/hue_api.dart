@@ -12,7 +12,7 @@ import 'dart:developer' as developer;
 
 class HueApi {
   static final HueApi _api = HueApi._internal();
-  Client _client;
+  Client client;
 
   BridgeFinder bridgeFinder;
   BridgeFinderResult bridgeFinderResult;
@@ -28,7 +28,7 @@ class HueApi {
   SharedPreferences pref;
 
   factory HueApi(Client client) {
-    _api._client = client;
+    _api.client = client;
     return _api;
   }
 
@@ -38,20 +38,32 @@ class HueApi {
     pref = await SharedPreferences.getInstance();
 
     BridgeFinderResult bridgeResult = await findBridge();
-    if(bridgeResult == null) return false;
+    if (bridgeResult == null) {
+      developer.log("No bridge found, returning");
+      return false;
+    }
 
     User foundUser = await _findUser();
-    if (foundUser == null) return false;
+    if (foundUser == null) {
+      developer.log("No user found");
+      return false;
+    }
 
     lights = await getLights();
+    developer.log("Found lights: " + lights.toString());
+
     scenes = await getScenes();
+    developer.log("Found scenes: " + scenes.toString());
+
     groups = await getGroups();
+    developer.log("Found groups: " + groups.toString());
+
     setCurrentGroup(groups.first.name);
     return true;
   }
 
   Future<BridgeFinderResult> findBridge() async {
-    bridgeFinder = BridgeFinder(_client);
+    bridgeFinder = BridgeFinder(client);
 
     List<BridgeFinderResult> bridgeFinderResultList =
         await bridgeFinder.automatic();
@@ -63,7 +75,7 @@ class HueApi {
 
     bridgeFinderResult = bridgeFinderResultList.first;
     developer.log("HUE bridge found with IP: " + bridgeFinderResult.ip);
-    bridgeApi = BridgeApi(_client, bridgeFinderResult.ip);
+    bridgeApi = BridgeApi(client, bridgeFinderResult.ip);
 
     return bridgeFinderResult;
   }
@@ -74,8 +86,8 @@ class HueApi {
       if (username.isNotEmpty) {
         user = new User(username);
         bridgeApi.username = username;
-        developer.log("Found username in prefs\nAdding user with username: " +
-            username);
+        developer.log(
+            "Found username in prefs\nAdding user with username: " + username);
         return user;
       }
     }
