@@ -41,7 +41,8 @@ class HueApi {
     BridgeFinderResult bridgeResult = await findBridge();
     if (bridgeResult == null) {
       developer.log("No bridge found, returning");
-      return new HueResults(HueResults.NO_BRIDGE_FOUND, false, "No bridge found");
+      return new HueResults(
+          HueResults.NO_BRIDGE_FOUND, false, "No bridge found");
     }
 
     HueResults result = await _findUser();
@@ -51,16 +52,12 @@ class HueApi {
     }
 
     lights = await getLights();
-    developer.log("Found lights: " + lights.toString());
-
     scenes = await getScenes();
-    developer.log("Found scenes: " + scenes.toString());
-
     groups = await getGroups();
-    developer.log("Found groups: " + groups.toString());
 
     setCurrentGroup(groups.first.name);
-    return new HueResults(HueResults.CONNECTION_SUCCESSFUL, true, "Successfully connected");
+    return new HueResults(
+        HueResults.CONNECTION_SUCCESSFUL, true, "Successfully connected");
   }
 
   Future<BridgeFinderResult> findBridge() async {
@@ -89,7 +86,8 @@ class HueApi {
         bridgeApi.username = username;
         developer.log(
             "Found username in prefs\nAdding user with username: " + username);
-        return new HueResults(HueResults.USER_IN_PREFS, true, "Found username in prefs, adding with username: " + username);
+        return new HueResults(HueResults.USER_IN_PREFS, true,
+            "Found username in prefs, adding with username: " + username);
       }
     }
 
@@ -107,16 +105,19 @@ class HueApi {
       bridgeApi.username = user.username;
 
       await pref.setString("username", user.username);
-      result = new HueResults(HueResults.USER_CREATED, true, "User successfully created");
+      result = new HueResults(
+          HueResults.USER_CREATED, true, "User successfully created");
     } else if (response.keys.first == "error") {
       final error = response["error"];
       if (error["type"] == 101) {
         developer.log(
             "Please press the button on your Philips HUE bridge and try again");
-        result = new HueResults(HueResults.PRESS_BUTTON, false, "Please press the button on the Philips Hue bridge and try again");
+        result = new HueResults(HueResults.PRESS_BUTTON, false,
+            "Please press the button on the Philips Hue bridge and try again");
       } else {
         developer.log("Error creating user: " + error.toString());
-        result = new HueResults(HueResults.UNKNOWN_USER_ERROR, false, "Error creating user: " + error.toString());
+        result = new HueResults(HueResults.UNKNOWN_USER_ERROR, false,
+            "Error creating user: " + error.toString());
       }
     }
     return result;
