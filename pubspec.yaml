@@ -40,7 +40,7 @@ dependencies:
   csv: ^4.1.0
   flutter_tts: ^3.0.0
   uuid: ^2.2.2
-
+  flag: ^3.2.2
 
 
   # The following adds the Cupertino Icons font to your application.
