@@ -12,6 +12,7 @@ class Strings {
   static const String ENTER = "Enter";
   static const String BACK = "Back";
   static const String HUE = "Philips Hue";
+  static const String REFRESH = "Refresh";
   static const String CHROMECAST = "Chromecast";
   static const String HYGIENE = "Hygiene";
   static const String EMOTIONS = "Emotions";

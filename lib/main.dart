@@ -34,6 +34,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
+    print("===================");
+    print(themeNotifier.getTheme());
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: Strings.ENABLED,
