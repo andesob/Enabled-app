@@ -3,6 +3,7 @@ import 'package:enabled_app/global_data/colors.dart';
 import 'package:enabled_app/emergency_page/emergency_popup.dart';
 import 'package:enabled_app/main_layout/themes.dart';
 import 'package:enabled_app/tts_controller.dart';
+import 'package:flag/flag.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
@@ -29,6 +30,7 @@ class MyAppBar extends StatefulWidget implements PreferredSizeWidget {
 class MyAppBarState extends State<MyAppBar> {
   ThemeNotifier themeNotifier;
   bool isDark;
+  bool isNorwegian = TTSController().getCurrentLanguage() == "US";
 
   createDropDown() {
     return <Widget>[
@@ -41,33 +43,57 @@ class MyAppBarState extends State<MyAppBar> {
           itemBuilder: (BuildContext bc) => [
             PopupMenuItem(
               child: StatefulBuilder(
-                builder: (BuildContext context, StateSetter setState) {
-                  return Row(
-                    children: [
-                      Text("Dark Mode"),
-                      Switch(
-                        value: isDark,
-                        onChanged: (value) {
-                          setState(() {
-                            themeNotifier.switchTheme();
-                            isDark = value;
-                            print("Value: " + value.toString());
-                            print("Is dark?: " + isDark.toString());
-                          });
-                        },
-                      ),
-                    ],
-                  );
-                }
-              ),
+                  builder: (BuildContext context, StateSetter setState) {
+                return Row(
+                  children: [
+                    Text("Dark Mode"),
+                    Spacer(),
+                    Switch(
+                      value: isDark,
+                      onChanged: (value) {
+                        setState(() {
+                          themeNotifier.switchTheme();
+                          isDark = value;
+                        });
+                      },
+                    ),
+                  ],
+                );
+              }),
               value: 0,
             ),
             PopupMenuItem(
-              child: Text("Change Emergency Contact"),
+              child: StatefulBuilder(
+                  builder: (BuildContext context, StateSetter setState) {
+                return Row(
+                  children: [
+                    Text("TTS Language"),
+                    Spacer(),
+                    Flag(
+                      'NO',
+                      width: 15,
+                      height: 15,
+                    ),
+                    Switch(
+                      value: isNorwegian,
+                      onChanged: (value) {
+                        setState(() {
+                          TTSController().changeLanguage();
+                          isNorwegian = !isNorwegian;
+                        });
+                      },
+                    ),
+                    Flag(
+                      'GB',
+                      width: 25,
+                    )
+                  ],
+                );
+              }),
               value: 1,
             ),
             PopupMenuItem(
-              child: Text("Change text-to-speech language"),
+              child: Text("Change Emergency Contact"),
               value: 2,
             ),
             PopupMenuItem(
@@ -82,14 +108,14 @@ class MyAppBarState extends State<MyAppBar> {
               });
             }
             if (selected == 1) {
+              //TTSController().changeLanguage();
+            }
+            if (selected == 2) {
               showDialog(
                   context: context,
                   builder: (BuildContext context) {
                     return EmergencyPopup();
                   });
-            }
-            if (selected == 2) {
-              TTSController().changeLanguage();
             }
             if (selected == 3) {
               showDialog(
