@@ -6,10 +6,41 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ThemeNotifier with ChangeNotifier {
   SharedPreferences prefs;
 
+  ThemeData lightTheme = ThemeData(
+    brightness: Brightness.light,
+    primaryColor: Colors.white,
+    backgroundColor: Colors.white,
+    appBarTheme: AppBarTheme(
+      textTheme: ThemeData.light().textTheme.copyWith(
+        headline6: TextStyle(
+          color: Color(StaticColors.lighterSlateGray),
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    ),
+  );
+
+  ThemeData darkTheme = ThemeData(
+    primaryColor: Color(StaticColors.lightGray),
+    backgroundColor: Color(StaticColors.lightPeach),
+    brightness: Brightness.dark,
+    appBarTheme: AppBarTheme(
+      textTheme: ThemeData.dark().textTheme.copyWith(
+        headline6: TextStyle(
+          color: Color(StaticColors.lightPeach),
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    ),
+  );
+
   ThemeData _themeData;
   bool isDark = false;
 
   ThemeNotifier() {
+    _themeData = lightTheme;
     initPrefs();
   }
 
@@ -22,36 +53,6 @@ class ThemeNotifier with ChangeNotifier {
   }
 
   getTheme() => _themeData;
-
-  ThemeData lightTheme = ThemeData(
-    brightness: Brightness.light,
-    primaryColor: Colors.white,
-    backgroundColor: Colors.white,
-    appBarTheme: AppBarTheme(
-      textTheme: ThemeData.light().textTheme.copyWith(
-            headline6: TextStyle(
-              color: Color(StaticColors.lighterSlateGray),
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-    ),
-  );
-
-  ThemeData darkTheme = ThemeData(
-    primaryColor: Color(StaticColors.lightGray),
-    backgroundColor: Color(StaticColors.lightPeach),
-    brightness: Brightness.dark,
-    appBarTheme: AppBarTheme(
-      textTheme: ThemeData.dark().textTheme.copyWith(
-            headline6: TextStyle(
-              color: Color(StaticColors.lightPeach),
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-    ),
-  );
 
   void switchTheme() {
     isDark = !isDark;
