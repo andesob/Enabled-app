@@ -50,10 +50,17 @@ dependencies:
 dev_dependencies:
   test: ^1.15.7
   mockito: ^4.1.4
+  flutter_launcher_icons: ^0.7.0
   flutter_test:
     sdk: flutter
   integration_test:
     sdk: flutter
+
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/enabled_logo.png"
 
 
 

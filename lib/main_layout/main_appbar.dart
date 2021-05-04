@@ -85,7 +85,8 @@ class MyAppBarState extends State<MyAppBar> {
                     ),
                     Flag(
                       'GB',
-                      width: 25,
+                      height: 15,
+                      width: 20,
                     )
                   ],
                 );
