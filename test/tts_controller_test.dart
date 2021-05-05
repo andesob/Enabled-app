@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:enabled_app/mocking/mock_tts_controller.dart';
 import 'package:enabled_app/tts_controller.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -11,19 +13,19 @@ void main() {
   TTSController controller = TTSController();
   MockTTSController mockController = MockTTSController();
 
-  test("Empty language test", () {
-    var result = controller.setLanguage("");
+  test("Empty language test", () async {
+    var result = await controller.setLanguage("");
     expect(result, "Enter language");
   });
 
-  test("Invalid language test", () {
-    var result = controller.setLanguage("SHEESH");
+  test("Invalid language test", () async {
+    var result = await controller.setLanguage("SWE");
     expect(result, "Language not found");
   });
 
   test("Valid language test", () async {
-    when(await mockController.setLanguage("NO")).thenReturn("NO language set");
-    var result = mockController.setLanguage("NO");
+    when(mockController.setLanguage("NO")).thenAnswer((_) async => "NO language set");
+    var result = await mockController.setLanguage("NO");
     expect(result, "NO language set");
   });
 
