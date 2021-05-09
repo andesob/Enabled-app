@@ -28,5 +28,16 @@ void main(){
     expect(find.byType(KeyboardDictionaryKey), findsOneWidget);
     expect(find.text("A"), findsOneWidget);
     expect(find.byType(DictionaryItem), findsNothing);
+
+    TextField textField = find.byType(TextField).evaluate().first.widget;
+
+    expect(textField.controller.text, "");
+
+    await tester.tap(find.byType(KeyboardKey).at(6));
+    await tester.tap(find.byType(KeyboardKey).at(1));
+    await tester.tap(find.byType(KeyboardKey).at(8));
+    await tester.tap(find.byType(KeyboardKey).at(6));
+
+    expect(textField.controller.text, "TEST");
   });
 }
