@@ -13,6 +13,14 @@ import 'dart:developer' as developer;
 
 class HueApi {
   static final HueApi _api = HueApi._internal();
+
+  factory HueApi(Client client) {
+    _api.client = client;
+    return _api;
+  }
+
+  HueApi._internal();
+
   Client client;
 
   BridgeFinder bridgeFinder;
@@ -28,12 +36,6 @@ class HueApi {
 
   SharedPreferences pref;
 
-  factory HueApi(Client client) {
-    _api.client = client;
-    return _api;
-  }
-
-  HueApi._internal();
 
   Future<HueResults> setup() async {
     pref = await SharedPreferences.getInstance();
