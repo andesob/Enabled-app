@@ -1,3 +1,4 @@
+import 'package:enabled_app/philips_hue/hue_results.dart';
 import 'package:http/http.dart';
 import 'package:philips_hue_flutter_library/hue/groups/group.dart';
 import 'package:philips_hue_flutter_library/hue/lights/light.dart';
@@ -12,7 +13,15 @@ import 'dart:developer' as developer;
 
 class HueApi {
   static final HueApi _api = HueApi._internal();
-  Client _client;
+
+  factory HueApi(Client client) {
+    _api.client = client;
+    return _api;
+  }
+
+  HueApi._internal();
+
+  Client client;
 
   BridgeFinder bridgeFinder;
   BridgeFinderResult bridgeFinderResult;
@@ -27,31 +36,34 @@ class HueApi {
 
   SharedPreferences pref;
 
-  factory HueApi(Client client) {
-    _api._client = client;
-    return _api;
-  }
 
-  HueApi._internal();
-
-  Future<bool> setup() async {
+  Future<HueResults> setup() async {
     pref = await SharedPreferences.getInstance();
 
     BridgeFinderResult bridgeResult = await findBridge();
-    if(bridgeResult == null) return false;
+    if (bridgeResult == null) {
+      developer.log("No bridge found, returning");
+      return new HueResults(
+          HueResults.NO_BRIDGE_FOUND, false, "No bridge found");
+    }
 
-    User foundUser = await _findUser();
-    if (foundUser == null) return false;
+    HueResults result = await _findUser();
+    if (!result.success) {
+      developer.log(result.message);
+      return result;
+    }
 
     lights = await getLights();
     scenes = await getScenes();
     groups = await getGroups();
+
     setCurrentGroup(groups.first.name);
-    return true;
+    return new HueResults(
+        HueResults.CONNECTION_SUCCESSFUL, true, "Successfully connected");
   }
 
   Future<BridgeFinderResult> findBridge() async {
-    bridgeFinder = BridgeFinder(_client);
+    bridgeFinder = BridgeFinder(client);
 
     List<BridgeFinderResult> bridgeFinderResultList =
         await bridgeFinder.automatic();
@@ -63,29 +75,30 @@ class HueApi {
 
     bridgeFinderResult = bridgeFinderResultList.first;
     developer.log("HUE bridge found with IP: " + bridgeFinderResult.ip);
-    bridgeApi = BridgeApi(_client, bridgeFinderResult.ip);
+    bridgeApi = BridgeApi(client, bridgeFinderResult.ip);
 
     return bridgeFinderResult;
   }
 
-  Future<User> _findUser() async {
+  Future<HueResults> _findUser() async {
     String username = await pref.get("username");
     if (username != null) {
       if (username.isNotEmpty) {
         user = new User(username);
         bridgeApi.username = username;
-        developer.log("Found username in prefs\nAdding user with username: " +
-            username);
-        return user;
+        developer.log(
+            "Found username in prefs\nAdding user with username: " + username);
+        return new HueResults(HueResults.USER_IN_PREFS, true,
+            "Found username in prefs, adding with username: " + username);
       }
     }
 
-    return _createUser("p30_pro");
+    return _createUser("hueUser");
   }
 
-  Future<User> _createUser(username) async {
+  Future<HueResults> _createUser(username) async {
     final response = await bridgeApi.createUser(username);
-
+    HueResults result;
     if (response.keys.first == "success") {
       final success = response["success"];
       developer.log("Successfully created user: " + success.toString());
@@ -94,17 +107,22 @@ class HueApi {
       bridgeApi.username = user.username;
 
       await pref.setString("username", user.username);
-      return user;
+      result = new HueResults(
+          HueResults.USER_CREATED, true, "User successfully created");
     } else if (response.keys.first == "error") {
       final error = response["error"];
       if (error["type"] == 101) {
         developer.log(
             "Please press the button on your Philips HUE bridge and try again");
+        result = new HueResults(HueResults.PRESS_BUTTON, false,
+            "Please press the button on the Philips Hue bridge and try again");
       } else {
         developer.log("Error creating user: " + error.toString());
+        result = new HueResults(HueResults.UNKNOWN_USER_ERROR, false,
+            "Error creating user: " + error.toString());
       }
     }
-    return null;
+    return result;
   }
 
   Future<List<Light>> getLights() async {

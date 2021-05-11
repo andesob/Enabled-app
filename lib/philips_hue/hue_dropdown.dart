@@ -1,5 +1,5 @@
 import 'package:enabled_app/global_data/colors.dart';
-import 'file:///E:/Dataingenior/Bachelor/EEG/enabled_app/lib/philips_hue/hue_api.dart';
+import 'package:enabled_app/philips_hue/hue_api.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_text/gradient_text.dart';
 import 'package:http/http.dart';
@@ -27,7 +27,7 @@ class _HueDropdownState extends State<HueDropdown> {
   @override
   void initState() {
     super.initState();
-    api = new HueApi(new Client());
+    api = HueApi(new Client());
   }
 
   @override

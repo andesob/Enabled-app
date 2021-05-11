@@ -35,14 +35,12 @@ class TTSController {
     }
   }
 
-  String changeLanguage() {
+  Future<String> changeLanguage() async {
     if (_currentLanguage == "US") {
-      setLanguage("NO");
-    } else if (_currentLanguage == "NO") {
-      setLanguage("US");
+      return await setLanguage("NO");
+    } else{
+      return await setLanguage("US");
     }
-
-    return _currentLanguage;
   }
 
   String getCurrentLanguage(){
