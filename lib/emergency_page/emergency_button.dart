@@ -1,12 +1,19 @@
 import 'dart:ui';
 
 import 'package:enabled_app/global_data/colors.dart';
+import 'package:enabled_app/home_page/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_text/gradient_text.dart';
 
+/// Widget representing the emergency button on [MyHomePage]
 class EmergencyButton extends StatefulWidget {
+  /// Text displayed on the button
   final String text;
+
+  /// The Callback called when button is pressed
   final VoidCallback onPressed;
+
+  /// True if button currently focused
   final bool focused;
 
   EmergencyButton({

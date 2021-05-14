@@ -49,7 +49,7 @@ class MyHomePageState extends PageState<MyHomePage> {
   Future<void> initPrefs() async {
     prefs = await SharedPreferences.getInstance();
     String contact = prefs.getString("emergency");
-    StaticEmergencyContact.emergencyContact = contact;
+    EmergencyContact.emergencyContact = contact;
   }
 
   void setGridSize(useMobileLayout) {
@@ -98,7 +98,7 @@ class MyHomePageState extends PageState<MyHomePage> {
   }
 
   _launchURL() async {
-    String number = StaticEmergencyContact.emergencyContact;
+    String number = EmergencyContact.emergencyContact;
     if (number != null && number.isNotEmpty) {
       bool res = await FlutterPhoneDirectCaller.callNumber(number);
     } else {
