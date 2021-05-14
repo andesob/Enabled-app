@@ -303,14 +303,14 @@ class _CustomPageHome extends PageState<CustomPageHome> {
     setState(() {
       if (inHorizontalList) {
         //If not at end of horizontal list
-        if (checkIfAtHorizontalListEnd()) {
+        if (!atHorizontalListEnd()) {
           _goRight();
         }
         return;
       }
 
       //If not at end of vertical list
-      if (checkIfAtVerticalListEnd()) {
+      if (!atVerticalListEnd()) {
         _goDown();
         return;
       }
@@ -322,14 +322,14 @@ class _CustomPageHome extends PageState<CustomPageHome> {
     setState(() {
       if (inHorizontalList) {
         //If not at start of horizontal list
-        if (checkIfAtHorizontalListStart()) {
+        if (!atHorizontalListStart()) {
           _goLeft();
         }
         return;
       }
 
       //If not at start of vertical list
-      if (checkIfAtVerticalListStart()) {
+      if (!atVerticalListStart()) {
         _goUp();
         return;
       }
@@ -358,19 +358,19 @@ class _CustomPageHome extends PageState<CustomPageHome> {
     });
   }
 
-  bool checkIfAtHorizontalListStart() {
-    return currentFocusedHorizontalListIndex > 0;
+  bool atHorizontalListStart() {
+    return currentFocusedHorizontalListIndex == 0;
   }
 
-  bool checkIfAtHorizontalListEnd() {
-    return currentFocusedHorizontalListIndex < horizontalList.length - 1;
+  bool atHorizontalListEnd() {
+    return currentFocusedHorizontalListIndex == horizontalList.length - 1;
   }
 
-  bool checkIfAtVerticalListStart() {
-    return currentFocusedVerticalListIndex > 0;
+  bool atVerticalListStart() {
+    return currentFocusedVerticalListIndex == 0;
   }
 
-  bool checkIfAtVerticalListEnd() {
-    return currentFocusedVerticalListIndex < categoryList.length - 1;
+  bool atVerticalListEnd() {
+    return currentFocusedVerticalListIndex == categoryList.length - 1;
   }
 }

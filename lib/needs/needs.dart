@@ -197,14 +197,14 @@ class _NeedsPageState extends PageState<NeedsPage> {
     setState(() {
       if (inHorizontalList) {
         //If not at end of horizontal list
-        if (checkIfAtHorizontalListEnd()) {
+        if (!atHorizontalListEnd()) {
           _goRight();
         }
         return;
       }
 
       //If not at end of vertical list
-      if (checkIfAtVerticalListEnd()) {
+      if (!atVerticalListEnd()) {
         currentFocusedVerticalListIndex++;
         return;
       }
@@ -215,13 +215,14 @@ class _NeedsPageState extends PageState<NeedsPage> {
   void leftPressed() {
     setState(() {
       if (inHorizontalList) {
-        if (checkIfAtHorizontalListStart()) {
+        //If not at start of horizontal list
+        if (!atHorizontalListStart()) {
           _goLeft();
         }
         return;
       }
-
-      if (checkIfAtVerticalListStart()) {
+      //If not at start of vertical list
+      if (!atVerticalListStart()) {
         currentFocusedVerticalListIndex--;
         return;
       }
@@ -254,19 +255,19 @@ class _NeedsPageState extends PageState<NeedsPage> {
     flutterTts.speak(horizontalList[currentFocusedHorizontalListIndex].text);
   }
 
-  bool checkIfAtHorizontalListStart() {
-    return currentFocusedHorizontalListIndex > 0;
+  bool atHorizontalListStart() {
+    return currentFocusedHorizontalListIndex == 0;
   }
 
-  bool checkIfAtHorizontalListEnd() {
-    return currentFocusedHorizontalListIndex < horizontalList.length - 1;
+  bool atHorizontalListEnd() {
+    return currentFocusedHorizontalListIndex == horizontalList.length - 1;
   }
 
-  bool checkIfAtVerticalListStart() {
-    return currentFocusedVerticalListIndex > 0;
+  bool atVerticalListStart() {
+    return currentFocusedVerticalListIndex == 0;
   }
 
-  bool checkIfAtVerticalListEnd() {
+  bool atVerticalListEnd() {
     return currentFocusedVerticalListIndex < categoryList.length - 1;
   }
 }

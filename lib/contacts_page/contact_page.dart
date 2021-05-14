@@ -162,7 +162,7 @@ class _ContactPageState extends PageState<ContactPage> {
   @override
   void leftPressed() {
     setState(() {
-      if (focusIndex > 0) {
+      if (!atTop()) {
         goUp();
       }
     });
@@ -188,7 +188,7 @@ class _ContactPageState extends PageState<ContactPage> {
   @override
   void rightPressed() {
     setState(() {
-      if (focusIndex < items.length - 1) {
+      if (!atBottom()) {
         goDown();
       }
     });
@@ -199,5 +199,13 @@ class _ContactPageState extends PageState<ContactPage> {
     if (_canScrollDown()) {
       _scrollDown();
     }
+  }
+
+  bool atBottom(){
+    return focusIndex == items.length - 1;
+  }
+
+  bool atTop(){
+    return focusIndex == 0;
   }
 }
