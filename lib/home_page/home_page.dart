@@ -1,19 +1,17 @@
-import 'package:enabled_app/global_data/colors.dart';
 import 'package:enabled_app/emergency_page/emergency_alert.dart';
 import 'package:enabled_app/emergency_page/emergency_button.dart';
 import 'package:enabled_app/emergency_page/emergency_contact.dart';
-import 'package:enabled_app/emergency_page/emergency_popup.dart';
-import 'package:enabled_app/main_layout/input_controller.dart';
-import 'package:enabled_app/main_layout/main_appbar.dart';
 import 'package:enabled_app/page_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
-import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'home_page_button.dart';
 import '../global_data/strings.dart';
 
+/// Widget representing the homepage
+///
+/// This is where buttons leading to all the other pages are found
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key}) : super(key: key);
 
@@ -23,13 +21,22 @@ class MyHomePage extends StatefulWidget {
 
 class MyHomePageState extends PageState<MyHomePage> {
   SharedPreferences prefs;
+
+  /// Number of horizontal buttons on this page
   int horizontalBtns;
+
+  /// Number of vertical buttons on this page.
   int verticalBtns;
 
+  /// [List] of current position.
+  ///
+  /// Keeps track of X and Y position for navigation purposes
   List<int> currPos = [0, 0];
+
+  /// Name of button currently focused
   String currBtnString = Strings.NEEDS;
 
-  List<HomePageButton> mainPageBtnList = [];
+  /// [List] of all button names
   List<String> btnTextList = [
     Strings.NEEDS,
     Strings.CUSTOM,
@@ -38,6 +45,7 @@ class MyHomePageState extends PageState<MyHomePage> {
     Strings.SMART,
     Strings.EMERGENCY,
   ];
+
   var list;
 
   @override
@@ -52,6 +60,10 @@ class MyHomePageState extends PageState<MyHomePage> {
     EmergencyContact.emergencyContact = contact;
   }
 
+  /// Sets size of the grid
+  ///
+  /// 3 rows x 2 columns if on mobile
+  /// 2 rows x 3 columns if on tablet
   void setGridSize(useMobileLayout) {
     setState(() {
       horizontalBtns = useMobileLayout ? 2 : 3;
@@ -69,27 +81,36 @@ class MyHomePageState extends PageState<MyHomePage> {
     });
   }
 
+  /// Called when the Left button in the bottom navigation bar is pressed.
   @override
   void leftPressed() {
     setState(() {
+      // If leftmost button is focused, go to rightmost button
+      // Else go left
       currPos[1] == verticalBtns - 1 ? currPos[1] = 0 : currPos[1]++;
       currBtnString = list[currPos[1]][currPos[0]];
     });
   }
 
+  /// Called when the Pull button in the bottom navigation bar is pressed.
   @override
   void pullPressed() {}
 
+  /// Called when the Right button in the bottom navigation bar is pressed.
   @override
   void rightPressed() {
     setState(() {
+      // If rightmost button is focused, go to the leftmost button
+      // Else go right
       currPos[0] == horizontalBtns - 1 ? currPos[0] = 0 : currPos[0]++;
       currBtnString = list[currPos[1]][currPos[0]];
     });
   }
 
+  /// Called when the Push button in the bottom navigation bar is pressed.
   @override
   void pushPressed() {
+    // If emergency button is pressed, call emergency contact
     if (currBtnString == Strings.EMERGENCY) {
       _launchURL();
       return;
@@ -97,16 +118,17 @@ class MyHomePageState extends PageState<MyHomePage> {
     Navigator.pushReplacementNamed(context, currBtnString);
   }
 
+  // Instantly calls the emergency contact.
   _launchURL() async {
     String number = EmergencyContact.emergencyContact;
     if (number != null && number.isNotEmpty) {
       bool res = await FlutterPhoneDirectCaller.callNumber(number);
     } else {
-      showEmergencyContactAlert();
+      _showEmergencyContactAlert();
     }
   }
 
-  showEmergencyContactAlert() {
+  _showEmergencyContactAlert() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
