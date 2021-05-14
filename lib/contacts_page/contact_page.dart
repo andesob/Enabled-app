@@ -3,10 +3,7 @@ import 'dart:convert';
 import 'package:enabled_app/contacts_page/contact_item.dart';
 import 'package:enabled_app/contacts_page/contact_item_data.dart';
 import 'package:enabled_app/contacts_page/contact_popup.dart';
-import 'package:enabled_app/global_data/colors.dart';
 import 'package:enabled_app/global_data/strings.dart';
-import 'package:enabled_app/main_layout/input_controller.dart';
-import 'package:enabled_app/main_layout/main_appbar.dart';
 import 'package:enabled_app/page_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,9 +12,13 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:developer' as developer;
 
+/// Widget representing the entire contact page
+///
+/// Contains a [Column] with multiple instances of [ContactItem]
 class ContactPage extends StatefulWidget {
   ContactPage({Key key, this.title}) : super(key: key);
 
+  /// Title of the page
   final String title;
 
   @override

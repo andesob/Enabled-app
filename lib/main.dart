@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
               pageKey: PageGlobalKeys.contactsPageKey,
             ),
         Strings.CUSTOM: (context) => MainPage(
-              pageContent: CustomPageHome(
+              pageContent: CustomPage(
                 key: PageGlobalKeys.customPageKey,
               ),
               title: Strings.CUSTOM,
