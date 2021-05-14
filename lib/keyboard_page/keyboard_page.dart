@@ -172,30 +172,32 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
   void leftPressed() {
     setState(() {
       if (inHorizontalList) {
-        if (currentFocusedVerticalListIndex == 5) {
-          if (currentFocusedHorizontalListIndex != 0) {
-            currentFocusedHorizontalListIndex -= 1;
+        if (_atVerticalListEnd()) {
+          if (!_atHorizontalListStart()) {
+            _goLeft();
           } else {
-            currentFocusedHorizontalListIndex = 2;
+            _goToBottomRowEnd();
           }
         } else {
-          if (currentFocusedHorizontalListIndex != 0) {
-            currentFocusedHorizontalListIndex -= 1;
+          if (!_atHorizontalListStart()) {
+            _goLeft();
           } else {
-            currentFocusedHorizontalListIndex = 5;
+            _goToHorizontalEnd();
           }
         }
       } else if (inDictionary) {
-        if (currentFocusedVerticalListIndex == 0) {
-          currentFocusedVerticalListIndex = 7;
+        if (_atVerticalListStart()) {
+          _goToDictionaryEnd();
         } else {
-          currentFocusedVerticalListIndex--;
+          _goUp();
         }
-      } else {
-        if (currentFocusedVerticalListIndex != 0) {
-          currentFocusedVerticalListIndex -= 1;
+      }
+      //If not in horizontal list && not in dictionary
+      else {
+        if (!_atVerticalListStart()) {
+          _goUp();
         } else {
-          currentFocusedVerticalListIndex = 5;
+          _goToBottom();
         }
       }
     });
@@ -206,11 +208,11 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
     setState(() {
       if (inHorizontalList || inDictionary) {
         if (inDictionary) {
-          currentFocusedVerticalListIndex = 0;
+          _goToTop();
         }
         inDictionary = false;
         inHorizontalList = false;
-        currentFocusedHorizontalListIndex = 0;
+        _goToHorizontalStart();
         return;
       }
       Navigator.pushReplacementNamed(context, Strings.HOME);
@@ -223,10 +225,12 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
       if (!inHorizontalList && !inDictionary) {
         inHorizontalList = true;
       } else if (inDictionary) {
+        //Insert word chosen from dictionary into the textfield
         String s = _searchList(getLastWord())[currentFocusedVerticalListIndex];
         _onDictItemChosen(s.toUpperCase());
       } else {
-        if (currentFocusedVerticalListIndex == 5) {
+        //Bottom row is focused
+        if (_atVerticalListEnd()) {
           //Caps lock is pressed
           if (currentFocusedHorizontalListIndex == 0) {
             _onDictKeyHandler();
@@ -239,7 +243,9 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
           else if (currentFocusedHorizontalListIndex == 2) {
             _onBackspace();
           }
-        } else if (!inDictionary) {
+        }
+        //If not in the bottom row insert letter chosen in the textfield
+        else if (!inDictionary) {
           String letter = allRows[currentFocusedVerticalListIndex]
               [currentFocusedHorizontalListIndex];
           _insertText(letter);
@@ -254,37 +260,103 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
       //If user has entered a horizontal list
       if (inHorizontalList) {
         //If bottom row is in focus
-        if (currentFocusedVerticalListIndex == 5) {
+        if (_atVerticalListEnd()) {
           //Move right if not at the last element in the bottom row
-          if (currentFocusedHorizontalListIndex != 2) {
-            currentFocusedHorizontalListIndex++;
+          if (!_atBottomRowEnd()) {
+            _goRight();
           } else {
-            currentFocusedHorizontalListIndex = 0;
+            _goToHorizontalStart();
           }
         }
         //If not at the bottom row
         else {
           //Move right if not at last element in the row
-          if (currentFocusedHorizontalListIndex != 5) {
-            currentFocusedHorizontalListIndex++;
+          if (!_atHorizontalListEnd()) {
+            _goRight();
           } else {
-            currentFocusedHorizontalListIndex = 0;
+            _goToHorizontalStart();
           }
         }
       } else if (inDictionary) {
-        if (currentFocusedVerticalListIndex == 7) {
-          currentFocusedVerticalListIndex = 0;
+        if (_atDictionaryEnd()) {
+          _goToTop();
         } else {
-          currentFocusedVerticalListIndex++;
+          _goToDictionaryEnd();
         }
-      } else {
-        if (currentFocusedVerticalListIndex != 5) {
-          currentFocusedVerticalListIndex++;
+      }
+      //If not in horizontal list and not in dictionary
+      else {
+        if (!_atVerticalListEnd()) {
+          _goDown();
         } else {
-          currentFocusedVerticalListIndex = 0;
+          _goToTop();
         }
       }
     });
+  }
+
+  void _goToHorizontalStart(){
+    currentFocusedHorizontalListIndex = 0;
+  }
+
+  void _goToHorizontalEnd(){
+    currentFocusedHorizontalListIndex = 5;
+  }
+
+  void _goToBottomRowEnd(){
+    currentFocusedHorizontalListIndex = 2;
+  }
+
+  void _goToDictionaryEnd(){
+    currentFocusedVerticalListIndex = 7;
+  }
+
+  void _goToBottom(){
+    currentFocusedVerticalListIndex = 5;
+  }
+
+  void _goToTop(){
+    currentFocusedVerticalListIndex = 0;
+  }
+
+  void _goLeft(){
+    currentFocusedHorizontalListIndex--;
+  }
+
+  void _goRight(){
+    currentFocusedHorizontalListIndex++;
+  }
+
+  void _goDown(){
+    currentFocusedVerticalListIndex++;
+  }
+
+  void _goUp(){
+    currentFocusedVerticalListIndex--;
+  }
+
+  bool _atDictionaryEnd(){
+    return currentFocusedVerticalListIndex == 7;
+  }
+
+  bool _atVerticalListStart(){
+    return currentFocusedVerticalListIndex == 0;
+  }
+
+  bool _atVerticalListEnd(){
+    return currentFocusedVerticalListIndex == 5;
+  }
+
+  bool _atHorizontalListStart(){
+    return currentFocusedHorizontalListIndex == 0;
+  }
+
+  bool _atHorizontalListEnd(){
+    return currentFocusedHorizontalListIndex == 5;
+  }
+
+  bool _atBottomRowEnd(){
+    return currentFocusedHorizontalListIndex == 2;
   }
 
   void _onDictKeyHandler() {

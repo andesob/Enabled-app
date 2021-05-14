@@ -35,7 +35,7 @@ class HomePageButtonState extends State<HomePageButton> {
             ? (widget.focused
                 ? StaticColors.deepSpaceSparkle
                 : StaticColors.lighterSlateGray)
-            : StaticColors.onyx),
+            : StaticColors.lighterNightRider),
       ),
       child: FlatButton(
         child: new GradientText(
