@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:gradient_text/gradient_text.dart';
 
-// TODO Change the flatButton to raisedButton??
+/// Widget representing a button on the [CustomPage].
 class CustomPageButton extends StatefulWidget {
   CustomPageButton({
     Key key,
@@ -12,7 +12,10 @@ class CustomPageButton extends StatefulWidget {
     this.isFocused = false,
   }) : super(key: key);
 
+  /// Text to be displayed on the button
   final String text;
+
+  /// True if this button is focused.
   final bool isFocused;
 
   @override
@@ -20,12 +23,15 @@ class CustomPageButton extends StatefulWidget {
 }
 
 class _CustomPageButton extends State<CustomPageButton> {
+  /// Instance of [FlutterTts] used to convert text to speech
   FlutterTts flutterTts = TTSController().flutterTts;
 
   @override
   Widget build(BuildContext context) {
+    /// Finds the shortest side of the device.
     var shortestSide = MediaQuery.of(context).size.shortestSide;
     bool isMobile = shortestSide < 600;
+
     Color lightPeach = Color(StaticColors.lightPeach);
     Color darkPeach = Color(StaticColors.darkPeach);
 

@@ -6,9 +6,6 @@ class StaticColors{
   static int white = 0xFFFFFFFF;
   static int black = 0xFF000000;
   static int darkGreen = 0xFF005B4B;
-  static int lighterDarkGreen = 0xFF00755E;
-  static int lighterLightDarkGreen = 0xFF659B90;
-  static int lighterGreen = 0xFF76997B;
   static int turquoiseGreen = 0xFFABD0B0;
   static int lightBlue = 0xFFB9FBFD;
   static int purple = 0xFFD1D5FF;
@@ -25,6 +22,12 @@ class StaticColors{
   static int patriarch = 0xFF7C0A86;
   static int gray = 0xFF474747;
   static int onyx = 0xFF414141;
+  static int nightRider = 0xFF313131;
+  static int nero = 0xFF222222;
+  static int lighterNightRider = 0xFF353535;
+  static int lighterDarkGreen = 0xFF00755E;
+  static int lighterLightDarkGreen = 0xFF659B90;
+  static int lighterGreen = 0xFF76997B;
   static int lightGray = 0xFF5B5B5B;
   static int lightSlateGray = 0xFF74909E;
   static int lighterSlateGray = 0xFF7F99A6;

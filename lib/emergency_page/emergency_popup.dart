@@ -4,6 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// Widget to represent the emergency popup'
+///
+/// Triggered when user wants to add a new [EmergencyContact]
 class EmergencyPopup extends StatefulWidget {
 
   EmergencyPopup({Key key}) : super(key: key);
@@ -14,8 +17,13 @@ class EmergencyPopup extends StatefulWidget {
 
 class _EmergencyPopupState extends State<EmergencyPopup> {
   SharedPreferences prefs;
+
+  /// Controller for the inputfield.
+  ///
+  /// User inputs the number of emergency contact
   final emergencyNumberController = TextEditingController();
 
+  /// Focusnode for the TextFormField.
   FocusNode emergencyFocusNode;
 
   @override
@@ -27,13 +35,13 @@ class _EmergencyPopupState extends State<EmergencyPopup> {
   @override
   void initState() {
     super.initState();
-    initPrefs();
+    _initPrefs();
     emergencyFocusNode = new FocusNode();
 
     emergencyFocusNode.addListener(_onOnFocusNodeEvent);
   }
 
-  Future<void> initPrefs() async {
+  Future<void> _initPrefs() async {
     prefs = await SharedPreferences.getInstance();
   }
 
@@ -85,8 +93,8 @@ class _EmergencyPopupState extends State<EmergencyPopup> {
             child: Text("Submit"),
             color: Color(StaticColors.lightSlateGray),
             onPressed: () {
-              StaticEmergencyContact.emergencyContact = emergencyNumberController.text;
-              prefs.setString("emergency", StaticEmergencyContact.emergencyContact);
+              EmergencyContact.emergencyContact = emergencyNumberController.text;
+              prefs.setString("emergency", EmergencyContact.emergencyContact);
               emergencyNumberController.clear();
               Navigator.pop(context);
             })

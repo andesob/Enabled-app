@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:enabled_app/contacts_page/contact_item.dart';
 import 'package:enabled_app/global_data/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -8,10 +7,17 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'custom_category.dart';
 
+/// Widget representing the popup to add new categories or buttons
 class CustomPopup extends StatefulWidget {
+  /// [List] of all categories in [CustomPage].
+  ///
+  /// Used to chose which category a new button is added to.
   final List<CustomCategory> items;
 
-  CustomPopup({Key key, this.items}) : super(key: key);
+  CustomPopup({
+    Key key,
+    this.items,
+  }) : super(key: key);
 
   @override
   _CustomPopup createState() => _CustomPopup();
@@ -19,14 +25,37 @@ class CustomPopup extends StatefulWidget {
 
 class _CustomPopup extends State<CustomPopup> {
   SharedPreferences prefs;
+
+  /// The controller that tracks text for new buttons
+  ///
+  /// This text is input by the user.
   final textInputController = TextEditingController();
+
+  /// The controller that tracks text for new categories.
+  ///
+  /// This text is input by the user.
   final categoryInputController = TextEditingController();
+
+
+  /// Focusnode for the shortcut [TextFormField]
   FocusNode firstFocusNode;
+
+  /// Focusnode for the category [TextFormField]
   FocusNode secondFocusNode;
+
+  /// The current category selected.
   CustomCategory selectedCategory;
+
+  /// True if user wants to add new category.
   bool addingCategory = false;
+
+  /// bool for validating category chosen
   bool validateCategory = true;
+
+  /// bool for validating input in category textfield
   bool validateCategoryTextfield = true;
+
+  /// bool for validating input in shortcut textfield
   bool validateTextfield = true;
 
   @override
@@ -40,14 +69,14 @@ class _CustomPopup extends State<CustomPopup> {
   @override
   void initState() {
     super.initState();
-    initPrefs();
+    _initPrefs();
     firstFocusNode = new FocusNode();
     firstFocusNode.addListener(_onOnFocusNodeEvent);
     secondFocusNode = new FocusNode();
     secondFocusNode.addListener(_onOnFocusNodeEvent);
   }
 
-  initPrefs() async {
+  _initPrefs() async {
     prefs = await SharedPreferences.getInstance();
   }
 
@@ -71,8 +100,8 @@ class _CustomPopup extends State<CustomPopup> {
         child: Form(
           child: Column(
             children: <Widget>[
-              addingCategory ? getAddCategory() : getDropdown(),
-              if (!addingCategory) getAddCategoryButton(),
+              addingCategory ? _getAddCategory() : _getDropdown(),
+              if (!addingCategory) _getAddCategoryButton(),
               TextFormField(
                 focusNode: firstFocusNode,
                 controller: textInputController,
@@ -165,7 +194,7 @@ class _CustomPopup extends State<CustomPopup> {
     );
   }
 
-  Container getAddCategoryButton() {
+  Container _getAddCategoryButton() {
     return Container(
       child: RaisedButton(
         child: Text("Add category"),
@@ -180,7 +209,7 @@ class _CustomPopup extends State<CustomPopup> {
     );
   }
 
-  TextFormField getAddCategory() {
+  TextFormField _getAddCategory() {
     return TextFormField(
       focusNode: secondFocusNode,
       controller: categoryInputController,
@@ -198,7 +227,7 @@ class _CustomPopup extends State<CustomPopup> {
     );
   }
 
-  InputDecorator getDropdown() {
+  InputDecorator _getDropdown() {
     return InputDecorator(
       isFocused: true,
       decoration: InputDecoration(
