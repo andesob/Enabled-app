@@ -1,13 +1,14 @@
 import 'dart:ui';
 
 import 'package:enabled_app/global_data/colors.dart';
+import 'package:enabled_app/needs/needs.dart';
 import 'package:enabled_app/tts_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:gradient_text/gradient_text.dart';
-import 'package:http/http.dart';
 
+/// Widget representing a button on the [NeedsPage].
 class NeedsPageButton extends StatefulWidget {
   NeedsPageButton({
     Key key,
@@ -15,8 +16,14 @@ class NeedsPageButton extends StatefulWidget {
     this.icon,
     this.isFocused = false,
   }) : super(key: key);
+
+  /// Text to be displayed on the button.
   final String text;
+
+  /// Icon to be displayed on the button.
   final IconData icon;
+
+  /// True if this button is focused.
   final bool isFocused;
 
   @override
@@ -24,6 +31,7 @@ class NeedsPageButton extends StatefulWidget {
 }
 
 class _NeedsPageButton extends State<NeedsPageButton> {
+  /// Instance of [FlutterTts] used to convert text to speech
   FlutterTts flutterTts = TTSController().flutterTts;
 
   @override
