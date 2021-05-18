@@ -3,6 +3,7 @@ import 'package:enabled_app/global_data/strings.dart';
 import 'package:enabled_app/needs/needs_object.dart';
 import 'package:flutter/material.dart';
 
+/// A class representing the pre-set needs data.
 class NeedsData {
   //Food and drink needs page object
   static const NeedsObject HUNGRY_OBJECT =

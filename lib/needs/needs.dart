@@ -11,9 +11,11 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import 'needs_object.dart';
 
+/// Widget representing the Needs page.
 class NeedsPage extends StatefulWidget {
   NeedsPage({Key key, this.title}) : super(key: key);
 
+  /// Title of the page
   final String title;
 
   @override
@@ -21,19 +23,51 @@ class NeedsPage extends StatefulWidget {
 }
 
 class _NeedsPageState extends PageState<NeedsPage> {
+  /// Instance of [FlutterTts] used to convert text to speech
   FlutterTts flutterTts = TTSController().flutterTts;
 
+  /// This is the vertical list of categories on the [NeedsPage]
+  ///
+  /// [List] containing [NeedsCategory] objects.
   List<NeedsCategory> categoryList = [];
+
+  /// The horizontal list that is currently entered.
+  ///
+  /// [List] of [String] objects to keep track of what horizontal list is currently entered.
+  /// Used to know what [String] object should be used for text-to-speech.
   List<NeedsObject> horizontalList = [];
 
+  /// Variable that tells if a horizontal list is entered or not.
   bool inHorizontalList = false;
+
+  /// Keeps track of what category is currently focused.
+  ///
+  /// [int] ranging between 0 and total amount of categories - 1.
   int currentFocusedVerticalListIndex;
+
+  /// Keeps track of what object is currently focused.
+  ///
+  /// [int] ranging between 0 and total amount of [String] objects in the category - 1.
   int currentFocusedHorizontalListIndex;
 
+  /// Keeps track of the last index scrolled down to.
+  ///
+  /// Only gets updated if the list actually scrolls, not if another element is focused.
+  /// Used to know if phone can scroll up.
   int lastScrollIndexLeft = 0;
+
+  /// Keeps track of the last index scrolled up to.
+  ///
+  /// Only gets updated if the list actually scrolls, not if another element is focused.
+  /// Used to know if the phone can scroll down.
   int lastScrollIndexRight = 0;
+
+  /// Keeps track of the last index horizontally scrolled to.
+  ///
+  /// Equal to either [lastScrollIndexLeft] or [lastScrollIndexRight].
   int lastHorizontalScrollIndex = 0;
 
+  /// Scrollcontroller for the vertical list.
   ItemScrollController childScrollController;
 
   void initState() {
@@ -42,6 +76,7 @@ class _NeedsPageState extends PageState<NeedsPage> {
     currentFocusedVerticalListIndex = 0;
     currentFocusedHorizontalListIndex = 0;
 
+    /// Creates the pre-set objects from NeedsData.
     NeedsCategory foodDrinkCategory =
         NeedsCategory(Strings.FOOD_DRINK, NeedsData.FOOD_DRINK_OBJECTS);
     NeedsCategory hygieneCategory =
@@ -51,6 +86,7 @@ class _NeedsPageState extends PageState<NeedsPage> {
     NeedsCategory roomCategory =
         NeedsCategory(Strings.ROOMS, NeedsData.ROOM_OBJECTS);
 
+    /// Adds the pre-set objects to the category list.
     categoryList.add(foodDrinkCategory);
     categoryList.add(hygieneCategory);
     categoryList.add(emotionsCategory);
@@ -86,6 +122,7 @@ class _NeedsPageState extends PageState<NeedsPage> {
     );
   }
 
+  /// Creates the list of [NeedsPageButton] objects to be rendered on the page.
   List<NeedsPageButton> _createButtons(index) {
     List<NeedsPageButton> buttonList = [];
     List<NeedsObject> objects = categoryList[index].objects;
@@ -103,7 +140,7 @@ class _NeedsPageState extends PageState<NeedsPage> {
     return buttonList;
   }
 
-  ///Scrolls one of the child list right.
+  ///Scrolls one of the child lists right.
   void _goRight() {
     currentFocusedHorizontalListIndex++;
     if (_canScrollRight()) {
@@ -111,7 +148,7 @@ class _NeedsPageState extends PageState<NeedsPage> {
     }
   }
 
-  // Scrolls one of the child list left.
+  /// Scrolls one of the child lists left.
   void _goLeft() {
     currentFocusedHorizontalListIndex--;
     if (_canScrollLeft()) {
@@ -119,11 +156,13 @@ class _NeedsPageState extends PageState<NeedsPage> {
     }
   }
 
+  /// Moves the focus to the horizontal list.
   void _goIntoList() {
     horizontalList = categoryList[currentFocusedVerticalListIndex].objects;
     inHorizontalList = true;
   }
 
+  /// Moves the focus away from the horizontal list and to the vertical list.
   void _goOutOfList() {
     currentFocusedHorizontalListIndex = 0;
     lastScrollIndexRight = 0;
@@ -133,6 +172,7 @@ class _NeedsPageState extends PageState<NeedsPage> {
     _scrollToStart();
   }
 
+  /// Checks if it is possible to navigate to the right.
   bool _canScrollRight() {
     //If rightmost button on screen is focused
     if (currentFocusedHorizontalListIndex > lastScrollIndexLeft + 3 &&
@@ -142,6 +182,7 @@ class _NeedsPageState extends PageState<NeedsPage> {
     return false;
   }
 
+  /// Checks if it is possible to navigate to the left.
   bool _canScrollLeft() {
     //If leftmost button on screen is focused
     if (lastScrollIndexRight != 0 &&
@@ -151,6 +192,7 @@ class _NeedsPageState extends PageState<NeedsPage> {
     return false;
   }
 
+  /// Scrolls the list to the left.
   void _scrollLeft() {
     lastScrollIndexLeft = currentFocusedHorizontalListIndex;
     lastHorizontalScrollIndex = currentFocusedHorizontalListIndex;
@@ -164,6 +206,7 @@ class _NeedsPageState extends PageState<NeedsPage> {
     );
   }
 
+  /// Scrolls the list to the right.
   void _scrollRight() {
     lastScrollIndexRight = currentFocusedHorizontalListIndex;
     lastHorizontalScrollIndex = currentFocusedHorizontalListIndex;
@@ -178,6 +221,7 @@ class _NeedsPageState extends PageState<NeedsPage> {
     );
   }
 
+  /// Scrolls the list to the start.
   void _scrollToStart() {
     childScrollController.scrollTo(
       index: 0,
@@ -188,6 +232,7 @@ class _NeedsPageState extends PageState<NeedsPage> {
     );
   }
 
+  /// Sets the child controller.
   void _setChildScrollController(ItemScrollController controller) {
     childScrollController = controller;
   }
@@ -251,22 +296,27 @@ class _NeedsPageState extends PageState<NeedsPage> {
     });
   }
 
+  /// Reads the text of the button out loud through the text-to-speech controller.
   void _sayButtonText() {
     flutterTts.speak(horizontalList[currentFocusedHorizontalListIndex].text);
   }
 
+  /// Checks if the horizontal list is at the start.
   bool atHorizontalListStart() {
     return currentFocusedHorizontalListIndex == 0;
   }
 
+  /// Check if the horizontal list is at the end.
   bool atHorizontalListEnd() {
     return currentFocusedHorizontalListIndex == horizontalList.length - 1;
   }
 
+  /// Check if the vertical list is at the start.
   bool atVerticalListStart() {
     return currentFocusedVerticalListIndex == 0;
   }
 
+  /// Check if the vertical list is at the end.
   bool atVerticalListEnd() {
     return currentFocusedVerticalListIndex < categoryList.length - 1;
   }
