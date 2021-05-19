@@ -2,6 +2,7 @@ import 'package:enabled_app/global_data/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+/// Widget that represents the backspace key
 class KeyboardBackspaceKey extends StatefulWidget {
   KeyboardBackspaceKey({
     Key key,
@@ -11,9 +12,15 @@ class KeyboardBackspaceKey extends StatefulWidget {
     this.isFocused = false,
   }) : super(key: key);
 
+  /// The icon of the key
   final Icon icon;
+
+  /// Method that is called when button is pressed
   final VoidCallback onBackspace;
+
   final int flex;
+
+  /// True if button is focused
   final bool isFocused;
 
   KeyboardBackspaceKeyState createState() => KeyboardBackspaceKeyState();

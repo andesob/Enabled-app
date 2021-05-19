@@ -4,6 +4,7 @@ import 'package:enabled_app/keyboard_page/keyboard_key.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
+/// Widget representing a horizontal list on the keyboard
 class KeyboardHorizontalList extends StatefulWidget {
   KeyboardHorizontalList({
     Key key,
@@ -18,14 +19,31 @@ class KeyboardHorizontalList extends StatefulWidget {
     this.onSend,
   }) : super(key: key);
 
+  /// The list containing all strings in the row
   final List<String> keyStringList;
+
+  /// True if list is focused
   final bool isFocused;
+
+  /// True if last row
   final bool isLastRow;
+
+  /// True if inside horizontal list
   final bool inHorizontalList;
+
+  /// Keeps track of the current item in the list focused
   final int currentFocusedKeyIndex;
+
+  /// Method that returns the letter on the button pressed
   final ValueSetter<String> onTextInput;
+
+  /// Method called when backspace is pressed
   final VoidCallback onBackspace;
+
+  /// Method called when dictionary button is pressed
   final VoidCallback onDictPressed;
+
+  /// Method called when send button is pressed
   final VoidCallback onSend;
 
   @override
