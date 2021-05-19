@@ -10,12 +10,17 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'dart:developer' as developer;
 
+/// Widget representing the Smart page
+///
+/// Displays either a refresh button, a Hue Page button or a non interactive Hue
+/// Page Button depending on its state.
 class SmartMainPage extends StatefulWidget {
   SmartMainPage({
     Key key,
     this.title = Strings.SMART,
   }) : super(key: key);
 
+  /// The title of the page
   final String title;
 
   SmartMainPageState createState() => SmartMainPageState();

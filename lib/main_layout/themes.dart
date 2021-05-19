@@ -3,9 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+/// The ThemeNotifier class changes the theme of the app to either a Dark Theme
+/// or a Light Theme.
 class ThemeNotifier with ChangeNotifier {
   SharedPreferences prefs;
 
+  /// The Light theme used in the application
   ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
     primaryColor: Colors.white,
@@ -21,6 +24,7 @@ class ThemeNotifier with ChangeNotifier {
     ),
   );
 
+  /// The Dark theme used in the application
   ThemeData darkTheme = ThemeData(
     primaryColor: Color(StaticColors.lightGray),
     backgroundColor: Color(StaticColors.lightPeach),

@@ -10,8 +10,13 @@ import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:gradient_text/gradient_text.dart';
 import 'package:provider/provider.dart';
 
+
+/// Widget representing the App Bar for the pages
 class MyAppBar extends StatefulWidget implements PreferredSizeWidget {
+  /// The title of the current page
   final String title;
+
+  /// True if page should have the dropdown menu
   final bool hasDropDown;
 
   const MyAppBar({
@@ -32,6 +37,8 @@ class MyAppBarState extends State<MyAppBar> {
   bool isDark;
   bool isNorwegian = TTSController().getCurrentLanguage() == "US";
 
+
+  /// Creates the dropdown menu for the app bar if [hasDropDown] is True
   createDropDown() {
     return <Widget>[
       Material(
