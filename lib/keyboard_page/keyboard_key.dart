@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
+/// Widget representing a single key on the keyboard
 class KeyboardKey extends StatefulWidget {
   KeyboardKey({
     Key key,
@@ -14,10 +15,18 @@ class KeyboardKey extends StatefulWidget {
     this.isFocused = false,
   }) : super(key: key);
 
+  /// Text displayed on the button
   final String text;
+
+  /// Method called when button is pressed
   final ValueSetter<String> onTextInput;
+
   final int flex;
+
+  /// Method called when button is pressed
   final VoidCallback onPressed;
+
+  /// True if button is focused
   final bool isFocused;
 
   KeyboardKeyState createState() => KeyboardKeyState();

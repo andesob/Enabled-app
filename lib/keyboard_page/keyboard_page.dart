@@ -13,6 +13,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 
+/// Widget representing the keyboard page
 class KeyboardPage extends StatefulWidget {
   KeyboardPage({
     Key key,
@@ -22,15 +23,27 @@ class KeyboardPage extends StatefulWidget {
 }
 
 class _KeyboardPageState extends PageState<KeyboardPage> {
+  /// Instance of [FlutterTts] used to convert text to speech
   FlutterTts tts = TTSController().flutterTts;
 
+  /// Used to keep track of what is written in the [TextField]
   TextEditingController _controller = TextEditingController();
 
+  /// Keeps track of what category is currently focused.
   int currentFocusedVerticalListIndex;
+
+  /// Keeps track of what object is currently focused.
   int currentFocusedHorizontalListIndex;
+
+  /// True if in horizontal list
   bool inHorizontalList = false;
+
+  /// True if inside dictionary
   bool inDictionary = false;
+
+  /// True if letters are uppercase
   bool isUpperCase = true;
+
 
   List<String> firstRow = [" ", "E", "A", "N", "L", "F"];
   List<String> secondRow = ["T", "O", "S", "D", "P", "B"];
@@ -40,6 +53,7 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
 
   List<List<String>> allRows;
 
+  /// List of the words in the dictionary
   List<String> dictionary = [];
 
   @override
@@ -56,6 +70,7 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
     allRows.add(fifthRow);
   }
 
+  /// Inserts the text into the [TextField]
   void _insertText(String myText) {
     setState(() {
       final text = _controller.text;
@@ -68,6 +83,7 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
     });
   }
 
+  /// Called when backspace is pressed
   void _onBackspace() {
     setState(() {
       final text = _controller.text;
@@ -81,6 +97,7 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
     });
   }
 
+  /// Inserts the dictionary item into the [TextField]
   void _onDictItemChosen(String myText) {
     setState(() {
       final text = _controller.text;
@@ -168,6 +185,7 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
     ]);
   }
 
+  /// Called when the Left button in the bottom navigation bar is pressed.
   @override
   void leftPressed() {
     setState(() {
@@ -203,6 +221,7 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
     });
   }
 
+  /// Called when the Pull button in the bottom navigation bar is pressed.
   @override
   void pullPressed() {
     setState(() {
@@ -219,6 +238,7 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
     });
   }
 
+  /// Called when the Push button in the bottom navigation bar is pressed.
   @override
   void pushPressed() {
     setState(() {
@@ -254,6 +274,7 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
     });
   }
 
+  /// Called when the Right button in the bottom navigation bar is pressed.
   @override
   void rightPressed() {
     setState(() {
@@ -368,6 +389,7 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
     });
   }
 
+  /// Loads a CSV file and adds the words to the dictionary
   void _loadCSV() async {
     String _rawData = null;
     if (TTSController().getCurrentLanguage() == "NO") {
@@ -385,6 +407,7 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
     });
   }
 
+  /// Finds the last word in the [TextField]
   String getLastWord() {
     if (_controller.text.isNotEmpty) {
       List<String> words = _controller.text.split(" ");
@@ -394,6 +417,7 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
     }
   }
 
+  /// Searches the dictionary list for a specific text string
   List<String> _searchList(String searchKey) {
     List<String> hitList = [];
     for (String word in dictionary) {

@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
+/// Widget representing the keyboard
 class CustomKeyboard extends StatefulWidget {
   CustomKeyboard({
     Key key,
@@ -21,14 +22,31 @@ class CustomKeyboard extends StatefulWidget {
     this.onSend,
   }) : super(key: key);
 
+  /// Method that returns the letter pressed
   final ValueSetter<String> onTextInput;
+
+  /// Method that is triggered when backspace is pressed.
   final VoidCallback onBackspace;
+
+  /// Method that is triggered when dictionary button is pressed.
   final VoidCallback onDictPressed;
+
+  /// Method that is triggered when send is pressed.
   final VoidCallback onSend;
+
+  /// Keeps track of what row is currently focused
   final int currentFocusedVerticalListIndex;
+
+  /// Keeps track of what letter is currently focused
   final int currentFocusedHorizontalListIndex;
+
+  /// Tells if the horizontal list is entered or not
   final bool inHorizontalList;
+
+  /// Tells if the dictionary is entered or not
   final bool inDictionary;
+
+  /// Two dimensional list that includes all the letters on the keyboard
   final List<List<String>> allRows;
 
   @override
@@ -56,6 +74,7 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
   List<Widget> buildKeyboard() {
     List<KeyboardHorizontalList> rows = [];
     for (int i = 0; i < widget.allRows.length; i++) {
+      ///True if list is focused, false if not
       if (widget.currentFocusedVerticalListIndex == i && !widget.inDictionary) {
         rows.add(buildRow(widget.allRows[i], true));
       } else {
@@ -63,11 +82,13 @@ class _CustomKeyboardState extends State<CustomKeyboard> {
       }
     }
 
+    /// True if list is focused, false if not
     if (widget.currentFocusedVerticalListIndex == widget.allRows.length && !widget.inDictionary) {
       rows.add(buildLastRow(true));
     } else {
       rows.add(buildLastRow(false));
     }
+
     return rows;
   }
 
