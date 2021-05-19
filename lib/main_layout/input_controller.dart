@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as developer;
 
+/// The ButtonController class controls the navigation inputs received from the user.
 class ButtonController extends StatefulWidget {
   final GlobalKey<PageState> pageKey;
 
@@ -20,18 +21,22 @@ class ButtonController extends StatefulWidget {
 class ButtonControllerState extends State<ButtonController> {
   StreamSubscription sub;
 
+  /// Starts the stream when the widget is loaded.
   @override
   void initState() {
     super.initState();
     startStream();
   }
 
+  /// Unsubscribes to the stream when the widget is disposed.
   @override
   void dispose() {
     super.dispose();
     sub.cancel();
   }
 
+  /// Starts listening to the stream. Depending on the stream object value it
+  /// either  sends a mental command or facial command.
   startStream() {
     SocketSingleton socket = SocketSingleton();
     Stream stream = socket.getStream();
@@ -47,6 +52,8 @@ class ButtonControllerState extends State<ButtonController> {
     });
   }
 
+  /// Checks for a corresponding Mental Command message. If found, it will call on the
+  /// correct method and navigate in the application.
   void mentalCommands(state) {
     switch (state) {
       case 'push':
@@ -77,6 +84,8 @@ class ButtonControllerState extends State<ButtonController> {
     }
   }
 
+  /// Checks for a corresponding Facial Command message. If found, it will call on the
+  /// correct method and navigate in the application.
   void facialCommands(state) {
     switch (state) {
       case 'smile':
@@ -105,6 +114,7 @@ class ButtonControllerState extends State<ButtonController> {
     }
   }
 
+  /// Navigates the page when a button is pressed.
   buttonIsPressed(int index) {
     if (index == 0) {
       widget.pageKey.currentState?.pushPressed();
