@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 
 import 'global_data/strings.dart';
 
+/// Widget representing the Main page
 class MainPage extends StatefulWidget {
   MainPage({
     Key key,
@@ -16,10 +17,19 @@ class MainPage extends StatefulWidget {
     this.hasDropDown,
     this.darkmode,
   }) : super(key: key);
+  /// The widget currently shown in the body
   final StatefulWidget pageContent;
+
+  /// Variable that sets the title shown in the top appbar
   final String title;
+
+  /// The global key belonging to the widget in the body
   final GlobalKey<PageState> pageKey;
+
+  /// Variable that tells if the page should have a dropdown menu
   final bool hasDropDown;
+
+  /// Variable that tells if the theme is set to dark mode
   final bool darkmode;
 
   _MainPageState createState() => _MainPageState();
