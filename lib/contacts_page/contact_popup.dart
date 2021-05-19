@@ -4,11 +4,14 @@ import 'package:enabled_app/global_data/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'contact_item.dart';
 import 'contact_item_data.dart';
 
+/// Widget representing the add contact popup page
+///
+/// Returns an [AlertDialog] with [TextFormField] to input contact information
 class ContactPopup extends StatefulWidget {
+
+  /// List of all instances of [ContactItemData]
   final List<ContactItemData> items;
 
   ContactPopup({

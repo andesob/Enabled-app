@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 import 'global_data/strings.dart';
 import 'package:enabled_app/custom_page/custom_page.dart';
 
+/// The entry point of the program
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
@@ -30,7 +31,9 @@ void main() {
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
-
+ ///Root widget of the application.
+  ///
+  /// Provides routes to the different pages of the application and sets the initial route.
   @override
   Widget build(BuildContext context) {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
@@ -59,7 +62,7 @@ class MyApp extends StatelessWidget {
               pageKey: PageGlobalKeys.contactsPageKey,
             ),
         Strings.CUSTOM: (context) => MainPage(
-              pageContent: CustomPageHome(
+              pageContent: CustomPage(
                 key: PageGlobalKeys.customPageKey,
               ),
               title: Strings.CUSTOM,

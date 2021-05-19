@@ -13,6 +13,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 
+/// Widget representing the keyboard page
 class KeyboardPage extends StatefulWidget {
   KeyboardPage({
     Key key,
@@ -22,15 +23,27 @@ class KeyboardPage extends StatefulWidget {
 }
 
 class _KeyboardPageState extends PageState<KeyboardPage> {
+  /// Instance of [FlutterTts] used to convert text to speech
   FlutterTts tts = TTSController().flutterTts;
 
+  /// Used to keep track of what is written in the [TextField]
   TextEditingController _controller = TextEditingController();
 
+  /// Keeps track of what category is currently focused.
   int currentFocusedVerticalListIndex;
+
+  /// Keeps track of what object is currently focused.
   int currentFocusedHorizontalListIndex;
+
+  /// True if in horizontal list
   bool inHorizontalList = false;
+
+  /// True if inside dictionary
   bool inDictionary = false;
+
+  /// True if letters are uppercase
   bool isUpperCase = true;
+
 
   List<String> firstRow = [" ", "E", "A", "N", "L", "F"];
   List<String> secondRow = ["T", "O", "S", "D", "P", "B"];
@@ -40,6 +53,7 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
 
   List<List<String>> allRows;
 
+  /// List of the words in the dictionary
   List<String> dictionary = [];
 
   @override
@@ -56,6 +70,7 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
     allRows.add(fifthRow);
   }
 
+  /// Inserts the text into the [TextField]
   void _insertText(String myText) {
     setState(() {
       final text = _controller.text;
@@ -68,6 +83,7 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
     });
   }
 
+  /// Called when backspace is pressed
   void _onBackspace() {
     setState(() {
       final text = _controller.text;
@@ -81,6 +97,7 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
     });
   }
 
+  /// Inserts the dictionary item into the [TextField]
   void _onDictItemChosen(String myText) {
     setState(() {
       final text = _controller.text;
@@ -168,65 +185,72 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
     ]);
   }
 
+  /// Called when the Left button in the bottom navigation bar is pressed.
   @override
   void leftPressed() {
     setState(() {
       if (inHorizontalList) {
-        if (currentFocusedVerticalListIndex == 5) {
-          if (currentFocusedHorizontalListIndex != 0) {
-            currentFocusedHorizontalListIndex -= 1;
+        if (_atVerticalListEnd()) {
+          if (!_atHorizontalListStart()) {
+            _goLeft();
           } else {
-            currentFocusedHorizontalListIndex = 2;
+            _goToBottomRowEnd();
           }
         } else {
-          if (currentFocusedHorizontalListIndex != 0) {
-            currentFocusedHorizontalListIndex -= 1;
+          if (!_atHorizontalListStart()) {
+            _goLeft();
           } else {
-            currentFocusedHorizontalListIndex = 5;
+            _goToHorizontalEnd();
           }
         }
       } else if (inDictionary) {
-        if (currentFocusedVerticalListIndex == 0) {
-          currentFocusedVerticalListIndex = 7;
+        if (_atVerticalListStart()) {
+          _goToDictionaryEnd();
         } else {
-          currentFocusedVerticalListIndex--;
+          _goUp();
         }
-      } else {
-        if (currentFocusedVerticalListIndex != 0) {
-          currentFocusedVerticalListIndex -= 1;
+      }
+      //If not in horizontal list && not in dictionary
+      else {
+        if (!_atVerticalListStart()) {
+          _goUp();
         } else {
-          currentFocusedVerticalListIndex = 5;
+          _goToBottom();
         }
       }
     });
   }
 
+  /// Called when the Pull button in the bottom navigation bar is pressed.
   @override
   void pullPressed() {
     setState(() {
       if (inHorizontalList || inDictionary) {
         if (inDictionary) {
-          currentFocusedVerticalListIndex = 0;
+          _goToTop();
         }
         inDictionary = false;
         inHorizontalList = false;
-        currentFocusedHorizontalListIndex = 0;
+        _goToHorizontalStart();
         return;
       }
       Navigator.pushReplacementNamed(context, Strings.HOME);
     });
   }
 
+  /// Called when the Push button in the bottom navigation bar is pressed.
   @override
   void pushPressed() {
     setState(() {
       if (!inHorizontalList && !inDictionary) {
         inHorizontalList = true;
       } else if (inDictionary) {
+        //Insert word chosen from dictionary into the textfield
         String s = _searchList(getLastWord())[currentFocusedVerticalListIndex];
         _onDictItemChosen(s.toUpperCase());
       } else {
-        if (currentFocusedVerticalListIndex == 5) {
+        //Bottom row is focused
+        if (_atVerticalListEnd()) {
           //Caps lock is pressed
           if (currentFocusedHorizontalListIndex == 0) {
             _onDictKeyHandler();
@@ -239,7 +263,9 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
           else if (currentFocusedHorizontalListIndex == 2) {
             _onBackspace();
           }
-        } else if (!inDictionary) {
+        }
+        //If not in the bottom row insert letter chosen in the textfield
+        else if (!inDictionary) {
           String letter = allRows[currentFocusedVerticalListIndex]
               [currentFocusedHorizontalListIndex];
           _insertText(letter);
@@ -248,43 +274,110 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
     });
   }
 
+  /// Called when the Right button in the bottom navigation bar is pressed.
   @override
   void rightPressed() {
     setState(() {
       //If user has entered a horizontal list
       if (inHorizontalList) {
         //If bottom row is in focus
-        if (currentFocusedVerticalListIndex == 5) {
+        if (_atVerticalListEnd()) {
           //Move right if not at the last element in the bottom row
-          if (currentFocusedHorizontalListIndex != 2) {
-            currentFocusedHorizontalListIndex++;
+          if (!_atBottomRowEnd()) {
+            _goRight();
           } else {
-            currentFocusedHorizontalListIndex = 0;
+            _goToHorizontalStart();
           }
         }
         //If not at the bottom row
         else {
           //Move right if not at last element in the row
-          if (currentFocusedHorizontalListIndex != 5) {
-            currentFocusedHorizontalListIndex++;
+          if (!_atHorizontalListEnd()) {
+            _goRight();
           } else {
-            currentFocusedHorizontalListIndex = 0;
+            _goToHorizontalStart();
           }
         }
       } else if (inDictionary) {
-        if (currentFocusedVerticalListIndex == 7) {
-          currentFocusedVerticalListIndex = 0;
+        if (_atDictionaryEnd()) {
+          _goToTop();
         } else {
-          currentFocusedVerticalListIndex++;
+          _goToDictionaryEnd();
         }
-      } else {
-        if (currentFocusedVerticalListIndex != 5) {
-          currentFocusedVerticalListIndex++;
+      }
+      //If not in horizontal list and not in dictionary
+      else {
+        if (!_atVerticalListEnd()) {
+          _goDown();
         } else {
-          currentFocusedVerticalListIndex = 0;
+          _goToTop();
         }
       }
     });
+  }
+
+  void _goToHorizontalStart(){
+    currentFocusedHorizontalListIndex = 0;
+  }
+
+  void _goToHorizontalEnd(){
+    currentFocusedHorizontalListIndex = 5;
+  }
+
+  void _goToBottomRowEnd(){
+    currentFocusedHorizontalListIndex = 2;
+  }
+
+  void _goToDictionaryEnd(){
+    currentFocusedVerticalListIndex = 7;
+  }
+
+  void _goToBottom(){
+    currentFocusedVerticalListIndex = 5;
+  }
+
+  void _goToTop(){
+    currentFocusedVerticalListIndex = 0;
+  }
+
+  void _goLeft(){
+    currentFocusedHorizontalListIndex--;
+  }
+
+  void _goRight(){
+    currentFocusedHorizontalListIndex++;
+  }
+
+  void _goDown(){
+    currentFocusedVerticalListIndex++;
+  }
+
+  void _goUp(){
+    currentFocusedVerticalListIndex--;
+  }
+
+  bool _atDictionaryEnd(){
+    return currentFocusedVerticalListIndex == 7;
+  }
+
+  bool _atVerticalListStart(){
+    return currentFocusedVerticalListIndex == 0;
+  }
+
+  bool _atVerticalListEnd(){
+    return currentFocusedVerticalListIndex == 5;
+  }
+
+  bool _atHorizontalListStart(){
+    return currentFocusedHorizontalListIndex == 0;
+  }
+
+  bool _atHorizontalListEnd(){
+    return currentFocusedHorizontalListIndex == 5;
+  }
+
+  bool _atBottomRowEnd(){
+    return currentFocusedHorizontalListIndex == 2;
   }
 
   void _onDictKeyHandler() {
@@ -296,6 +389,7 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
     });
   }
 
+  /// Loads a CSV file and adds the words to the dictionary
   void _loadCSV() async {
     String _rawData = null;
     if (TTSController().getCurrentLanguage() == "NO") {
@@ -313,6 +407,7 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
     });
   }
 
+  /// Finds the last word in the [TextField]
   String getLastWord() {
     if (_controller.text.isNotEmpty) {
       List<String> words = _controller.text.split(" ");
@@ -322,6 +417,7 @@ class _KeyboardPageState extends PageState<KeyboardPage> {
     }
   }
 
+  /// Searches the dictionary list for a specific text string
   List<String> _searchList(String searchKey) {
     List<String> hitList = [];
     for (String word in dictionary) {

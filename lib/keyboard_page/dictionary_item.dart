@@ -3,6 +3,7 @@ import 'package:enabled_app/keyboard_page/keyboard_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+/// Widget that represents each item in dictionary
 class DictionaryItem extends StatefulWidget {
   DictionaryItem({
     Key key,
@@ -11,9 +12,16 @@ class DictionaryItem extends StatefulWidget {
     this.flex = 1,
     this.isFocused = false,
   }) : super(key: key);
+
+  /// Text displayed on button
   final String text;
+
+  /// Method that returns the string on the letter pressed
   final ValueSetter<String> onDictItemChosen;
+
   final int flex;
+
+  /// True if button is focused
   final bool isFocused;
 
   DictionaryItemState createState() => DictionaryItemState();

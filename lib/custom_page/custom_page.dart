@@ -1,11 +1,9 @@
-import 'dart:async';
 import 'dart:convert';
 
 import 'package:enabled_app/custom_page/custom_category.dart';
 import 'package:enabled_app/custom_page/custom_page_button.dart';
 import 'package:enabled_app/custom_page/custom_popup.dart';
 import 'package:enabled_app/custom_page/custom_horizontal_list.dart';
-import 'package:enabled_app/desktop_connection/server_socket.dart';
 import 'package:enabled_app/global_data/strings.dart';
 import 'package:enabled_app/page_state.dart';
 import 'package:enabled_app/tts_controller.dart';
@@ -14,47 +12,103 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uuid/uuid.dart';
 import 'dart:developer' as developer;
 
-//TODO create a solution for the "result" object returned from the alert dialog.
+/// Widget representing the CustomPage
+class CustomPage extends StatefulWidget {
+  CustomPage({
+    Key key,
+    this.title,
+  }) : super(key: key);
 
-class CustomPageHome extends StatefulWidget {
-  CustomPageHome({Key key, this.title}) : super(key: key);
-
+  /// Title of the page
   final String title;
 
   @override
   _CustomPageHome createState() => _CustomPageHome();
 }
 
-class _CustomPageHome extends PageState<CustomPageHome> {
+class _CustomPageHome extends PageState<CustomPage> {
+  /// Instance of [FlutterTts] used to convert text to speech
   FlutterTts flutterTts = TTSController().flutterTts;
 
   SharedPreferences prefs;
 
+  /// This is the vertical list of categories on the [CustomPage]
+  ///
+  /// [List] containing [CustomCategory] objects.
   List<CustomCategory> categoryList = [];
-  List<String> horizontalList = [];
 
+  /// The horizontal list that is currently entered.
+  ///
+  /// [List] of [String] objects to keep track of what horizontal list is currently entered.
+  /// Used to know what [String] object should be used for text-to-speech.
+  List<String> currentHorizontalList = [];
+
+  /// Variable that tells if a horizontal list is entered or not.
   bool inHorizontalList = false;
-  int currentFocusedVerticalListIndex;
-  int currentFocusedHorizontalListIndex;
 
+  /// Keeps track of what category is currently focused.
+  ///
+  /// [int] ranging between 0 and total amount of categories - 1.
+  int currentFocusedVerticalListIndex = 0;
+
+  /// Keeps track of what object is currently focused.
+  ///
+  /// [int] ranging between 0 and total amount of [String] objects in the category - 1.
+  int currentFocusedHorizontalListIndex = 0;
+
+  /// Keeps track of the last index scrolled down to.
+  ///
+  /// Only gets updated if the list actually scrolls, not if another element is focused.
+  /// Used to know if phone can scroll up.
   int lastScrollIndexDown = 0;
+
+  /// Keeps track of the last index scrolled up to.
+  ///
+  /// Only gets updated if the list actually scrolls, not if another element is focused.
+  /// Used to know if the phone can scroll down.
   int lastScrollIndexUp = 0;
+
+  /// Keeps track of the last index scrolled left to.
+  ///
+  /// Only gets updated if the list actually scrolls, not if another element is focused.
+  /// Used to know if the phone can scroll right.
   int lastScrollIndexLeft = 0;
+
+  /// Keeps track of the last index scrolled left to.
+  ///
+  /// Only gets updated if the list actually scrolls, not if another element is focused.
+  /// Used to know if the phone can scroll left.
   int lastScrollIndexRight = 0;
+
+  /// Keeps track of the last index vertically scrolled to.
+  ///
+  /// Equal to either [lastScrollIndexUp] or [lastScrollIndexUp].
   int lastVerticalScrollIndex = 0;
+
+  /// Keeps track of the last index horizontally scrolled to.
+  ///
+  /// Equal to either [lastScrollIndexLeft] or [lastScrollIndexRight].
   int lastHorizontalScrollIndex = 0;
 
+  /// Scrollcontroller for the vertical list.
   ItemScrollController itemScrollController;
+
+  /// Scrollcontroller for the horizontal list currently focused.
+  ///
+  /// Is set when entering a horizontal list.
   ItemScrollController childScrollController;
 
   initPrefs() async {
     prefs = await SharedPreferences.getInstance();
     setState(() {
+      // Adds information stored in SharedPreferences.
       List<String> categories = prefs.getStringList('categories');
-      if(categories == null) return;
+
+      // Returns if no information is stored in SharedPreferences.
+      if (categories == null) return;
+
       for (String s in categories) {
         CustomCategory category = CustomCategory.fromJson(jsonDecode(s));
         categoryList.add(category);
@@ -65,15 +119,14 @@ class _CustomPageHome extends PageState<CustomPageHome> {
   @override
   void initState() {
     super.initState();
-
     initPrefs();
-
-    currentFocusedVerticalListIndex = 0;
-    currentFocusedHorizontalListIndex = 0;
 
     itemScrollController = ItemScrollController();
   }
 
+  /// Sets the Scrollcontroller for the horizontal list currently focused.
+  ///
+  /// This method is passed to [CustomHorizontalList] which calls it.
   void _setChildScrollController(ItemScrollController controller) {
     childScrollController = controller;
   }
@@ -90,20 +143,20 @@ class _CustomPageHome extends PageState<CustomPageHome> {
               child: FlatButton(
                 child: Text("Legg til"),
                 onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return CustomPopup(
-                            items: categoryList,
-                          );
-                        }).then((value) {
-                      setState(() {
-                        developer.log("Value");
-                      });
-                    }).catchError((error) {
-                      developer.log("Error");
-                      //developer.log(error.toString());
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return CustomPopup(
+                          items: categoryList,
+                        );
+                      }).then((value) {
+                    setState(() {
+                      developer.log("Value");
                     });
+                  }).catchError((error) {
+                    developer.log("Error");
+                    //developer.log(error.toString());
+                  });
                 },
               ),
             ),
@@ -129,6 +182,7 @@ class _CustomPageHome extends PageState<CustomPageHome> {
     );
   }
 
+  /// Creates the list of [CustomPageButton] objects to be rendered on the page.
   List<CustomPageButton> _createButtons(index) {
     List<CustomPageButton> buttonList = [];
     List<String> objects = categoryList[index].objects;
@@ -144,7 +198,7 @@ class _CustomPageHome extends PageState<CustomPageHome> {
     return buttonList;
   }
 
-  /// Scrolls the list down to the selected index.
+  /// Navigates to the next element in the list.
   void _goDown() {
     currentFocusedVerticalListIndex++;
     if (_canScrollDown()) {
@@ -152,7 +206,7 @@ class _CustomPageHome extends PageState<CustomPageHome> {
     }
   }
 
-  /// Scrolls the list up to the selected index.
+  /// Navigates to the previous element in the list.
   void _goUp() {
     currentFocusedVerticalListIndex--;
     if (_canScrollUp()) {
@@ -160,7 +214,7 @@ class _CustomPageHome extends PageState<CustomPageHome> {
     }
   }
 
-  ///Scrolls one of the child list right.
+  /// Navigates to the next element in the list.
   void _goRight() {
     currentFocusedHorizontalListIndex++;
     if (_canScrollRight()) {
@@ -168,7 +222,7 @@ class _CustomPageHome extends PageState<CustomPageHome> {
     }
   }
 
-  // Scrolls one of the child list left.
+  /// Navigates to the previous element in the list.
   void _goLeft() {
     currentFocusedHorizontalListIndex--;
     if (_canScrollLeft()) {
@@ -185,8 +239,10 @@ class _CustomPageHome extends PageState<CustomPageHome> {
     _scrollToStart();
   }
 
+  /// Enters a horizontal list.
   void _goIntoList() {
-    horizontalList = categoryList[currentFocusedVerticalListIndex].objects;
+    currentHorizontalList =
+        categoryList[currentFocusedVerticalListIndex].objects;
     inHorizontalList = true;
   }
 
@@ -224,6 +280,7 @@ class _CustomPageHome extends PageState<CustomPageHome> {
     return false;
   }
 
+  /// Scrolls one of the child list left.
   void _scrollLeft() {
     lastScrollIndexLeft = currentFocusedHorizontalListIndex;
     lastHorizontalScrollIndex = currentFocusedHorizontalListIndex;
@@ -237,6 +294,7 @@ class _CustomPageHome extends PageState<CustomPageHome> {
     );
   }
 
+  /// Scrolls one of the child list right.
   void _scrollRight() {
     lastScrollIndexRight = currentFocusedHorizontalListIndex;
     lastHorizontalScrollIndex = currentFocusedHorizontalListIndex;
@@ -251,6 +309,7 @@ class _CustomPageHome extends PageState<CustomPageHome> {
     );
   }
 
+  /// Scrolls the list up to the selected index.
   void _scrollUp() {
     lastScrollIndexUp = currentFocusedVerticalListIndex;
     lastVerticalScrollIndex = currentFocusedVerticalListIndex;
@@ -264,6 +323,7 @@ class _CustomPageHome extends PageState<CustomPageHome> {
     );
   }
 
+  /// Scrolls the list down to the selected index.
   void _scrollDown() {
     lastScrollIndexDown = currentFocusedVerticalListIndex;
     lastVerticalScrollIndex = currentFocusedVerticalListIndex;
@@ -278,6 +338,7 @@ class _CustomPageHome extends PageState<CustomPageHome> {
     );
   }
 
+  /// Scrolls to the start of the list.
   void _scrollToStart() {
     childScrollController.scrollTo(
       index: 0,
@@ -288,9 +349,11 @@ class _CustomPageHome extends PageState<CustomPageHome> {
     );
   }
 
+  /// Use [FlutterTts] to say text out loud.
   void _sayButtonText() {
-    horizontalList = categoryList[currentFocusedVerticalListIndex].objects;
-    flutterTts.speak(horizontalList[currentFocusedHorizontalListIndex]);
+    currentHorizontalList =
+        categoryList[currentFocusedVerticalListIndex].objects;
+    flutterTts.speak(currentHorizontalList[currentFocusedHorizontalListIndex]);
   }
 
   void _sayCategoryText() {
@@ -298,44 +361,47 @@ class _CustomPageHome extends PageState<CustomPageHome> {
         .speak(categoryList[currentFocusedVerticalListIndex].categoryName);
   }
 
+  /// Called when the Right button in the bottom navigation bar is pressed.
   @override
   void rightPressed() {
     setState(() {
       if (inHorizontalList) {
         //If not at end of horizontal list
-        if (checkIfAtHorizontalListEnd()) {
+        if (!atHorizontalListEnd()) {
           _goRight();
         }
         return;
       }
 
       //If not at end of vertical list
-      if (checkIfAtVerticalListEnd()) {
+      if (!atVerticalListEnd()) {
         _goDown();
         return;
       }
     });
   }
 
+  /// Called when the Left button in the bottom navigation bar is pressed.
   @override
   void leftPressed() {
     setState(() {
       if (inHorizontalList) {
         //If not at start of horizontal list
-        if (checkIfAtHorizontalListStart()) {
+        if (!atHorizontalListStart()) {
           _goLeft();
         }
         return;
       }
 
       //If not at start of vertical list
-      if (checkIfAtVerticalListStart()) {
+      if (!atVerticalListStart()) {
         _goUp();
         return;
       }
     });
   }
 
+  /// Called when the Pull button in the bottom navigation bar is pressed.
   @override
   void pullPressed() {
     setState(() {
@@ -347,6 +413,7 @@ class _CustomPageHome extends PageState<CustomPageHome> {
     });
   }
 
+  /// Called when the Push button in the bottom navigation bar is pressed.
   @override
   void pushPressed() {
     setState(() {
@@ -358,19 +425,20 @@ class _CustomPageHome extends PageState<CustomPageHome> {
     });
   }
 
-  bool checkIfAtHorizontalListStart() {
-    return currentFocusedHorizontalListIndex > 0;
+  bool atHorizontalListStart() {
+    return currentFocusedHorizontalListIndex == 0;
   }
 
-  bool checkIfAtHorizontalListEnd() {
-    return currentFocusedHorizontalListIndex < horizontalList.length - 1;
+  bool atHorizontalListEnd() {
+    return currentFocusedHorizontalListIndex ==
+        currentHorizontalList.length - 1;
   }
 
-  bool checkIfAtVerticalListStart() {
-    return currentFocusedVerticalListIndex > 0;
+  bool atVerticalListStart() {
+    return currentFocusedVerticalListIndex == 0;
   }
 
-  bool checkIfAtVerticalListEnd() {
-    return currentFocusedVerticalListIndex < categoryList.length - 1;
+  bool atVerticalListEnd() {
+    return currentFocusedVerticalListIndex == categoryList.length - 1;
   }
 }

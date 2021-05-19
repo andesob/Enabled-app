@@ -2,6 +2,7 @@ import 'package:enabled_app/global_data/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+/// Widget representing the key to enter the dictionary
 class KeyboardDictionaryKey extends StatefulWidget {
   KeyboardDictionaryKey({
     Key key,
@@ -10,8 +11,11 @@ class KeyboardDictionaryKey extends StatefulWidget {
     this.isFocused = false,
   }) : super(key: key);
 
+  /// Method that is called when button is pressed
   final VoidCallback onDictPressed;
   final int flex;
+
+  /// True if button is focused
   final bool isFocused;
 
   KeyboardDictionaryKeyState createState() => KeyboardDictionaryKeyState();

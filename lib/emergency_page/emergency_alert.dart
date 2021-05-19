@@ -1,8 +1,10 @@
 import 'package:enabled_app/emergency_page/emergency_popup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
+/// Widget for the Emergency popup
+///
+/// Triggered when [EmergencyButton] is pressed while no [EmergencyContact] is chosen
 class EmergencyAlert extends StatefulWidget {
   EmergencyAlert({Key key}) : super(key: key);
 

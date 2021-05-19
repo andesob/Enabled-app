@@ -8,7 +8,7 @@ void main(){
   }
 
   testWidgets("", (WidgetTester tester) async{
-    CustomPageHome page = CustomPageHome(title: "Custom", );
+    CustomPage page = CustomPage(title: "Custom", );
 
     //Find only one Add Custom Button
     await tester.pumpWidget(makeTestableWidget(child: page));

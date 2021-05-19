@@ -6,6 +6,7 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import '../tts_controller.dart';
 
+/// Widget representing a horizontal list or category in the [CustomPage].
 class CustomHorizontalList extends StatefulWidget {
   CustomHorizontalList({
     Key key,
@@ -15,16 +16,22 @@ class CustomHorizontalList extends StatefulWidget {
     this.setScrollController,
   }) : super(key: key);
 
+  /// Title of the list
   final String categoryTitle;
+
+  /// [List] containing [CustomPageButton] objects.
   final List<CustomPageButton> buttonList;
+
+  /// [bool] True if this list is focused
   final bool isFocused;
+
+  /// Reports that an [ItemScrollController] has been set.
   final ValueSetter<ItemScrollController> setScrollController;
 
   @override
   _CustomHorizontalList createState() => _CustomHorizontalList();
 }
 
-// TODO - See if i can change "container" with raised button for elevation effect when focused.
 class _CustomHorizontalList extends State<CustomHorizontalList> {
   FlutterTts flutterTts = TTSController().flutterTts;
 

@@ -1,8 +1,10 @@
+import 'package:enabled_app/needs/needs.dart';
 import 'package:enabled_app/needs/needs_page_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
+/// Widget representing a horizontal list or category in the [NeedsPage].
 class NeedsHorizontalList extends StatefulWidget {
   NeedsHorizontalList({
     Key key,
@@ -12,9 +14,16 @@ class NeedsHorizontalList extends StatefulWidget {
     this.setScrollController,
   }) : super(key: key);
 
+  /// Title of the list
   final String categoryTitle;
+
+  /// [List] containing [NeedsPageButton] objects.
   final List<NeedsPageButton> buttonList;
+
+  /// [bool] True if this list is focused
   final bool isFocused;
+
+  /// Reports that an [ItemScrollController] has been set.
   final ValueSetter<ItemScrollController> setScrollController;
 
   @override
@@ -22,20 +31,21 @@ class NeedsHorizontalList extends StatefulWidget {
 }
 
 class _NeedsHorizontalList extends State<NeedsHorizontalList> {
+  /// Controller to scroll or jump to a particular item.
   ItemScrollController scrollController;
 
   @override
   void initState() {
     super.initState();
     scrollController = new ItemScrollController();
-    if(widget.isFocused){
+    if (widget.isFocused) {
       widget.setScrollController(scrollController);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if(widget.isFocused){
+    if (widget.isFocused) {
       widget.setScrollController(scrollController);
     }
 

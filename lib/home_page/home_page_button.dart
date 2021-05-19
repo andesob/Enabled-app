@@ -1,12 +1,19 @@
 import 'dart:ui';
 
 import 'package:enabled_app/global_data/colors.dart';
+import 'package:enabled_app/home_page/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:gradient_text/gradient_text.dart';
 
+/// Widget representing a button on the [MyHomePage]
 class HomePageButton extends StatefulWidget {
+  /// Text displayed on the button
   final String text;
+
+  /// True if button is focused
   final bool focused;
+
+  /// [bool] to disable the button
   final bool enabled;
 
   HomePageButton({
@@ -21,6 +28,7 @@ class HomePageButton extends StatefulWidget {
 }
 
 class HomePageButtonState extends State<HomePageButton> {
+  /// Navigate to page when button is pressed
   void pushPressed() {
     if (widget.enabled) Navigator.pushReplacementNamed(context, widget.text);
   }
@@ -35,7 +43,7 @@ class HomePageButtonState extends State<HomePageButton> {
             ? (widget.focused
                 ? StaticColors.deepSpaceSparkle
                 : StaticColors.lighterSlateGray)
-            : StaticColors.onyx),
+            : StaticColors.lighterNightRider),
       ),
       child: FlatButton(
         child: new GradientText(

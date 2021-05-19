@@ -4,9 +4,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
+
+/// Widget representing a single Contact
 class ContactItem extends StatefulWidget {
+  /// True if Contact is focused
   final bool isFocused;
+
+  /// Contains all data for a Contact, like firstname, lastname and number.
   final ContactItemData cData;
+
+  /// When delete is pressed, returns the id of contact to delete it.
   final ValueSetter<String> onDelete;
 
   ContactItem({
@@ -28,9 +35,6 @@ class _ContactItem extends State<ContactItem> {
     String number = widget.cData.getNumber;
 
     return Row(
-        /* height:
-          ((MediaQuery.of(context).size.height - kBottomNavigationBarHeight) *
-              0.14),*/
         children: [
           Expanded(
             child: ListTile(

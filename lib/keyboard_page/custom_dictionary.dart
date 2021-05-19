@@ -1,12 +1,7 @@
-import 'package:csv/csv.dart';
 import 'package:enabled_app/keyboard_page/dictionary_item.dart';
-import 'package:enabled_app/keyboard_page/keyboard_page.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_tts/flutter_tts.dart';
 
-import '../tts_controller.dart';
-
+/// Widget representing the dictionary
 class CustomDictionary extends StatefulWidget {
   CustomDictionary({
     Key key,
@@ -17,10 +12,19 @@ class CustomDictionary extends StatefulWidget {
     this.dictionary,
   });
 
+  /// Method to return the word chosen
   final ValueSetter<String> onDictItemChosen;
+
+  /// Text to be displayed
   final String text;
+
+  /// True if dictionary is focused
   final bool isFocused;
+
+  /// Keeps track of what dictionary item currently focused
   final int currentFocusedVerticalListIndex;
+
+  /// List of all strings inside dictionary
   final List<String> dictionary;
 
   CustomDictionaryState createState() => CustomDictionaryState();
