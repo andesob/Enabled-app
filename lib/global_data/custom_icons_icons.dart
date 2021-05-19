@@ -31,6 +31,7 @@
 ///
 import 'package:flutter/widgets.dart';
 
+///Icons used across the application
 class CustomIcons {
   CustomIcons._();
 

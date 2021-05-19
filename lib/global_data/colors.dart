@@ -1,3 +1,4 @@
+///Colors used across the application
 class StaticColors{
   static int lightPeach = 0xffffecd2;
   static int darkPeach = 0xfffcb7a0;
