@@ -1,3 +1,4 @@
+///Constant strings used across the application
 class Strings {
   static const String ENABLED = "Enabled";
   static const String NEEDS = "Needs";
